@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{AE5BC0D2-5527-4252-9691-3CD82DB1F71F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ReneUtiles</RootNamespace>
+    <AssemblyName>ReneUtiles</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="delimon.win32.io">
+      <HintPath>..\..\..\..\Librerias\C#\dlls\framework 4.0\Delimon\4.0.4764.1936\delimon.win32.io.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\..\..\..\Librerias\C#\dlls\framework 4.5\Npgsql.4.0.0\lib\net45\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\..\..\..\Librerias\C#\dlls\framework 4.0\sqlite-netFx40-binary-bundle-Win32-2010-1.0.115.5\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReneUtiles\Archivos.cs" />
+    <Compile Include="ReneUtiles\Arreglos.cs" />
+    <Compile Include="ReneUtiles\Clases\Almacenamiento\EspacioEnAlmacenamiento.cs" />
+    <Compile Include="ReneUtiles\Clases\Basicos\RArrayList.cs" />
+    <Compile Include="ReneUtiles\Clases\Basicos\RArchivo.cs" />
+    <Compile Include="ReneUtiles\Clases\Basicos\RCarpeta.cs" />
+    <Compile Include="ReneUtiles\Clases\Basicos\RFile.cs" />
+    <Compile Include="ReneUtiles\Clases\Basicos\RLinkedList.cs" />
+    <Compile Include="ReneUtiles\Clases\Basicos\String\StringNumberTokenizer.cs" />
+    <Compile Include="ReneUtiles\Clases\Basicos\String\StringToken.cs" />
+    <Compile Include="ReneUtiles\Clases\Basicos\String\StringTokenizer.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\BasicoBD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\BDConexion.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\BDUpdates.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Conexion\BDResultadoInsertar.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Conexion\DatosBDConect.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Conexion\GestorDeConexionImple.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Conexion\GestorDeConexionSQL_Server.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Conexion\GestorDeConexionSQLite.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Conexion\GestorDeConexion_Postgresql.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Conexion\IGestorDeConexion.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\CodeBDLenguaje.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\CodeBDLenguaje_ConIAdmin.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\CSharp\CodeBDCSharp.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\CSharp\CodeBDCSharp_Usings.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\Java\Android\CodeBDAndroid.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\Java\Android\CodeBDAndroid_DatosDeBDConect.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\Java\Android\CodeBDAndroid_Imports.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\Java\CodeBDJava.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\Java\CodeBDJava_DatosDeBDConect.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\Java\CodeBDJava_Imports.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\Python\CodeBDPython.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\ColumnaDeModeloBD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Consultas\CrearDeleteCascade.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Consultas\InnerJoin.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Consultas\ManyToMany.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Consultas\OneToMany.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Consultas\OneToManySort.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Consultas\OneToMany_EnTablaExterna.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Consultas\SelectWhereSort.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\DatosDeBDConect.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\DatosDeConexionFactoryBD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\EsquemaBD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\FactoryBD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\ModeloBD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\ModeloBD_ID.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\ModeloUnion.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\UtilesFactory\BasicoFactory.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\UtilesFactory\ElementoPorElQueBuscar.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\UtilesFactory\ElementoPorElQueOrdenar.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\ModeloDeApiBD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\SesionEstorage\BDSesionStorage.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\SesionEstorage\Modelos\BDAdminSesionStorage.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\SesionEstorage\Modelos\DatoEnListaSesionStorage_MD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\SesionEstorage\Modelos\PropiedadSesionStorage_MD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\SesionEstorage\Modelos\ValorSimpleSesionStorage_MD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\TemporalStorageBD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\TipoDeClasificacionSQL.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\TipoDeConexionBD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\TipoDeDatoSQL.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\TipoDeOrdenamientoSQL.cs" />
+    <Compile Include="ReneUtiles\Clases\Archivo\DatosParaRecorridoDeCarpeta.cs" />
+    <Compile Include="ReneUtiles\Clases\ComparableHash.cs" />
+    <Compile Include="ReneUtiles\Clases\Condicionales\AND_Condicional.cs" />
+    <Compile Include="ReneUtiles\Clases\Condicionales\Condicional.cs" />
+    <Compile Include="ReneUtiles\Clases\Condicionales\FALSE_Condicional.cs" />
+    <Compile Include="ReneUtiles\Clases\Condicionales\IF_Condicional.cs" />
+    <Compile Include="ReneUtiles\Clases\Condicionales\NOT_Condicional.cs" />
+    <Compile Include="ReneUtiles\Clases\Condicionales\OR_Condicional.cs" />
+    <Compile Include="ReneUtiles\Clases\Condicionales\TRUE_Condicional.cs" />
+    <Compile Include="ReneUtiles\Clases\Condicionales\XOR_Condicional.cs" />
+    <Compile Include="ReneUtiles\Clases\ConjuntoDeEventos.cs" />
+    <Compile Include="ReneUtiles\Clases\ConsolaBasica.cs" />
+    <Compile Include="ReneUtiles\Clases\ConstantesExprecionesRegulares.cs" />
+    <Compile Include="ReneUtiles\Clases\Copiador\Direcciones_Y_Destino.cs" />
+    <Compile Include="ReneUtiles\Clases\Copiador\MangerCopiador.cs" />
+    <Compile Include="ReneUtiles\Clases\CreadorDeCodigo\Python\Flask\CodeFlaskEstructuraBasica.cs" />
+    <Compile Include="ReneUtiles\Clases\CreadorDeCodigo\Python\Flask\CreardorDeNombresBasicos_EstructuraFlask.cs" />
+    <Compile Include="ReneUtiles\Clases\CreadorDeCodigo\Python\Flask\FactoryEstructuraFlask.cs" />
+    <Compile Include="ReneUtiles\Clases\ExprecionesRegularesBasico.cs" />
+    <Compile Include="ReneUtiles\Clases\ExprecionesRegulares\Aleatoriedades\DatosDeAleatoriedadEnStr.cs" />
+    <Compile Include="ReneUtiles\Clases\ExprecionesRegulares\DatosDeIgnorarNumero.cs" />
+    <Compile Include="ReneUtiles\Clases\ExprecionesRegulares\Fechas\BuscadorDeFechasEnStr.cs" />
+    <Compile Include="ReneUtiles\Clases\ExprecionesRegulares\Fechas\DatosDeFechaEnStr.cs" />
+    <Compile Include="ReneUtiles\Clases\ExprecionesRegulares\Fechas\RecursosDePatronesDeFecha.cs" />
+    <Compile Include="ReneUtiles\Clases\ExprecionesRegulares\IdentificacionesNumericas\ConjuntoDeIdentificacionesNumericas.cs" />
+    <Compile Include="ReneUtiles\Clases\ExprecionesRegulares\IdentificacionesNumericas\IdentificacionEnStr.cs" />
+    <Compile Include="ReneUtiles\Clases\ExprecionesRegulares\IdentificacionesNumericas\IdentificacionNumericaEnStr.cs" />
+    <Compile Include="ReneUtiles\Clases\ExprecionesRegulares\IdentificacionesNumericas\IdentificacionNumeroRomanoEnStr.cs" />
+    <Compile Include="ReneUtiles\Clases\ExprecionesRegulares\LimitesDeIndice.cs" />
+    <Compile Include="ReneUtiles\Clases\ExprecionesRegulares\SeleccionadorDeTramosDeStr.cs" />
+    <Compile Include="ReneUtiles\Clases\IA\Imagenes\FiltroMxN.cs" />
+    <Compile Include="ReneUtiles\Clases\IA\Imagenes\ImgUtilesIA.cs" />
+    <Compile Include="ReneUtiles\Clases\IA\Imagenes\PixelMxN.cs" />
+    <Compile Include="ReneUtiles\Clases\IMG\TipoDeImg.cs" />
+    <Compile Include="ReneUtiles\Clases\LeguajeDescritivo\Metodos\Algoritmo.cs" />
+    <Compile Include="ReneUtiles\Clases\ParEnvoltura.cs" />
+    <Compile Include="ReneUtiles\Clases\PatronRegex.cs" />
+    <Compile Include="ReneUtiles\Clases\PW\TipoDePW.cs" />
+    <Compile Include="ReneUtiles\Clases\ReneBasico.cs" />
+    <Compile Include="ReneUtiles\Clases\Subprocesos\EjecutorDeSubprosesos.cs" />
+    <Compile Include="ReneUtiles\Clases\Subprocesos\EventosEnSubproceso.cs" />
+    <Compile Include="ReneUtiles\Clases\TerminacionNumerica.cs" />
+    <Compile Include="ReneUtiles\Clases\Tipos\TipoDeEspacio.cs" />
+    <Compile Include="ReneUtiles\Clases\Tipos\TipoDeExtencion.cs" />
+    <Compile Include="ReneUtiles\Clases\Tipos\TipoDeLenguaje.cs" />
+    <Compile Include="ReneUtiles\Clases\Validacion\CamposConValidacion\CampoConAlfanumericos_Validacion.cs" />
+    <Compile Include="ReneUtiles\Clases\Validacion\CamposConValidacion\CampoConValidacion.cs" />
+    <Compile Include="ReneUtiles\Clases\Validacion\TipoDeValidaciones\TipoDeValidacion.cs" />
+    <Compile Include="ReneUtiles\Clases\Validacion\TipoDeValidaciones\TipoDeValidacionMaxLength.cs" />
+    <Compile Include="ReneUtiles\Clases\Validacion\TipoDeValidaciones\TipoDeValidacionMinLength.cs" />
+    <Compile Include="ReneUtiles\Clases\Validacion\TipoDeValidaciones\TipoDeValidacionRangoEnteroPositivo.cs" />
+    <Compile Include="ReneUtiles\Clases\Validacion\TipoDeValidaciones\TipoDeValidacionRangoPositivo.cs" />
+    <Compile Include="ReneUtiles\Clases\Videos\TipoDeSubtitulo.cs" />
+    <Compile Include="ReneUtiles\Clases\Videos\TipoDeVideo.cs" />
+    <Compile Include="ReneUtiles\Matchs.cs" />
+    <Compile Include="ReneUtiles\Operaciones.cs" />
+    <Compile Include="ReneUtiles\SQLUtiles.cs" />
+    <Compile Include="ReneUtiles\Utiles.cs" />
+    <Compile Include="ReneUtiles\UtilesConsola.cs" />
+    <Compile Include="ReneUtiles\UtilesEncriptar.cs" />
+    <Compile Include="ReneUtiles\UtilesHardware.cs" />
+    <Compile Include="ReneUtiles\UtilesImg.cs" />
+    <Compile Include="ReneUtiles\UtilesNavegador.cs" />
+    <Compile Include="ReneUtiles\UtilesReflexion.cs" />
+    <Compile Include="ReneUtiles\UtilesSubprocesos.cs" />
+    <Compile Include="ReneUtiles\UtilesVideos.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ReneUtiles\Clases\Web\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

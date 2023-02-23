@@ -1,0 +1,8 @@
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtiles\ReneUtiles\bin\Release\ReneUtiles.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtiles\ReneUtiles\bin\Release\ReneUtiles.pdb
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtiles\ReneUtiles\bin\Release\delimon.win32.io.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtiles\ReneUtiles\bin\Release\System.Data.SQLite.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtiles\ReneUtiles\bin\Release\System.Data.SQLite.pdb
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtiles\ReneUtiles\bin\Release\System.Data.SQLite.xml
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtiles\ReneUtiles\obj\Release\ReneUtiles.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtiles\ReneUtiles\obj\Release\ReneUtiles.pdb
