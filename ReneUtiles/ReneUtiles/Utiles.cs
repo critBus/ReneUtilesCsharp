@@ -53,7 +53,17 @@ namespace ReneUtiles
             
         };
         private readonly static string APLICAR_SEGURIDAD = SEGURIDAD_R_A();
+        public static int getCantidadDeCaracteresIgualesEnMismaPosicion(string a,string b) {
+            int c = 0;
 
+            for (int i = 0; i < a.Length&& i < b.Length; i++)
+            {
+                if (a[i]==b[i]) {
+                    c+=1;
+                }
+            }
+            return c;
+        }
         public static void ejecutarCMD(string urlExe,string comando) {
 
             ProcessStartInfo psi = new ProcessStartInfo();

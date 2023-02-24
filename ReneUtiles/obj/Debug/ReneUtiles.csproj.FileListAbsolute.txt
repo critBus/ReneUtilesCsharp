@@ -10,3 +10,15 @@ D:\_Cosas\Programacion\Proyectos\C#\ReneUtiles\ReneUtiles\bin\Debug\delimon.win3
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtiles\ReneUtiles\bin\Debug\Npgsql.dll
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtiles\ReneUtiles\bin\Debug\Npgsql.pdb
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtiles\ReneUtiles\bin\Debug\Npgsql.xml
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\ReneUtiles.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\ReneUtiles.pdb
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\delimon.win32.io.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\Npgsql.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.Data.SQLite.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\Npgsql.pdb
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\Npgsql.xml
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.Data.SQLite.pdb
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.Data.SQLite.xml
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\obj\Debug\ReneUtiles.csprojResolveAssemblyReference.cache
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\obj\Debug\ReneUtiles.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\obj\Debug\ReneUtiles.pdb
