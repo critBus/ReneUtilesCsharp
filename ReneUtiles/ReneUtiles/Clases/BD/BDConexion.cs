@@ -53,8 +53,15 @@ namespace ReneUtiles.Clases.BD
         datosBDConect.mostrarResultadoConsola=true;
         return this;
     }
+        public BDConexion no_cl()
+        {
+            // mostrarResultadoConsola = true;
+            //datosBDConect.setMostrarResultadoConsola(true);
+            datosBDConect.mostrarResultadoConsola = false;
+            return this;
+        }
 
-    public GestorDeConexionImple getGestorDeConexionImple() {
+        public GestorDeConexionImple getGestorDeConexionImple() {
 //        if (gestorDeConexionImple == null) {
 //            gestorDeConexionImple = new GestionadorDeConexion(datosBDConect);
 //        }

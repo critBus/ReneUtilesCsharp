@@ -49,15 +49,20 @@ namespace ReneUtiles.Clases.BD.Factory
         public string NombreClaseBDPadre;
 
         public List<DatosDeConexionFactoryBD> listaDatosDeConexiones;
-		
-		
-		public FactoryBD(EsquemaBD esquema)
+
+
+        public string sufijoModelos;
+
+
+        public FactoryBD(EsquemaBD esquema)
 		{
 				this.Esquema=esquema;
             this.listaDatosDeConexiones = new List<DatosDeConexionFactoryBD>();
             this.NombreClaseBDPadre = "I_BDAdmin";
-                //this.NombreBDAdmin="BDAdmin";
-                //this.NombreArchivoQueContieneTodosLosModelos="ModelosDeBD";
+
+            this.sufijoModelos = "_MD";
+            //this.NombreBDAdmin="BDAdmin";
+            //this.NombreArchivoQueContieneTodosLosModelos="ModelosDeBD";
         }
 
         public DatosDeConexionFactoryBD addConexion_SQLite(

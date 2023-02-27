@@ -47,7 +47,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string separacion = getSeparacionln(0, separacion0);
 			string separacion1 = getSeparacionln(1, separacion0);
 			string mr = "";
-			mr += separacion + "class " + CodeBDLenguaje.getNombreStrModelo(m) + "(" + nombreSuperClaseModelo + "):";
+			mr += separacion + "class " + this.getNombreStrModelo(m) + "(" + nombreSuperClaseModelo + "):";
 			mr += separacion1 + m.Nombre + "=\"" + m.Nombre + "\"";
 			for (int j = 0; j < m.Columnas.Count; j++) {
 				ColumnaDeModeloBD c = m.Columnas[j];
@@ -71,7 +71,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				ColumnaDeModeloBD c = m.Columnas[i];
 				string cc = columnasStr[i];
 				if (c.EsReferencia) {
-					mr += separacion2 + "if isinstance(" + cc + "," + CodeBDLenguaje.getNombreStrModelo(c.ReferenciaID) + "):";
+					mr += separacion2 + "if isinstance(" + cc + "," + this.getNombreStrModelo(c.ReferenciaID) + "):";
 					mr += separacion3 + "self." + cc + "=" + cc + ".idkey";
 					mr += separacion2 + "else:";
 					mr += separacion3 + "self." + cc + "=" + cc;
@@ -260,7 +260,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			
 			mr += separacion1 + "def getStr(self, textoInicial=\"\"):";
 			mr += separacion2 + "s = self";
-			mr += separacion2 + "return strg(textoInicial,\"" + CodeBDLenguaje.getNombreStrModelo(m) + ": idkey=\", s.idkey";
+			mr += separacion2 + "return strg(textoInicial,\"" + this.getNombreStrModelo(m) + ": idkey=\", s.idkey";
 			//string separacion3 = getSeparacionln(3,separacion0);
 			for (int i = 0; i < columnasStr.Length; i++) {
 				string c = columnasStr[i];
@@ -284,7 +284,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			EsquemaBD E = factory.Esquema;
 //			for (int i = 0; i < E.getCantidadDeModelos(); i++) {
 //				ModeloBD_ID mt=(ModeloBD_ID)E.getModelo(i);
-//				bd +=separacion+ "from "+factory.DireccionPaquete+"."+CodeBDLenguaje.getNombreStrModelo(mt)+" import *";
+//				bd +=separacion+ "from "+factory.DireccionPaquete+"."+this.getNombreStrModelo(mt)+" import *";
 //			}
 			
 			bd += separacion + "class " + datosConexionFactory.NombreBDAdmin + "(BasicoBD):";
@@ -520,7 +520,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string separacion1 = getSeparacionln(0, separacion0);
 			string mc = separacion1 + "def " + getNombreMetodoCrearTabla(m) + "(self):";
 			string separacion2 = getSeparacionln(1, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			//mc += separacion2 + "self.BD.crearTablaYBorrarSiExiste("+nombreModelo+"." + m.Nombre;
 			mc += separacion2 + "self.BD." + getDSC().NombreMetodoCrearTablaYBorrarSiExiste + "(" + nombreModelo + "." + m.Nombre;
 			string separacion10 = getSeparacionln(5, separacion0);
@@ -559,7 +559,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string separacion1 = getSeparacionln(0, separacion0);
 			string mc = separacion1 + "def " + getNombreMetodoCrearTablaSiNoExiste(m) + "(self):";
 			string separacion2 = getSeparacionln(1, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			//mc += separacion2 + "self.BD.crearTablaYBorrarSiExiste("+nombreModelo+"." + m.Nombre;
 			mc += separacion2 + "self.BD." + getDSC().NombreMetodoCrearTablaSiNoExiste + "(" + nombreModelo + "." + m.Nombre;
 			string separacion10 = getSeparacionln(5, separacion0);
@@ -597,7 +597,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoGetArgs(ModeloBD m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			//string mr=separacion+"def get"+nombreModelo+"_Args(self, listaDeArgumentos):";
 			string mr = separacion + "def " + getNombreMetodo_getArgs(m) + "(self, listaDeArgumentos):";
 			string separacion1 = getSeparacionln(1, separacion0);
@@ -618,7 +618,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoContentArgs(ModeloBD m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string mr = separacion + "def __content_" + nombreModelo + "(self, " + nombreModeloLower + ":" + nombreModelo + "):";
 			string separacion1 = getSeparacionln(1, separacion0);
@@ -638,7 +638,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoGetForID(ModeloBD_ID m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			//string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
 			string mr = separacion + "def " + getNombreMetodo_GetForID(m) + "(self, id):";
@@ -656,7 +656,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoInsertar(ModeloBD_ID m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string mr = separacion + "def insertar" + nombreModelo + "(self," + nombreModeloLower + "):";
 			string separacion1 = getSeparacionln(1, separacion0);
@@ -698,7 +698,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoGetAll(ModeloBD_ID m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string mr = separacion + "def " + getNombreMetodoGetAll(m) + "(self):";
 			string separacion2 = getSeparacionln(1, separacion0);
@@ -713,7 +713,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoUpdate(ModeloBD_ID m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string mr = separacion + "def " + getNombreMetodoUpdate(m) + "(self," + nombreModeloLower + "):";
 			string separacion2 = getSeparacionln(1, separacion0);
@@ -732,7 +732,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoDeleteForID(ModeloBD_ID m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			
@@ -745,7 +745,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoGetAll_ForColumna(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 			string mr = separacion + "def " + getNombreMetodoGetAll_ForColumna(m, c) + "(self," + nombreVariableColumna + "):";
@@ -761,7 +761,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoGet_ForColumna(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 			string mr = separacion + "def " + getNombreMetodoGet_ForColumna(m, c) + "(self," + nombreVariableColumna + "):";
@@ -770,7 +770,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string separacion4 = getSeparacionln(3, separacion0);
 			if (c.EsReferencia) {
 				ModeloBD referencia = c.ReferenciaID;
-				string nombreModeloColumnaReferencia = CodeBDLenguaje.getNombreStrModelo(referencia);
+				string nombreModeloColumnaReferencia = this.getNombreStrModelo(referencia);
 				mr += separacion2 + "if isinstance(" + nombreVariableColumna + "," + nombreModeloColumnaReferencia + "):";
 				mr += separacion3 + "O=self.BD." + getDSC().NombreMetodoSelectWhere + "(" + nombreModelo + "." + m.Nombre + "," + nombreModelo + "." + c.Nombre + "," + nombreVariableColumna + ".idkey)";
 				mr += separacion2 + "else:";
@@ -795,14 +795,14 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoDelete_ForColumna(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 			string mr = separacion + "def " + getNombreMetodoDelete_ForColumna(m, c) + "(self," + nombreVariableColumna + "):";
 			string separacion2 = getSeparacionln(1, separacion0);
 			if (c.EsReferencia) {
 				ModeloBD referencia = c.ReferenciaID;
-				string nombreModeloColumnaReferencia = CodeBDLenguaje.getNombreStrModelo(referencia);
+				string nombreModeloColumnaReferencia = this.getNombreStrModelo(referencia);
 				mr += separacion2 + "if isinstance(" + nombreVariableColumna + "," + nombreModeloColumnaReferencia + "):";
 				string separacion3 = getSeparacionln(2, separacion0);
 				mr += separacion3 + "self.BD." + getDSC().NombreMetodoDelete + "(" + nombreModelo + "." + m.Nombre + "," + nombreModelo + "." + c.Nombre + "," + nombreVariableColumna + ".idkey)";
@@ -814,7 +814,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 //			if(c.EsReferencia){
 //				ModeloBD referencia=c.ReferenciaID; 
 //				string nombreVariableColumnaReferencia = CodeBDLenguaje.getNombreStrModeloLower(referencia);
-//				string nombreModeloColumnaReferencia = CodeBDLenguaje.getNombreStrModelo(referencia);
+//				string nombreModeloColumnaReferencia = this.getNombreStrModelo(referencia);
 //				mr+= separacion + "public void " + getNombreMetodoDelete_ForColumna(m, c) + "(" + nombreModeloColumnaReferencia + " " + nombreVariableColumnaReferencia + "){";
 //				mr+= separacion2 +getNombreMetodoDelete_ForColumna(m, c)+"("+nombreVariableColumnaReferencia+".idkey);";
 //				mr += separacion + "}";
@@ -825,7 +825,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoGetAll_ForListaDeColumnas(ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			
@@ -863,7 +863,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoGet_ForListaDeColumnas(string nombreDelMetodo, ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			
@@ -901,7 +901,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoDelete_ForListaDeColumnas(ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			
@@ -931,7 +931,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoGetAll_InnerJoin_ForListaDeColumnas(ModeloBD_ID m, List<ElementoPorElQueBuscar> cadena, List<ElementoPorElQueBuscar> elementosWhere, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			string mr = separacion + "def " + getNombreMetodoGetAll_InnerJoin_ForListaDeColumnas(m, elementosWhere) + "(self";
@@ -962,7 +962,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoGet_InnerJoin_ForListaDeColumnas(ModeloBD_ID m, List<ElementoPorElQueBuscar> cadena, List<ElementoPorElQueBuscar> elementosWhere, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			string mr = separacion + "def " + getNombreMetodoGet_InnerJoin_ForListaDeColumnas(m, elementosWhere) + "(";
@@ -991,7 +991,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoDelete_ForColumna_Cascade(ModeloBD_ID m, ColumnaDeModeloBD c, EsquemaBD E, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			//string nombreModeloLower=CodeBDLenguaje.getNombreStrModeloLower(m);
 			string nombreVariableModelo = CodeBDLenguaje.getNombreStrModeloLower(m);//getNombreVariableElemento(m);
 			string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
@@ -1015,7 +1015,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			for (int i = 0; i < listaCascade.Count; i++) {
 				ColumnaDeModeloBD cIneterna = listaCascade[i];
 				ModeloBD mActual = cIneterna.Padre;
-				string nombreModeloActual = CodeBDLenguaje.getNombreStrModelo(mActual);
+				string nombreModeloActual = this.getNombreStrModelo(mActual);
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 				//CrearDeleteCascade C=E.listaCrearDeleteCascade[mActual];
 				
@@ -1037,7 +1037,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			for (int i = 0; i < listaCascade.Count; i++) {
 				ColumnaDeModeloBD cIneterna = listaCascade[i];
 				ModeloBD mActual = cIneterna.ReferenciaID;
-				string nombreModeloActual = CodeBDLenguaje.getNombreStrModelo(mActual);
+				string nombreModeloActual = this.getNombreStrModelo(mActual);
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 
 				string nombreVariableColumnaActual = getNombreVariableElemento(cIneterna);
@@ -1069,7 +1069,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoDeleteForID_Cascade(ModeloBD_ID m, EsquemaBD E, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreVariableModelo = CodeBDLenguaje.getNombreStrModeloLower(m);//getNombreVariableElemento(m);
 			string nombreVariableColumna = getNombreVariableElemento(m);//CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 			string mr = separacion + "def " + getNombreMetodoDeleteForID_Cascade(m) + "(self," + nombreVariableColumna + ",modeloQueLoLlamo=None):";
@@ -1083,7 +1083,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			for (int i = 0; i < listaCascade.Count; i++) {
 				ColumnaDeModeloBD cIneterna = listaCascade[i];
 				ModeloBD mActual = cIneterna.Padre;
-				string nombreModeloActual = CodeBDLenguaje.getNombreStrModelo(mActual);
+				string nombreModeloActual = this.getNombreStrModelo(mActual);
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 				//CrearDeleteCascade C=E.listaCrearDeleteCascade[mActual];
 				
@@ -1109,7 +1109,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				for (int i = 0; i < listaCascade.Count; i++) {
 					ColumnaDeModeloBD cIneterna = listaCascade[i];
 					ModeloBD mActual = cIneterna.ReferenciaID;
-					string nombreModeloActual = CodeBDLenguaje.getNombreStrModelo(mActual);
+					string nombreModeloActual = this.getNombreStrModelo(mActual);
 					string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 //					CrearDeleteCascade C = E.listaCrearDeleteCascade[mActual];
 //					CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
@@ -1142,7 +1142,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoDelete_ForListaDeColumnas_Cascade(ModeloBD_ID m, List<ColumnaDeModeloBD> C, EsquemaBD E, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreVariableModelo = CodeBDLenguaje.getNombreStrModeloLower(m);//getNombreVariableElemento(m);
 			
 			string mr = separacion + "def " + getNombreMetodoDelete_ForListaDeColumnas_Cascade(m, C) + "(self,";
@@ -1177,7 +1177,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			for (int i = 0; i < listaCascade.Count; i++) {
 				ColumnaDeModeloBD cIneterna = listaCascade[i];
 				ModeloBD mActual = cIneterna.Padre;
-				string nombreModeloActual = CodeBDLenguaje.getNombreStrModelo(mActual);
+				string nombreModeloActual = this.getNombreStrModelo(mActual);
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 				//CrearDeleteCascade Cc=E.listaCrearDeleteCascade[mActual];
 				
@@ -1200,7 +1200,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			for (int i = 0; i < listaCascade.Count; i++) {
 				ColumnaDeModeloBD cIneterna = listaCascade[i];
 				ModeloBD mActual = cIneterna.ReferenciaID;
-				string nombreModeloActual = CodeBDLenguaje.getNombreStrModelo(mActual);
+				string nombreModeloActual = this.getNombreStrModelo(mActual);
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 //				CrearDeleteCascade C0 = E.listaCrearDeleteCascade[mActual];
 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
@@ -1237,7 +1237,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoExiste(ModeloBD_ID m, ColumnaDeModeloBD c, bool soloHayEsteEnElModelo, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 			string mr = separacion + "def " + getNombreMetodoExiste(m, c, soloHayEsteEnElModelo) + "(self," + nombreVariableColumna + "):";
@@ -1253,7 +1253,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoExiste_ForListaDeColumnas(string nombreMetodo, ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			string mr = separacion + "def " + nombreMetodo + "(self";// + getNombreTipoDeDato(c) + " " + nombreVariableColumna + ") throws Exception {";
@@ -1287,7 +1287,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		public override string getStrMetodoExiste_ForID(ModeloBD_ID m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			//string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
 			string mr = separacion + "def " + getNombreMetodo_GetForID(m) + "(self, id):";
@@ -1305,7 +1305,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			ModeloBD_ID m = s.Modelo;
 			List<ColumnaDeModeloBD> C = s.ListaPorLasQueBuscar;
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			string mr = separacion + "def " + getNombreMetodoGetAll_ForListaDeColumnas_Sort(s) + "(self";//+getNombreTipoDeDato(c)+" "+nombreVariableColumna+"){";
@@ -1361,7 +1361,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 		protected override string __getStrInnerJoin(string nombreMetodoBD, ModeloBD_ID m, List<ElementoPorElQueBuscar> cadena, List<ElementoPorElQueBuscar> elementosWhere, int separacion0)
 		{
 			//string separacion=getSeparacionln(0,separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			string mr = "";
@@ -1379,7 +1379,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			for (int i = 0; i < cadena.Count; i++) {
 				ElementoPorElQueBuscar e = cadena[i];
 				ModeloBD mEnInner = getModeloDeElemento(e);
-				string nombreModeloEnInner = CodeBDLenguaje.getNombreStrModelo(mEnInner);
+				string nombreModeloEnInner = this.getNombreStrModelo(mEnInner);
 				string nombreModeloLowerEnInner = CodeBDLenguaje.getNombreStrModeloLower(mEnInner);
 				
 				string nombreColumna = "";
@@ -1414,7 +1414,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			for (int i = 0; i < elementosWhere.Count; i++) {
 				ElementoPorElQueBuscar e = elementosWhere[i];
 				ModeloBD mEnInner = getModeloDeElemento(e);
-				string nombreModeloEnInner = CodeBDLenguaje.getNombreStrModelo(mEnInner);
+				string nombreModeloEnInner = this.getNombreStrModelo(mEnInner);
 				string nombreModeloLowerEnInner = CodeBDLenguaje.getNombreStrModeloLower(mEnInner);
 				
 				string nombreColumna = "";

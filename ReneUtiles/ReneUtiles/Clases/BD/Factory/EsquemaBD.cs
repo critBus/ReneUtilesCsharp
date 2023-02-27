@@ -221,7 +221,13 @@ namespace ReneUtiles.Clases.BD.Factory
 			addManyToMany(m);
 			return m;
 		}
-		public ManyToMany addManyToMany(ModeloBD_ID m1, ModeloBD_ID m2)
+        public ManyToMany addManyToMany(ModeloBD_ID m1, string m1_nombre, ModeloBD_ID m2, string m2_nombre, string nombre)
+        {
+            ManyToMany m = new ManyToMany(m1, m2, ManyToMany.crearUnion(m1, m1_nombre, m2, m2_nombre, nombre));
+            addManyToMany(m);
+            return m;
+        }
+        public ManyToMany addManyToMany(ModeloBD_ID m1, ModeloBD_ID m2)
 		{
 			return addManyToMany(m1, m2, null);
 		}

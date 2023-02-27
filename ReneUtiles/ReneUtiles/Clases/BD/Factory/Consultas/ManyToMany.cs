@@ -32,8 +32,12 @@ namespace ReneUtiles.Clases.BD.Factory.Consultas
 				throw new Exception("Los Many no pueden ser iguale a Union");
 			}
 		}
-		
-		public static ModeloUnion crearUnion(ModeloBD_ID many_1, ModeloBD_ID many_2, string nombre)
+
+        public static ModeloUnion crearUnion(ModeloBD_ID many_1, ModeloBD_ID many_2, string nombre) {
+            return ManyToMany.crearUnion(many_1,null,many_2,null,nombre);
+        }
+
+        public static ModeloUnion crearUnion(ModeloBD_ID many_1, string nombreColumnaMany_1, ModeloBD_ID many_2, string nombreColumnaMany_2, string nombre)
 		{
 			string nombreAutomatico=null;
 			if (nombre == null) {
@@ -41,8 +45,24 @@ namespace ReneUtiles.Clases.BD.Factory.Consultas
 				 nombreAutomatico= "TABLA_" + modificarNombre(many_1.Nombre) + "_AND_" + modificarNombre(many_2.Nombre);
 			}
 			ModeloUnion union = new ModeloUnion(nombre ?? nombreAutomatico);
-			union.addC_ID(many_1);
-			union.addC_ID(many_2);
+            if (nombreColumnaMany_1 == null)
+            {
+                union.addC_ID(many_1);
+            }
+            else {
+                union.addC_ID(nombreColumnaMany_1,many_1);
+            }
+
+            if (nombreColumnaMany_2 == null)
+            {
+                union.addC_ID(many_2);
+            }
+            else
+            {
+                union.addC_ID(nombreColumnaMany_2, many_2);
+            }
+
+            //union.addC_ID(many_2);
 			union.addBuscarListaPor(many_1);
 			union.addBuscarListaPor(many_2);
 			if (nombre == null) {

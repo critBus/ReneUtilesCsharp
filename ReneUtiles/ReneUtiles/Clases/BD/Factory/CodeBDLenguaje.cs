@@ -67,7 +67,7 @@ namespace ReneUtiles.Clases.BD.Factory
         public abstract  string getStrMetodoCrearTabla(ModeloBD m, int separacion0);
 		public virtual  string getNombreMetodoCrearTabla(ModeloBD m)
 		{
-			return "crearTabla" + CodeBDLenguaje.getNombreStrModelo(m);
+			return "crearTabla" + this.getNombreStrModelo(m);
 		}
 		
 		
@@ -75,7 +75,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		public abstract  string getStrMetodoCrearTablaSiNoExiste(ModeloBD m, int separacion0);
 		public virtual  string getNombreMetodoCrearTablaSiNoExiste(ModeloBD m)
 		{
-			return "crearTabla" + CodeBDLenguaje.getNombreStrModelo(m)+"SiNoExiste";
+			return "crearTabla" + this.getNombreStrModelo(m)+"SiNoExiste";
 		}
 		
 		
@@ -83,7 +83,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		public abstract string getStrMetodoGetArgs(ModeloBD m, int separacion0);
 		public virtual  string getNombreMetodo_getArgs(ModeloBD m)
 		{
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			return "get" + nombreModelo + "_Args";
 		}
 		
@@ -94,7 +94,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		public abstract string getStrMetodoGetForID(ModeloBD_ID m, int separacion0);
 		public virtual  string getNombreMetodo_GetForID(ModeloBD m)
 		{
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			return "get" + nombreModelo + "_id";
 		}
 		
@@ -102,7 +102,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		public abstract string getStrMetodoInsertar(ModeloBD_ID m, int separacion0);
 		public virtual  string getNombreMetodo_insertar(ModeloBD m)
 		{
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			return "insertar" + nombreModelo;
 		}
 		
@@ -110,49 +110,49 @@ namespace ReneUtiles.Clases.BD.Factory
 		public abstract string getStrMetodoGetAll(ModeloBD_ID m, int separacion0);
 		public virtual  string getNombreMetodoGetAll(ModeloBD m)
 		{
-			return "get" + CodeBDLenguaje.getNombreStrModelo(m) + "_All";
+			return "get" + this.getNombreStrModelo(m) + "_All";
 		}
 		
 		//Metodo Update
 		public abstract string getStrMetodoUpdate(ModeloBD_ID m, int separacion0);
 		public virtual  string getNombreMetodoUpdate(ModeloBD m)
 		{
-			return "update" + CodeBDLenguaje.getNombreStrModelo(m) + "";
+			return "update" + this.getNombreStrModelo(m) + "";
 		}
 		
 		//Metodo DeleteForID
 		public abstract string getStrMetodoDeleteForID(ModeloBD_ID m, int separacion0);
 		public virtual  string getNombreMetodoDeleteForID(ModeloBD m)
 		{
-			return "delete" + CodeBDLenguaje.getNombreStrModelo(m) + "_ForId";
+			return "delete" + this.getNombreStrModelo(m) + "_ForId";
 		}
 		
 		//Metodo GetAll_ForColumna
 		public abstract string getStrMetodoGetAll_ForColumna(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0);
 		public virtual  string getNombreMetodoGetAll_ForColumna(ModeloBD m, ColumnaDeModeloBD c)
 		{
-			return "get" + CodeBDLenguaje.getNombreStrModelo(m) + "_All_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m, c);
+			return "get" + this.getNombreStrModelo(m) + "_All_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m, c);
 		}
 		
 		//Metodo Get_ForColumna
 		public abstract string getStrMetodoGet_ForColumna(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0);
 		public virtual  string getNombreMetodoGet_ForColumna(ModeloBD m, ColumnaDeModeloBD c)
 		{
-			return "get" + CodeBDLenguaje.getNombreStrModelo(m) + "_For_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m, c);
+			return "get" + this.getNombreStrModelo(m) + "_For_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m, c);
 		}
 		
 		//Metodo Delete_ForColumna
 		public abstract string getStrMetodoDelete_ForColumna(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0);
 		public virtual  string getNombreMetodoDelete_ForColumna(ModeloBD m, ColumnaDeModeloBD c)
 		{
-			return "delete" + CodeBDLenguaje.getNombreStrModelo(m) + "_For_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m, c);
+			return "delete" + this.getNombreStrModelo(m) + "_For_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m, c);
 		}
 		
 		//Metodo GetAll_ForListaDeColumnas
 		public abstract string getStrMetodoGetAll_ForListaDeColumnas(ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0);
 		public virtual  string getNombreMetodoGetAll_ForListaDeColumnas(ModeloBD m, List<ColumnaDeModeloBD> C)
 		{
-			string r = "get" + CodeBDLenguaje.getNombreStrModelo(m) + "_All";
+			string r = "get" + this.getNombreStrModelo(m) + "_All";
 			for (int i = 0; i < C.Count; i++) {
 				r += "_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m, C[i]);
 			}
@@ -167,7 +167,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		}
 		public virtual  string getNombreMetodoGet_ForListaDeColumnas(ModeloBD m, List<ColumnaDeModeloBD> C)
 		{
-			string r = "get" + CodeBDLenguaje.getNombreStrModelo(m) + "_For";
+			string r = "get" + this.getNombreStrModelo(m) + "_For";
 			for (int i = 0; i < C.Count; i++) {
 				//r+="_"+CodeBDLenguaje.getNombreStrElementoCapitalice(C[i]);
 				r += "_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m, C[i]);
@@ -179,7 +179,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		public abstract string getStrMetodoDelete_ForListaDeColumnas(ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0);
 		public virtual  string getNombreMetodoDelete_ForListaDeColumnas(ModeloBD m, List<ColumnaDeModeloBD> C)
 		{
-			string r = "delete" + CodeBDLenguaje.getNombreStrModelo(m) + "_For";
+			string r = "delete" + this.getNombreStrModelo(m) + "_For";
 			for (int i = 0; i < C.Count; i++) {
 				r += "_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m, C[i]);
 			}
@@ -201,7 +201,7 @@ namespace ReneUtiles.Clases.BD.Factory
 			}
 			
 			return "get" +o.Nombre;
-			//return "getListaDe_"+CodeBDLenguaje.getNombreStrModelo(o.Many);
+			//return "getListaDe_"+this.getNombreStrModelo(o.Many);
 			
 		}
 		
@@ -234,7 +234,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		public virtual  string getNombreMetodoGetListaDe_OneToManyEnTablaExterna(OneToMany_EnTablaExterna o)
 		{
 			if (o.Union.TieneUnNombreAutomatico) {
-				return "get" + CodeBDLenguaje.getNombreStrModelo(o.Many) + "_All";
+				return "get" + this.getNombreStrModelo(o.Many) + "_All";
 			}
 			
 			return "get" + o.Union.Nombre;
@@ -265,9 +265,9 @@ namespace ReneUtiles.Clases.BD.Factory
 		}
 		public virtual  string getNombreMetodoGetListaDe_ManyToMany(ManyToMany o, ModeloBD mDestino)
 		{
-			//return "getListaDe_"+CodeBDLenguaje.getNombreStrModelo(o.Many);
+			//return "getListaDe_"+this.getNombreStrModelo(o.Many);
 			if (o.Union.TieneUnNombreAutomatico) {
-				return "get" + CodeBDLenguaje.getNombreStrModelo(mDestino) + "_All";
+				return "get" + this.getNombreStrModelo(mDestino) + "_All";
 				//return getNombreMetodoGetAll_ForColumna(mDestino,o.Union.Columnas[0]);
 			}
 			
@@ -317,14 +317,14 @@ namespace ReneUtiles.Clases.BD.Factory
 		//Metodo Existe
 		public virtual  string getNombreMetodoExiste(ModeloBD m, ColumnaDeModeloBD c, bool soloHayEsteEnElModelo)
 		{
-			return "existe" + CodeBDLenguaje.getNombreStrModelo(m) + (soloHayEsteEnElModelo ? "" : "_For_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m, c));
+			return "existe" + this.getNombreStrModelo(m) + (soloHayEsteEnElModelo ? "" : "_For_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m, c));
 		}
 		public abstract string getStrMetodoExiste(ModeloBD_ID m, ColumnaDeModeloBD c, bool soloHayEsteEnElModelo, int separacion0);
 		
 		//Metodo Existe ForListaDeColumnas
 		public virtual  string getNombreMetodoExiste_ForListaDeColumnas(ModeloBD m, List<ColumnaDeModeloBD> C, bool soloHayEsteEnElModelo)
 		{
-			string r = "existe" + CodeBDLenguaje.getNombreStrModelo(m);
+			string r = "existe" + this.getNombreStrModelo(m);
 			if (!soloHayEsteEnElModelo) {
 				for (int i = 0; i < C.Count; i++) {
 					r += "_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m, C[i]);
@@ -343,17 +343,17 @@ namespace ReneUtiles.Clases.BD.Factory
 		public virtual  string getNombreMetodoAddMany_OneToManyEnTablaExterna(OneToMany_EnTablaExterna o)
 		{
 			if (o.Union.TieneUnNombreAutomatico) {
-				return "add" + CodeBDLenguaje.getNombreStrModelo(o.Many);
+				return "add" + this.getNombreStrModelo(o.Many);
 			}
 			
-			return "add" + CodeBDLenguaje.getNombreStrModelo(o.Union);
+			return "add" + this.getNombreStrModelo(o.Union);
 		}
 		
 		//Metodo AddMany OneToMany dentro de modelo | OneToMany
 		public virtual  string getNombreMetodoAddMany_OneToMany(OneToMany o)
 		{
 			if (o.TieneUnNombreAutomatico) {
-				return "add" + CodeBDLenguaje.getNombreStrModelo(o.Many);
+				return "add" + this.getNombreStrModelo(o.Many);
 			}
 			
 			return "add" +o.Nombre;
@@ -363,7 +363,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		public virtual  string getNombreMetodoAddMany_OneToManySort(OneToManySort o)
 		{
 			if (o.TieneUnNombreAutomatico) {
-				return "add" + CodeBDLenguaje.getNombreStrModelo(o.Many);//+"_Sort"
+				return "add" + this.getNombreStrModelo(o.Many);//+"_Sort"
 			}
 			
 			return "add" +o.Nombre;//+"_Sort"
@@ -374,10 +374,10 @@ namespace ReneUtiles.Clases.BD.Factory
 		public virtual  string getNombreMetodoGet_OneToManyEnTablaExterna(OneToMany_EnTablaExterna o)
 		{
 			if (o.Union.TieneUnNombreAutomatico) {
-				return "get" + CodeBDLenguaje.getNombreStrModelo(o.Many);
+				return "get" + this.getNombreStrModelo(o.Many);
 			}
 			
-			return "get" + CodeBDLenguaje.getNombreStrModelo(o.Union);
+			return "get" + this.getNombreStrModelo(o.Union);
 		}
 		//		public virtual string getStrMetodoGet_OneToManyTablaExterna(OneToMany_EnTablaExterna o, int separacion0)
 		//		{
@@ -394,10 +394,10 @@ namespace ReneUtiles.Clases.BD.Factory
 		public virtual  string getNombreMetodoGet_EnBD_OneToManyEnTablaExterna(OneToMany_EnTablaExterna o)
 		{
 //			if (o.Union.TieneUnNombreAutomatico) {
-//				return "get" + CodeBDLenguaje.getNombreStrModelo(o.Many);
+//				return "get" + this.getNombreStrModelo(o.Many);
 //			}
 			
-			return "get" + CodeBDLenguaje.getNombreStrModelo(o.Union);
+			return "get" + this.getNombreStrModelo(o.Union);
 		}
 		public virtual string getStrMetodoGet_EnBD_OneToManyTablaExterna(OneToMany_EnTablaExterna o, int separacion0)
 		{
@@ -414,10 +414,10 @@ namespace ReneUtiles.Clases.BD.Factory
 		public virtual  string getNombreMetodoExiste_OneToManyEnTablaExterna(OneToMany_EnTablaExterna o)
 		{
 			if (o.Union.TieneUnNombreAutomatico) {
-				return "existe" + CodeBDLenguaje.getNombreStrModelo(o.One) + "_And_" + CodeBDLenguaje.getNombreStrModelo(o.Many);
+				return "existe" + this.getNombreStrModelo(o.One) + "_And_" + this.getNombreStrModelo(o.Many);
 			}
 			
-			return "existe" + CodeBDLenguaje.getNombreStrModelo(o.Union);
+			return "existe" + this.getNombreStrModelo(o.Union);
 		}
 		public virtual string getStrMetodoExiste_OneToManyEnTablaExterna(OneToMany_EnTablaExterna o, int separacion0)
 		{
@@ -429,10 +429,10 @@ namespace ReneUtiles.Clases.BD.Factory
 		public virtual  string getNombreMetodoAddMany_ManyToMany(ManyToMany o, ModeloBD m)
 		{
 			if (o.Union.TieneUnNombreAutomatico) {
-				return "add" + CodeBDLenguaje.getNombreStrModelo(o.Many_1 == m ? o.Many_2 : o.Many_1);
+				return "add" + this.getNombreStrModelo(o.Many_1 == m ? o.Many_2 : o.Many_1);
 			}
 			
-			return "add" + CodeBDLenguaje.getNombreStrModelo(o.Union);
+			return "add" + this.getNombreStrModelo(o.Union);
 			;
 		}
 		
@@ -441,10 +441,10 @@ namespace ReneUtiles.Clases.BD.Factory
 		public virtual  string getNombreMetodoGet_ManyToMany(ManyToMany o, ModeloBD m)
 		{
 			if (o.Union.TieneUnNombreAutomatico) {
-				return "get" + CodeBDLenguaje.getNombreStrModelo(o.Many_1 == m ? o.Many_2 : o.Many_1);
+				return "get" + this.getNombreStrModelo(o.Many_1 == m ? o.Many_2 : o.Many_1);
 			}
 			
-			return "get" + CodeBDLenguaje.getNombreStrModelo(o.Union);
+			return "get" + this.getNombreStrModelo(o.Union);
 			;
 		}
 		//		public virtual string getStrMetodoGet_ManyToMany(ManyToMany o, int separacion0)
@@ -463,10 +463,10 @@ namespace ReneUtiles.Clases.BD.Factory
 		public virtual  string getNombreMetodoExiste_ManyToMany(ManyToMany o)
 		{
 			if (o.Union.TieneUnNombreAutomatico) {
-				return "existe" + CodeBDLenguaje.getNombreStrModelo(o.Many_1) + "_And_" + CodeBDLenguaje.getNombreStrModelo(o.Many_2);
+				return "existe" + this.getNombreStrModelo(o.Many_1) + "_And_" + this.getNombreStrModelo(o.Many_2);
 			}
 			
-			return "existe" + CodeBDLenguaje.getNombreStrModelo(o.Union);
+			return "existe" + this.getNombreStrModelo(o.Union);
 			;
 		}
 		public virtual string getStrMetodoExiste_ManyToMany(ManyToMany o, int separacion0)
@@ -478,10 +478,10 @@ namespace ReneUtiles.Clases.BD.Factory
 		public virtual  string getNombreMetodoGet_EnBD_ManyToMany(ManyToMany o)
 		{
 //			if (o.Union.TieneUnNombreAutomatico) {
-//				return "get" + CodeBDLenguaje.getNombreStrModelo(o.Many);
+//				return "get" + this.getNombreStrModelo(o.Many);
 //			}
 			
-			return "get" + CodeBDLenguaje.getNombreStrModelo(o.Union);
+			return "get" + this.getNombreStrModelo(o.Union);
 			;
 		}
 		public virtual string getStrMetodoGet_EnBD_ManyToMany(ManyToMany o, int separacion0)
@@ -499,7 +499,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		//save dentro de modelo
 		public virtual  string getNombreMetodoSave(ModeloBD m)
 		{
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			return "s";
 		}
 		
@@ -507,14 +507,14 @@ namespace ReneUtiles.Clases.BD.Factory
 		public abstract string getStrMetodoExiste_ForID(ModeloBD_ID m, int separacion0);
 		public virtual  string getNombreMetodoExiste_ForID(ModeloBD m)
 		{
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			return "existe" + nombreModelo + "_id";
 		}
 		
 		//Delete dentro de modelo
 		public virtual  string getNombreMetodoDelete_EnModelo(ModeloBD m)
 		{
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			return "d";
 		}
 		
@@ -523,7 +523,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		public abstract string getStrMetodoGetAll_ForListaDeColumnas_Sort(SelectWhereSort s, int separacion0);
 		public virtual  string getNombreMetodoGetAll_ForListaDeColumnas_Sort(SelectWhereSort s)
 		{
-			string r = "get" + CodeBDLenguaje.getNombreStrModelo(s.Modelo) + "_All";
+			string r = "get" + this.getNombreStrModelo(s.Modelo) + "_All";
 			for (int i = 0; i < s.ListaPorLasQueBuscar.Count; i++) {
 				ElementoPorElQueBuscar e = s.ListaPorLasQueBuscar[i];
 				
@@ -555,7 +555,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		public virtual  string getNombreMetodoGetListaDe_OneToManyLinkInterno_Sort(OneToManySort o)
 		{
 			if (o.Nombre == null) {
-				string r = "get" + CodeBDLenguaje.getNombreStrModelo(o.Many);
+				string r = "get" + this.getNombreStrModelo(o.Many);
 				r += "_All_Sort";
 				for (int i = 0; i < o.Sort.ListaPorLasQueOrdenar.Count; i++) {
 					r += "_" + CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(o.Sort.Modelo, o.Sort.ListaPorLasQueOrdenar[i].Columna);
@@ -563,7 +563,7 @@ namespace ReneUtiles.Clases.BD.Factory
 				return r;
 			}
 			return o.Nombre;
-			//return "getListaDe_"+CodeBDLenguaje.getNombreStrModelo(o.Many);
+			//return "getListaDe_"+this.getNombreStrModelo(o.Many);
 			//return getNombreMetodoGetAll_ForColumna(o.Many, o.LinkToOne);
 		}
 		
@@ -573,11 +573,11 @@ namespace ReneUtiles.Clases.BD.Factory
 		//Nombres de Metodos ********************
 		public virtual  string getNombreMetodoGetListaDe(ModeloBD m)
 		{
-			return "getListaDe_" + CodeBDLenguaje.getNombreStrModelo(m);
+			return "getListaDe_" + this.getNombreStrModelo(m);
 		}
 		public virtual  string getNombreMetodoGet_ForListaDeElementos(ModeloBD m, List<ElementoPorElQueBuscar> C)
 		{
-			string r = "get" + CodeBDLenguaje.getNombreStrModelo(m) + "_For";
+			string r = "get" + this.getNombreStrModelo(m) + "_For";
 			for (int i = 0; i < C.Count; i++) {
 				r += "_" + getNombreStrElementoCapitalice(C[i]);
 				//r+="_"+CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m,C[i]);
@@ -586,7 +586,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		}
 		public virtual  string getNombreMetodoGetAll_ForListaDeElementos(ModeloBD m, List<ElementoPorElQueBuscar> C)
 		{
-			string r = "get" + CodeBDLenguaje.getNombreStrModelo(m) + "_All";
+			string r = "get" + this.getNombreStrModelo(m) + "_All";
 			for (int i = 0; i < C.Count; i++) {
 				r += "_" + getNombreStrElementoCapitalice(C[i]);
 				//r+="_"+CodeBDLenguaje.getNombreStrColumnaModeloCapitalice(m,C[i]);
@@ -716,12 +716,12 @@ namespace ReneUtiles.Clases.BD.Factory
 		}
 		
 		//static
-		public static string getNombreStrModelo(ModeloBD m)
-		{	
-//			cwl("m="+m);
-//			cwl("m.Nombre="+m.Nombre);
-			
-			return Utiles.llevarASingular(Utiles.getCapitalizeUnido(m.Nombre.Replace("TABLA_", ""))) + "_MD";
+		public  string getNombreStrModelo(ModeloBD m)
+		{
+            //			cwl("m="+m);
+            //			cwl("m.Nombre="+m.Nombre);
+
+            return Utiles.llevarASingular(Utiles.getCapitalizeUnido(m.Nombre.Replace("TABLA_", ""))) +this.factory.sufijoModelos ;//"_MD";
 		}
 		
 		public static string getNombreStrColumnaModelo(ColumnaDeModeloBD c)

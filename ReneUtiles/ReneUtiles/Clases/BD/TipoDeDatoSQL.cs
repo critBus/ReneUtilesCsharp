@@ -26,6 +26,7 @@ namespace ReneUtiles.Clases.BD
 			BOOLEAN = new TipoDeDatoSQL("BOOLEAN", "false"),
 			DOUBLE_PRECISION = new TipoDeDatoSQL("DOUBLE PRECISION", "0")
             , SERIAL = new TipoDeDatoSQL("SERIAL", null)
+            , TEXT = new TipoDeDatoSQL("TEXT", null)
             ;
 		public static readonly TipoDeDatoSQL[] VALUES = {
 			INTEGER,
@@ -35,8 +36,9 @@ namespace ReneUtiles.Clases.BD
 			POINT,
 			BLOB,
 			BOOLEAN,
-            SERIAL
-		};
+            SERIAL,
+            TEXT
+        };
 		public readonly string valor;
 		public readonly string porDefecto;
 		public TipoDeDatoSQL(string valor, string porDefecto)

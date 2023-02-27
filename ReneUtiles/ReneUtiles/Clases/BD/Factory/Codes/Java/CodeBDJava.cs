@@ -255,7 +255,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			string nombreSuperClaseModelo = getNombreSuperclaseModelo();
 			string nombreTipoApiBD = getNombreClaseBDImplementada();
 			string separacion1 = getSeparacionln(1, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			List<string> nombreMetodosAgregados=new List<string>();
 			
 			string mr = "package " + factory.DireccionPaquete + ";";
@@ -325,7 +325,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 					ColumnaDeModeloBD c = m.Columnas[i];
 					mr += ",";
 					if (c.EsReferencia) {
-						mr += CodeBDLenguaje.getNombreStrModelo(c.ReferenciaID) + " " + CodeBDLenguaje.getNombreStrColumnaModeloReferencia_ParaTipoModelo(c);
+						mr += this.getNombreStrModelo(c.ReferenciaID) + " " + CodeBDLenguaje.getNombreStrColumnaModeloReferencia_ParaTipoModelo(c);
 					} else {
 						mr += getNombreTipoDeDato(c) + " " + columnasStr[i];
 					}
@@ -356,7 +356,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			for (int i = 0; i < referencias.Length; i++) {
 				//"id_tabla_";
 				ColumnaDeModeloBD c = referencias[i];
-				mr += separacion1 + "public " + CodeBDLenguaje.getNombreStrModelo(c.ReferenciaID) + " " + CodeBDLenguaje.getNombreStrMetodoGetReferenciaColumnaModelo(m, c) + "() throws Exception {";
+				mr += separacion1 + "public " + this.getNombreStrModelo(c.ReferenciaID) + " " + CodeBDLenguaje.getNombreStrMetodoGetReferenciaColumnaModelo(m, c) + "() throws Exception {";
 				mr += separacion2 + "return this.apibd." + getNombreMetodo_GetForID(c.ReferenciaID) + "(this." + CodeBDLenguaje.getNombreStrColumnaModelo(m, c) + ");";
 				mr += separacion1 + "}";
 			}
@@ -550,7 +550,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			
 			mr += separacion1 + "public String getStr(String textoInicial){";
 			mr += separacion2 + nombreModelo + " s = this;";
-			mr += separacion2 + "return textoInicial+\"" + CodeBDLenguaje.getNombreStrModelo(m) + ": idkey=\"+ s.idkey";
+			mr += separacion2 + "return textoInicial+\"" + this.getNombreStrModelo(m) + ": idkey=\"+ s.idkey";
 			//string separacion3 = getSeparacionln(3, separacion0);
 			for (int i = 0; i < columnasStr.Length; i++) {
 				string c = columnasStr[i];
@@ -618,7 +618,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 
         public override string getStrMetodoCrearTabla(ModeloBD m, int separacion0)
 		{
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string tipoARetornar = getNombreClaseBDImplementada();
 			string separacion1 = getSeparacionln(0, separacion0);
 			string mc = separacion1 + "public " + tipoARetornar + " " + getNombreMetodoCrearTabla(m) + "() throws Exception {";
@@ -658,7 +658,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		
 		public override string getStrMetodoCrearTablaSiNoExiste(ModeloBD m, int separacion0)
 		{
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string tipoARetornar = getNombreClaseBDImplementada();
 			string separacion1 = getSeparacionln(0, separacion0);
 			string mc = separacion1 + "public " + tipoARetornar + " " + getNombreMetodoCrearTablaSiNoExiste(m) + "() throws Exception {";
@@ -699,7 +699,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoGetArgs(ModeloBD m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			//string mr=separacion+"def get"+nombreModelo+"_Args(self, listaDeArgumentos):";
 			string mr = separacion + "public " + nombreModelo + " " + getNombreMetodo_getArgs(m) + "(Object[] listaDeArgumentos) throws Exception {";
 			string separacion1 = getSeparacionln(1, separacion0);
@@ -721,7 +721,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoContentArgs(ModeloBD m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string mr = separacion + "public Object[] __content_" + nombreModelo + "(" + nombreModelo + " " + nombreModeloLower + ") throws Exception {";
 			string separacion1 = getSeparacionln(1, separacion0);
@@ -741,7 +741,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoGetForID(ModeloBD_ID m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			//string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
 			string mr = separacion + "public " + nombreModelo + " " + getNombreMetodo_GetForID(m) + "(int id) throws Exception {";
@@ -757,7 +757,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoInsertar(ModeloBD_ID m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string mr = separacion + "public " + nombreModelo + " " + getNombreMetodo_insertar(m) + "(" + nombreModelo + " " + nombreModeloLower + ") throws Exception {";
 			string separacion1 = getSeparacionln(1, separacion0);
@@ -798,7 +798,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoGetAll(ModeloBD_ID m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string mr = separacion + "public List<" + nombreModelo + "> " + getNombreMetodoGetAll(m) + "() throws Exception {";
 			string separacion2 = getSeparacionln(2, separacion0);
@@ -819,7 +819,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoUpdate(ModeloBD_ID m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string mr = separacion + "public " + nombreModelo + " " + getNombreMetodoUpdate(m) + "(" + nombreModelo + " " + nombreModeloLower + ") throws Exception {";
 			string separacion2 = getSeparacionln(2, separacion0);
@@ -838,7 +838,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoDeleteForID(ModeloBD_ID m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			
@@ -855,7 +855,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoGetAll_ForColumna(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 			string mr = separacion + "public List<" + nombreModelo + "> " + getNombreMetodoGetAll_ForColumna(m, c) + "(" + getNombreTipoDeDato(c) + " " + nombreVariableColumna + ") throws Exception {";
@@ -878,7 +878,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoGet_ForColumna(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 			string mr = separacion + "public " + nombreModelo + " " + getNombreMetodoGet_ForColumna(m, c) + "(" + getNombreTipoDeDato(c) + " " + nombreVariableColumna + ") throws Exception {";
@@ -899,7 +899,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			if (c.EsReferencia) {
 				ModeloBD referencia = c.ReferenciaID; 
 				string nombreVariableColumnaReferencia = CodeBDLenguaje.getNombreStrModeloLower(referencia);
-				string nombreModeloColumnaReferencia = CodeBDLenguaje.getNombreStrModelo(referencia);
+				string nombreModeloColumnaReferencia = this.getNombreStrModelo(referencia);
 				mr += separacion + "public " + nombreModelo + " " + getNombreMetodoGet_ForColumna(m, c) +  "(" + nombreModeloColumnaReferencia + " " + nombreVariableColumnaReferencia + ") throws Exception {";
 				mr += separacion2 +"return "+ getNombreMetodoGet_ForColumna(m, c) + "(" + nombreVariableColumnaReferencia + ".idkey);";
 				mr += separacion + "}";
@@ -910,7 +910,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoDelete_ForColumna(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 			string mr = separacion + "public void " + getNombreMetodoDelete_ForColumna(m, c) + "(" + getNombreTipoDeDato(c) + " " + nombreVariableColumna + ") throws Exception {";
@@ -925,7 +925,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			if(c.EsReferencia){
 				ModeloBD referencia=c.ReferenciaID; 
 				string nombreVariableColumnaReferencia = CodeBDLenguaje.getNombreStrModeloLower(referencia);
-				string nombreModeloColumnaReferencia = CodeBDLenguaje.getNombreStrModelo(referencia);
+				string nombreModeloColumnaReferencia = this.getNombreStrModelo(referencia);
 				mr+= separacion + "public void " + getNombreMetodoDelete_ForColumna(m, c) + "(" + nombreModeloColumnaReferencia + " " + nombreVariableColumnaReferencia + ") throws Exception {";
 				mr+= separacion2 +getNombreMetodoDelete_ForColumna(m, c)+"("+nombreVariableColumnaReferencia+".idkey);";
 				mr += separacion + "}";
@@ -937,7 +937,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoGetAll_ForListaDeColumnas(ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			string mr = separacion + "public List<" + nombreModelo + "> " + getNombreMetodoGetAll_ForListaDeColumnas(m, C) + "(";//+getNombreTipoDeDato(c)+" "+nombreVariableColumna+"){";
@@ -975,7 +975,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoGet_ForListaDeColumnas(string nombreDelMetodo, ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			//string mr = separacion + "public " + nombreModelo + " " + getNombreMetodoGet_ForListaDeColumnas(m, C) + "(";
@@ -1013,7 +1013,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoDelete_ForListaDeColumnas(ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			string mr = separacion + "public void " + getNombreMetodoDelete_ForListaDeColumnas(m, C) + "(";
@@ -1045,7 +1045,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoGetAll_InnerJoin_ForListaDeColumnas(ModeloBD_ID m, List<ElementoPorElQueBuscar> cadena, List<ElementoPorElQueBuscar> elementosWhere, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			string mr = separacion + "public List<" + nombreModelo + "> " + getNombreMetodoGetAll_InnerJoin_ForListaDeColumnas(m, elementosWhere) + "(";
@@ -1081,7 +1081,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoGet_InnerJoin_ForListaDeColumnas(ModeloBD_ID m, List<ElementoPorElQueBuscar> cadena, List<ElementoPorElQueBuscar> elementosWhere, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			string mr = separacion + "public " + nombreModelo + " " + getNombreMetodoGet_InnerJoin_ForListaDeColumnas(m, elementosWhere) + "(";
@@ -1117,7 +1117,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoDelete_ForColumna_Cascade(ModeloBD_ID m, ColumnaDeModeloBD c, EsquemaBD E, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			//string nombreModeloLower=CodeBDLenguaje.getNombreStrModeloLower(m);
 			string nombreVariableModelo = CodeBDLenguaje.getNombreStrModeloLower(m);//getNombreVariableElemento(m);
 			string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
@@ -1149,7 +1149,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			for (int i = 0; i < listaCascade.Count; i++) {
 				ColumnaDeModeloBD cIneterna = listaCascade[i];
 				ModeloBD mActual = cIneterna.Padre;
-				string nombreModeloActual = CodeBDLenguaje.getNombreStrModelo(mActual);
+				string nombreModeloActual = this.getNombreStrModelo(mActual);
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 //				CrearDeleteCascade C = E.listaCrearDeleteCascade[mActual];
 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
@@ -1173,7 +1173,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			for (int i = 0; i < listaCascade.Count; i++) {
 				ColumnaDeModeloBD cIneterna = listaCascade[i];
 				ModeloBD mActual = cIneterna.ReferenciaID;
-				string nombreModeloActual = CodeBDLenguaje.getNombreStrModelo(mActual);
+				string nombreModeloActual = this.getNombreStrModelo(mActual);
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 //				CrearDeleteCascade C = E.listaCrearDeleteCascade[mActual];
 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
@@ -1208,7 +1208,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoDeleteForID_Cascade(ModeloBD_ID m, EsquemaBD E, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			//string nombreModeloLower=CodeBDLenguaje.getNombreStrModeloLower(m);
 			string nombreVariableModelo = CodeBDLenguaje.getNombreStrModeloLower(m);//getNombreVariableElemento(m);
 			string nombreVariableColumna = getNombreVariableElemento(m);//CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
@@ -1230,7 +1230,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			for (int i = 0; i < listaCascade.Count; i++) {
 				ColumnaDeModeloBD cIneterna = listaCascade[i];
 				ModeloBD mActual = cIneterna.Padre;
-				string nombreModeloActual = CodeBDLenguaje.getNombreStrModelo(mActual);
+				string nombreModeloActual = this.getNombreStrModelo(mActual);
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 //				CrearDeleteCascade C = E.listaCrearDeleteCascade[mActual];
 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
@@ -1255,7 +1255,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 				for (int i = 0; i < listaCascade.Count; i++) {
 					ColumnaDeModeloBD cIneterna = listaCascade[i];
 					ModeloBD mActual = cIneterna.ReferenciaID;
-					string nombreModeloActual = CodeBDLenguaje.getNombreStrModelo(mActual);
+					string nombreModeloActual = this.getNombreStrModelo(mActual);
 					string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 //					CrearDeleteCascade C = E.listaCrearDeleteCascade[mActual];
 //					CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
@@ -1292,7 +1292,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoDelete_ForListaDeColumnas_Cascade(ModeloBD_ID m, List<ColumnaDeModeloBD> C, EsquemaBD E, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreVariableModelo = CodeBDLenguaje.getNombreStrModeloLower(m);//getNombreVariableElemento(m);
 			//string nombreVariableColumna=CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 			string separacion2 = getSeparacionln(1, separacion0);
@@ -1352,7 +1352,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			for (int i = 0; i < listaCascade.Count; i++) {
 				ColumnaDeModeloBD cIneterna = listaCascade[i];
 				ModeloBD mActual = cIneterna.Padre;
-				string nombreModeloActual = CodeBDLenguaje.getNombreStrModelo(mActual);
+				string nombreModeloActual = this.getNombreStrModelo(mActual);
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 //				CrearDeleteCascade C0 = E.listaCrearDeleteCascade[mActual];
 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
@@ -1376,7 +1376,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			for (int i = 0; i < listaCascade.Count; i++) {
 				ColumnaDeModeloBD cIneterna = listaCascade[i];
 				ModeloBD mActual = cIneterna.ReferenciaID;
-				string nombreModeloActual = CodeBDLenguaje.getNombreStrModelo(mActual);
+				string nombreModeloActual = this.getNombreStrModelo(mActual);
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 //				CrearDeleteCascade C0 = E.listaCrearDeleteCascade[mActual];
 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
@@ -1419,7 +1419,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoExiste(ModeloBD_ID m, ColumnaDeModeloBD c, bool soloHayEsteEnElModelo, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 			string mr = separacion + "public boolean " + getNombreMetodoExiste(m, c, soloHayEsteEnElModelo) + "(" + getNombreTipoDeDato(c) + " " + nombreVariableColumna + ") throws Exception {";
@@ -1437,7 +1437,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoExiste_ForListaDeColumnas(string nombreMetodo, ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			string mr = separacion + "public boolean " + nombreMetodo + "(";// + getNombreTipoDeDato(c) + " " + nombreVariableColumna + ") throws Exception {";
@@ -1470,7 +1470,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public override string getStrMetodoExiste_ForID(ModeloBD_ID m, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			//string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
 			string mr = separacion + "public boolean " + getNombreMetodoExiste_ForID(m) + "(int id) throws Exception {";
@@ -1489,7 +1489,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			ModeloBD_ID m=s.Modelo;
 			List<ColumnaDeModeloBD> C=s.ListaPorLasQueBuscar;
 			string separacion = getSeparacionln(0, separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			string mr = separacion + "public List<" + nombreModelo + "> " + getNombreMetodoGetAll_ForListaDeColumnas_Sort(s) + "(";//+getNombreTipoDeDato(c)+" "+nombreVariableColumna+"){";
@@ -1502,7 +1502,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 //					mr += getNombreTipoDeDato(c) + " " + nombreVariableColumna;
 //				}else{
 //					if(C[i] is ModeloBD){
-//						nombreVariableColumna = CodeBDLenguaje.getNombreStrModelo((ModeloBD)C[i]);
+//						nombreVariableColumna = this.getNombreStrModelo((ModeloBD)C[i]);
 //						mr += "int " + nombreVariableColumna;
 //					}
 //				}
@@ -1583,7 +1583,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		protected override string __getStrInnerJoin(string nombreMetodoBD, ModeloBD_ID m, List<ElementoPorElQueBuscar> cadena, List<ElementoPorElQueBuscar> elementosWhere, int separacion0)
 		{
 			//string separacion=getSeparacionln(0,separacion0);
-			string nombreModelo = CodeBDLenguaje.getNombreStrModelo(m);
+			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			string mr = "";
@@ -1601,7 +1601,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			for (int i = 0; i < cadena.Count; i++) {
 				ElementoPorElQueBuscar e = cadena[i];
 				ModeloBD mEnInner = getModeloDeElemento(e);
-				string nombreModeloEnInner = CodeBDLenguaje.getNombreStrModelo(mEnInner);
+				string nombreModeloEnInner = this.getNombreStrModelo(mEnInner);
 				string nombreModeloLowerEnInner = CodeBDLenguaje.getNombreStrModeloLower(mEnInner);
 				
 				string nombreColumna = "";
@@ -1638,7 +1638,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			for (int i = 0; i < elementosWhere.Count; i++) {
 				ElementoPorElQueBuscar e = elementosWhere[i];
 				ModeloBD mEnInner = getModeloDeElemento(e);
-				string nombreModeloEnInner = CodeBDLenguaje.getNombreStrModelo(mEnInner);
+				string nombreModeloEnInner = this.getNombreStrModelo(mEnInner);
 				string nombreModeloLowerEnInner = CodeBDLenguaje.getNombreStrModeloLower(mEnInner);
 				
 				string nombreColumna = "";
@@ -1670,7 +1670,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		//			for (int i = 0; i < listaCascade.Count; i++) {
 		//				ColumnaDeModeloBD c=listaCascade[i];
 		//				ModeloBD mActual=c.Padre;
-		//				string nombreModeloActual=CodeBDLenguaje.getNombreStrModelo(m);
+		//				string nombreModeloActual=this.getNombreStrModelo(m);
 		//				string nombreModeloLowerActual=CodeBDLenguaje.getNombreStrModeloLower(m);
 		//				CrearDeleteCascade C=listaCrearDeleteCascade[mActual];
 		//				if(c.EsUnique){

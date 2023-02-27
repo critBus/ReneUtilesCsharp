@@ -19,6 +19,8 @@ namespace ReneUtiles.Clases.BD.Factory
 
         public DatosDeBDConect datosDelCodigoDelBDConector;
 
+        //public string sufijoModelos;
+
         public DatosDeConexionFactoryBD(string nombreBDAdmin, DatosBDConect datosDBConect)
         {
             NombreBDAdmin = nombreBDAdmin;
@@ -26,6 +28,7 @@ namespace ReneUtiles.Clases.BD.Factory
             this.datosDBConect = datosDBConect;
 
             this.datosDelCodigoDelBDConector = new DatosDeBDConect();
+            //this.sufijoModelos = "_MD";
         }
     }
 }

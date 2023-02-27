@@ -22,3 +22,9 @@ D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\obj\Debug\ReneUtiles.csprojResolveAssemblyReference.cache
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\obj\Debug\ReneUtiles.dll
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\obj\Debug\ReneUtiles.pdb
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.Threading.Tasks.Extensions.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.Threading.Tasks.Extensions.xml
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.ValueTuple.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.ValueTuple.xml
