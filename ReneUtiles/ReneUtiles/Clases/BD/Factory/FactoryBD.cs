@@ -195,7 +195,7 @@ namespace ReneUtiles.Clases.BD.Factory
 				for (int i = 0; i < Esquema.getCantidadDeModelos(); i++) {
 					ModeloBD m=Esquema.getModelo(i);
 					string codigo=c.getStrModelo(m,Esquema,0);
-					FileInfo f=Archivos.crearTEXTO(carpeta:urlCarpeta,nombre:CodeBDLenguaje.getNombreStrModelo(m),extencion_Sustituye:c.Extencion,lineas:codigo);
+					FileInfo f=Archivos.crearTEXTO(carpeta:urlCarpeta,nombre:c.getNombreStrModelo(m),extencion_Sustituye:c.Extencion,lineas:codigo);
 					archivosCreados.Add(f);
 				}
 			}
