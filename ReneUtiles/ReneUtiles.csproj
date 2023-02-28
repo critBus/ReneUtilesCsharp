@@ -80,8 +80,8 @@
     <Compile Include="ReneUtiles\Clases\BD\Conexion\BDResultadoInsertar.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Conexion\DatosBDConect.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Conexion\GestorDeConexionImple.cs" />
-    <Compile Include="ReneUtiles\Clases\BD\Conexion\GestorDeConexionSQL_Server.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Conexion\GestorDeConexionSQLite.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Conexion\GestorDeConexionSQL_Server.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Conexion\GestorDeConexion_Postgresql.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Conexion\IGestorDeConexion.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\CodeBDLenguaje.cs" />

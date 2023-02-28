@@ -48,10 +48,10 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string separacion1 = getSeparacionln(1, separacion0);
 			string mr = "";
 			mr += separacion + "class " + this.getNombreStrModelo(m) + "(" + nombreSuperClaseModelo + "):";
-			mr += separacion1 + m.Nombre + "=\"" + m.Nombre + "\"";
+			mr += separacion1 + this.getStrStaticTabla(m) + "=\"" + m.Nombre + "\"";
 			for (int j = 0; j < m.Columnas.Count; j++) {
 				ColumnaDeModeloBD c = m.Columnas[j];
-				mr += separacion1 + c.Nombre + "=\"" + c.Nombre + "\"";
+				mr += separacion1 + this.getStrStaticColumna(c) + "=\"" + c.Nombre + "\"";
 			}
 			
 			string[] columnasStr = new string[m.Columnas.Count];
@@ -521,19 +521,19 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string mc = separacion1 + "def " + getNombreMetodoCrearTabla(m) + "(self):";
 			string separacion2 = getSeparacionln(1, separacion0);
 			string nombreModelo = this.getNombreStrModelo(m);
-			//mc += separacion2 + "self.BD.crearTablaYBorrarSiExiste("+nombreModelo+"." + m.Nombre;
-			mc += separacion2 + "self.BD." + getDSC().NombreMetodoCrearTablaYBorrarSiExiste + "(" + nombreModelo + "." + m.Nombre;
+			//mc += separacion2 + "self.BD.crearTablaYBorrarSiExiste("+nombreModelo+"." + this.getStrStaticTabla(m);
+			mc += separacion2 + "self.BD." + getDSC().NombreMetodoCrearTablaYBorrarSiExiste + "(" + nombreModelo + "." + this.getStrStaticTabla(m);
 			string separacion10 = getSeparacionln(5, separacion0);
 			for (int i = 0; i < m.Columnas.Count; i++) {
 				ColumnaDeModeloBD c = m.Columnas[i];
 				//string nc = FactoryBD.getNombreStrColumnaModelo(m, c);
-				string nc = c.Nombre;
+				string nc = this.getStrStaticColumna(c);
 				//mc += separacion10 + ",self." + nc;
 				//mc += separacion10 + ",\"" + nc+"\"";
 				mc += separacion10 + "," + nombreModelo + "." + nc;
 				if (c.Tipo != null) {
 					if (c.Tipo != TipoDeDatoSQL.VARCHAR) {
-						mc += ",TipoDeDatoSQL." + c.Tipo.getValor();
+						mc += ",TipoDeDatoSQL." + c.Tipo.getValor().Replace(" ", "_");
 					}
 					if (c.Tipo == TipoDeDatoSQL.VARCHAR) {
 						if (c.Tamaño != 256 && c.Tamaño > 0) {
@@ -544,7 +544,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				}
 				if (c.Clasificaciones != null) {
 					for (int j = 0; j < c.Clasificaciones.Length; j++) {
-						mc += ",TipoDeClasificacionSQL." + c.Clasificaciones[j].getValor();
+						mc += ",TipoDeClasificacionSQL." + c.Clasificaciones[j].getValor().Replace(" ", "_");
 					}
 				}
 				
@@ -560,19 +560,19 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string mc = separacion1 + "def " + getNombreMetodoCrearTablaSiNoExiste(m) + "(self):";
 			string separacion2 = getSeparacionln(1, separacion0);
 			string nombreModelo = this.getNombreStrModelo(m);
-			//mc += separacion2 + "self.BD.crearTablaYBorrarSiExiste("+nombreModelo+"." + m.Nombre;
-			mc += separacion2 + "self.BD." + getDSC().NombreMetodoCrearTablaSiNoExiste + "(" + nombreModelo + "." + m.Nombre;
+			//mc += separacion2 + "self.BD.crearTablaYBorrarSiExiste("+nombreModelo+"." + this.getStrStaticTabla(m);
+			mc += separacion2 + "self.BD." + getDSC().NombreMetodoCrearTablaSiNoExiste + "(" + nombreModelo + "." + this.getStrStaticTabla(m);
 			string separacion10 = getSeparacionln(5, separacion0);
 			for (int i = 0; i < m.Columnas.Count; i++) {
 				ColumnaDeModeloBD c = m.Columnas[i];
 				//string nc = FactoryBD.getNombreStrColumnaModelo(m, c);
-				string nc = c.Nombre;
+				string nc = this.getStrStaticColumna(c);
 				//mc += separacion10 + ",self." + nc;
 				//mc += separacion10 + ",\"" + nc+"\"";
 				mc += separacion10 + "," + nombreModelo + "." + nc;
 				if (c.Tipo != null) {
 					if (c.Tipo != TipoDeDatoSQL.VARCHAR) {
-						mc += ",TipoDeDatoSQL." + c.Tipo.getValor();
+						mc += ",TipoDeDatoSQL." + c.Tipo.getValor().Replace(" ", "_");
 					}
 					if (c.Tipo == TipoDeDatoSQL.VARCHAR) {
 						if (c.Tamaño != 256 && c.Tamaño > 0) {
@@ -583,7 +583,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				}
 				if (c.Clasificaciones != null) {
 					for (int j = 0; j < c.Clasificaciones.Length; j++) {
-						mc += ",TipoDeClasificacionSQL." + c.Clasificaciones[j].getValor();
+						mc += ",TipoDeClasificacionSQL." + c.Clasificaciones[j].getValor().Replace(" ", "_");
 					}
 				}
 				
@@ -628,7 +628,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				ColumnaDeModeloBD c = m.Columnas[i];
 				string nombreAtributo = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 				mr += (i != 0) ? separacionExtra + "," : "";
-				mr += "[" + nombreModelo + "." + c.Nombre + "," + nombreModeloLower + "." + nombreAtributo + "]";
+				mr += "[" + nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreModeloLower + "." + nombreAtributo + "]";
 			}
 			mr += separacionExtra + "]";
 			mr += separacion1 + "return lista";
@@ -643,8 +643,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			//string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
 			string mr = separacion + "def " + getNombreMetodo_GetForID(m) + "(self, id):";
 			string separacion1 = getSeparacionln(1, separacion0);
-			//mr+=separacion1+"O = self.BD.select_forID("+nombreModelo+"."+m.Nombre+", id)";
-			mr += separacion1 + "O = self.BD." + getDSC().NombreMetodoGetForId + "(" + nombreModelo + "." + m.Nombre + ", id)";
+			//mr+=separacion1+"O = self.BD.select_forID("+nombreModelo+"."+this.getStrStaticTabla(m)+", id)";
+			mr += separacion1 + "O = self.BD." + getDSC().NombreMetodoGetForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ", id)";
 			string separacion2 = getSeparacionln(2, separacion0);
 			mr += separacion1 + "if O == None:";
 			mr += separacion2 + "return None";
@@ -662,8 +662,9 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string separacion1 = getSeparacionln(1, separacion0);
 			mr += separacion1 + "if " + nombreModeloLower + ".idkey is None:";
 			string separacion2 = getSeparacionln(2, separacion0);
-            //mr += separacion2 + "id=self.BD." + getDSC().NombreMetodoInsertar + "(" + nombreModelo + "." + m.Nombre;
-            mr += separacion2 + "id=self.BD." + getDSC().NombreMetodoInsertarConIdAutomatico + "(" + nombreModelo + "." + m.Nombre+",\"" + m.getPrimer_NombreColumnaKey() + "\",";
+            string idKey = m.getPrimer_NombreColumnaKey() ?? factory.idDeafult;
+            //mr += separacion2 + "id=self.BD." + getDSC().NombreMetodoInsertar + "(" + nombreModelo + "." + this.getStrStaticTabla(m);
+            mr += separacion2 + "id=self.BD." + getDSC().NombreMetodoInsertarConIdAutomatico + "(" + nombreModelo + "." + this.getStrStaticTabla(m)+",\"" + idKey + "\",";
             string[] variables = new string[m.Columnas.Count];
 			string separacionExtra = getSeparacionln(4, separacion0);
 
@@ -672,8 +673,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
             {
                 ColumnaDeModeloBD c = m.Columnas[i];
 
-                //mr += (i!=0?",":"")+nombreModeloLower + "." +c.Nombre;
-                mr += (i != 0 ? "," : "") + nombreModelo + "." + c.Nombre;
+                //mr += (i!=0?",":"")+nombreModeloLower + "." +this.getStrStaticColumna(c);
+                mr += (i != 0 ? "," : "") + nombreModelo + "." + this.getStrStaticColumna(c);
             }
             mr += "]";
 
@@ -685,7 +686,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			mr += separacionExtra + ")";
 			mr += separacion2 + "return self." + getNombreMetodo_GetForID(m) + "(id)";
 			mr += separacion1 + "else:";
-			mr += separacion2 + "id=self.BD." + getDSC().NombreMetodoInsertarSinIdAutomatico + "(" + nombreModelo + "." + m.Nombre + "," + nombreModeloLower + ".idkey";
+			mr += separacion2 + "id=self.BD." + getDSC().NombreMetodoInsertarSinIdAutomatico + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + nombreModeloLower + ".idkey";
 			for (int i = 0; i < variables.Length; i++) {
 				mr += variables[i];
 			}
@@ -702,7 +703,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string mr = separacion + "def " + getNombreMetodoGetAll(m) + "(self):";
 			string separacion2 = getSeparacionln(1, separacion0);
-			mr += separacion2 + "O=self.BD." + getDSC().NombreMetodoSelectTodo + "(" + nombreModelo + "." + m.Nombre + ")";
+			mr += separacion2 + "O=self.BD." + getDSC().NombreMetodoSelectTodo + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ")";
 			mr += separacion2 + "if O is not None:";
 			string separacion3 = getSeparacionln(2, separacion0);
 			mr += separacion3 + "return [ self." + getNombreMetodo_getArgs(m) + "(e) for e in O ]";
@@ -717,11 +718,11 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string mr = separacion + "def " + getNombreMetodoUpdate(m) + "(self," + nombreModeloLower + "):";
 			string separacion2 = getSeparacionln(1, separacion0);
-			mr += separacion2 + "self.BD." + getDSC().NombreMetodoUpdateForId + "(" + nombreModelo + "." + m.Nombre + "," + nombreModeloLower + ".idkey";
+			mr += separacion2 + "self.BD." + getDSC().NombreMetodoUpdateForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + nombreModeloLower + ".idkey";
 			string separacionExtra = getSeparacionln(5, separacion0);
 			for (int i = 0; i < m.Columnas.Count; i++) {
 				ColumnaDeModeloBD c = m.Columnas[i];
-				mr += separacionExtra + " , " + nombreModelo + "." + c.Nombre + " , " + nombreModeloLower + "." + CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+				mr += separacionExtra + " , " + nombreModelo + "." + this.getStrStaticColumna(c) + " , " + nombreModeloLower + "." + CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 				;
 			}
 			mr += ")";
@@ -738,7 +739,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			
 			string mr = separacion + "def " + getNombreMetodoDeleteForID(m) + "(self,id):";
 			string separacion2 = getSeparacionln(1, separacion0);
-			mr += separacion2 + "self.BD." + getDSC().NombreMetodoDeleteForId + "(" + nombreModelo + "." + m.Nombre + ",id)";
+			mr += separacion2 + "self.BD." + getDSC().NombreMetodoDeleteForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ",id)";
 			
 			return mr;
 		}
@@ -750,7 +751,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 			string mr = separacion + "def " + getNombreMetodoGetAll_ForColumna(m, c) + "(self," + nombreVariableColumna + "):";
 			string separacion2 = getSeparacionln(1, separacion0);
-			mr += separacion2 + "O=self.BD." + getDSC().NombreMetodoSelectWhere + "(" + nombreModelo + "." + m.Nombre + "," + nombreModelo + "." + c.Nombre + "," + nombreVariableColumna + ")";
+			mr += separacion2 + "O=self.BD." + getDSC().NombreMetodoSelectWhere + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna + ")";
 			mr += separacion2 + "if O is not None:";
 			string separacion3 = getSeparacionln(2, separacion0);
 			mr += separacion3 + "return [ self." + getNombreMetodo_getArgs(m) + "(e) for e in O ]";
@@ -772,9 +773,9 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				ModeloBD referencia = c.ReferenciaID;
 				string nombreModeloColumnaReferencia = this.getNombreStrModelo(referencia);
 				mr += separacion2 + "if isinstance(" + nombreVariableColumna + "," + nombreModeloColumnaReferencia + "):";
-				mr += separacion3 + "O=self.BD." + getDSC().NombreMetodoSelectWhere + "(" + nombreModelo + "." + m.Nombre + "," + nombreModelo + "." + c.Nombre + "," + nombreVariableColumna + ".idkey)";
+				mr += separacion3 + "O=self.BD." + getDSC().NombreMetodoSelectWhere + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna + ".idkey)";
 				mr += separacion2 + "else:";
-				mr += separacion3 + "O=self.BD." + getDSC().NombreMetodoSelectWhere + "(" + nombreModelo + "." + m.Nombre + "," + nombreModelo + "." + c.Nombre + "," + nombreVariableColumna + ")";
+				mr += separacion3 + "O=self.BD." + getDSC().NombreMetodoSelectWhere + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna + ")";
 				
 				
 				mr += separacion2 + "if O is None:";
@@ -782,7 +783,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				mr += separacion2 + "return self." + getNombreMetodo_getArgs(m) + "(O)";
 			} else {
 			
-				mr += separacion2 + "O=self.BD." + getDSC().NombreMetodoSelectWhere + "(" + nombreModelo + "." + m.Nombre + "," + nombreModelo + "." + c.Nombre + "," + nombreVariableColumna + ")";
+				mr += separacion2 + "O=self.BD." + getDSC().NombreMetodoSelectWhere + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna + ")";
 				mr += separacion2 + "if O is None:";
 				
 				mr += separacion3 + "return None";
@@ -805,11 +806,11 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				string nombreModeloColumnaReferencia = this.getNombreStrModelo(referencia);
 				mr += separacion2 + "if isinstance(" + nombreVariableColumna + "," + nombreModeloColumnaReferencia + "):";
 				string separacion3 = getSeparacionln(2, separacion0);
-				mr += separacion3 + "self.BD." + getDSC().NombreMetodoDelete + "(" + nombreModelo + "." + m.Nombre + "," + nombreModelo + "." + c.Nombre + "," + nombreVariableColumna + ".idkey)";
+				mr += separacion3 + "self.BD." + getDSC().NombreMetodoDelete + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna + ".idkey)";
 				mr += separacion2 + "else:";
-				mr += separacion3 + "self.BD." + getDSC().NombreMetodoDelete + "(" + nombreModelo + "." + m.Nombre + "," + nombreModelo + "." + c.Nombre + "," + nombreVariableColumna + ")";
+				mr += separacion3 + "self.BD." + getDSC().NombreMetodoDelete + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna + ")";
 			} else {
-				mr += separacion2 + "self.BD." + getDSC().NombreMetodoDelete + "(" + nombreModelo + "." + m.Nombre + "," + nombreModelo + "." + c.Nombre + "," + nombreVariableColumna + ")";
+				mr += separacion2 + "self.BD." + getDSC().NombreMetodoDelete + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna + ")";
 			}
 //			if(c.EsReferencia){
 //				ModeloBD referencia=c.ReferenciaID; 
@@ -843,12 +844,12 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string separacion2 = getSeparacionln(1, separacion0);
 			
 			
-			mr += separacion2 + "O=self.BD." + getDSC().NombreMetodoSelectWhere + "(" + nombreModelo + "." + m.Nombre;//+","+nombreModelo+"."+c.Nombre+","+nombreVariableColumna+");";
+			mr += separacion2 + "O=self.BD." + getDSC().NombreMetodoSelectWhere + "(" + nombreModelo + "." + this.getStrStaticTabla(m);//+","+nombreModelo+"."+this.getStrStaticColumna(c)+","+nombreVariableColumna+");";
 			for (int i = 0; i < C.Count; i++) {
 				ColumnaDeModeloBD c = C[i];
 				string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 				mr += ",";
-				mr += nombreModelo + "." + c.Nombre + "," + nombreVariableColumna;
+				mr += nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna;
 			}
 			mr += ")";
 			
@@ -882,12 +883,12 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string separacion2 = getSeparacionln(1, separacion0);
 			
 			
-			mr += separacion2 + "O=self.BD." + getDSC().NombreMetodoSelectWhereFirstRow + "(" + nombreModelo + "." + m.Nombre;//+","+nombreModelo+"."+c.Nombre+","+nombreVariableColumna+");";
+			mr += separacion2 + "O=self.BD." + getDSC().NombreMetodoSelectWhereFirstRow + "(" + nombreModelo + "." + this.getStrStaticTabla(m);//+","+nombreModelo+"."+this.getStrStaticColumna(c)+","+nombreVariableColumna+");";
 			for (int i = 0; i < C.Count; i++) {
 				ColumnaDeModeloBD c = C[i];
 				string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 				mr += ",";
-				mr += nombreModelo + "." + c.Nombre + "," + nombreVariableColumna;
+				mr += nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna;
 			}
 			mr += ")";
 			
@@ -918,12 +919,12 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			
 			string separacion2 = getSeparacionln(1, separacion0);
 			
-			mr += separacion2 + "self.BD." + getDSC().NombreMetodoDelete + "(" + nombreModelo + "." + m.Nombre;//+","+nombreModelo+"."+c.Nombre+","+nombreVariableColumna+");";
+			mr += separacion2 + "self.BD." + getDSC().NombreMetodoDelete + "(" + nombreModelo + "." + this.getStrStaticTabla(m);//+","+nombreModelo+"."+this.getStrStaticColumna(c)+","+nombreVariableColumna+");";
 			for (int i = 0; i < C.Count; i++) {
 				ColumnaDeModeloBD c = C[i];
 				string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 				mr += ",";
-				mr += nombreModelo + "." + c.Nombre + "," + nombreVariableColumna;
+				mr += nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna;
 			}
 			mr += ")";
 			return mr;
@@ -1059,7 +1060,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			
 			
 			mr += separacion2 + "self." + getNombreMetodoDelete_ForColumna(m, c) + "(" + nombreVariableColumna + ")";
-			//mr+=separacion2+"this.BD."+getDSC().NombreMetodoDelete+"("+nombreModelo+"."+m.Nombre+","+nombreModelo+"."+c.Nombre+","+nombreVariableColumna+");";
+			//mr+=separacion2+"this.BD."+getDSC().NombreMetodoDelete+"("+nombreModelo+"."+this.getStrStaticTabla(m)+","+nombreModelo+"."+this.getStrStaticColumna(c)+","+nombreVariableColumna+");";
 			
 			
 			
@@ -1243,7 +1244,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string mr = separacion + "def " + getNombreMetodoExiste(m, c, soloHayEsteEnElModelo) + "(self," + nombreVariableColumna + "):";
 			string separacion2 = getSeparacionln(1, separacion0);
 			
-			mr += separacion2 + "return self.BD." + getDSC().NombreMetodoExiste + "(" + nombreModelo + "." + m.Nombre + "," + nombreModelo + "." + c.Nombre + "," + nombreVariableColumna + ")";
+			mr += separacion2 + "return self.BD." + getDSC().NombreMetodoExiste + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna + ")";
 			
 			
 			
@@ -1269,13 +1270,13 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string separacion2 = getSeparacionln(1, separacion0);
 			
 			string separacionEspecial = getSeparacionln(4, separacion0);
-			mr += separacion2 + "return self.BD." + getDSC().NombreMetodoExiste + "(" + nombreModelo + "." + m.Nombre;// + "," + nombreModelo + "." + c.Nombre + "," + nombreVariableColumna + ");";
+			mr += separacion2 + "return self.BD." + getDSC().NombreMetodoExiste + "(" + nombreModelo + "." + this.getStrStaticTabla(m);// + "," + nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna + ");";
 			for (int i = 0; i < C.Count; i++) {
 				ColumnaDeModeloBD c = C[i];
 				string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 				//mr += (i != 0 ? "," : "");
 				mr += separacionEspecial + ",";
-				mr += nombreModelo + "." + c.Nombre + "," + nombreVariableColumna;
+				mr += nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna;
 			}
 			mr += ")";
 			
@@ -1292,8 +1293,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			//string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
 			string mr = separacion + "def " + getNombreMetodo_GetForID(m) + "(self, id):";
 			string separacion1 = getSeparacionln(1, separacion0);
-			//mr+=separacion1+"O = self.BD.select_forID("+nombreModelo+"."+m.Nombre+", id)";
-			mr += separacion1 + "O = self.BD." + getDSC().NombreMetodoGetForId + "(" + nombreModelo + "." + m.Nombre + ", id)";
+			//mr+=separacion1+"O = self.BD.select_forID("+nombreModelo+"."+this.getStrStaticTabla(m)+", id)";
+			mr += separacion1 + "O = self.BD." + getDSC().NombreMetodoGetForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ", id)";
 			string separacion2 = getSeparacionln(2, separacion0);
 			mr += separacion1 + "return O is not None";
 			
@@ -1324,14 +1325,14 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string separacion4 = getSeparacionln(3, separacion0);
 			
 			//mr += separacion2 + "List<" + nombreModelo + "> lista=new ArrayList<>();";
-			mr += separacion2 + "O=self.BD." + getDSC().NombreMetodoSelectWhereOrderBy + "(" + nombreModelo + "." + m.Nombre + ",";//+","+nombreModelo+"."+c.Nombre+","+nombreVariableColumna+");";
+			mr += separacion2 + "O=self.BD." + getDSC().NombreMetodoSelectWhereOrderBy + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ",";//+","+nombreModelo+"."+this.getStrStaticColumna(c)+","+nombreVariableColumna+");";
 			mr += separacion3 + "[";
 			for (int i = 0; i < C.Count; i++) {
 				string nombreVariableColumna = getNombreVariableElemento(C[i]);
 				string nombreColumna = null;
 				ColumnaDeModeloBD c = C[i];//(ColumnaDeModeloBD)C[i];
 					
-				nombreColumna = c.Nombre;
+				nombreColumna = this.getStrStaticColumna(c);
 
 				
 				mr += separacion4 + (i != 0 ? "," : "");
@@ -1343,7 +1344,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				ColumnaDeModeloBD c = co.Columna;
 				string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
 				mr += separacion4 + ",";
-				mr += nombreModelo + "." + c.Nombre;//+ "," + nombreVariableColumna;
+				mr += nombreModelo + "." + this.getStrStaticColumna(c);//+ "," + nombreVariableColumna;
 				if (co.Ordenamiento != null) {
 					mr += "," + co.Ordenamiento.getValor();
 				}
@@ -1372,8 +1373,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string separacion4 = getSeparacionln(3, separacion0);
 			string separacion5 = getSeparacionln(4, separacion0);
 			
-			//mr+=separacion2+"this.BD."+getDSC().NombreMetodoSelectWhereInnerJoin+"("+nombreModelo+"."+m.Nombre;//+","+nombreModelo+"."+c.Nombre+","+nombreVariableColumna+");";
-			mr += "self.BD." + nombreMetodoBD + "(" + nombreModelo + "." + m.Nombre;//+","+nombreModelo+"."+c.Nombre+","+nombreVariableColumna+");";
+			//mr+=separacion2+"this.BD."+getDSC().NombreMetodoSelectWhereInnerJoin+"("+nombreModelo+"."+this.getStrStaticTabla(m);//+","+nombreModelo+"."+this.getStrStaticColumna(c)+","+nombreVariableColumna+");";
+			mr += "self.BD." + nombreMetodoBD + "(" + nombreModelo + "." + this.getStrStaticTabla(m);//+","+nombreModelo+"."+this.getStrStaticColumna(c)+","+nombreVariableColumna+");";
 			mr += separacion3 + ",[";
 			int pos = 0, j = 0;
 			for (int i = 0; i < cadena.Count; i++) {
@@ -1385,9 +1386,9 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				string nombreColumna = "";
 				if (e is ColumnaDeModeloBD) {
 					ColumnaDeModeloBD c = (ColumnaDeModeloBD)e;
-					nombreColumna = "." + c.Nombre;
+					nombreColumna = "." + this.getStrStaticColumna(c);
 				}
-				string par = "[" + nombreModeloEnInner + "." + mEnInner.Nombre + (nombreColumna.Length > 1 ? "," + nombreModeloEnInner + nombreColumna : "") + "]";
+				string par = "[" + nombreModeloEnInner + "." + this.getStrStaticTabla(mEnInner) + (nombreColumna.Length > 1 ? "," + nombreModeloEnInner + nombreColumna : "") + "]";
 				
 				if (i == 0 && cadena.Count == 1) {
 					mr += par;
@@ -1420,9 +1421,9 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				string nombreColumna = "";
 				if (e is ColumnaDeModeloBD) {
 					ColumnaDeModeloBD c = (ColumnaDeModeloBD)e;
-					nombreColumna = "." + c.Nombre;
+					nombreColumna = "." + this.getStrStaticColumna(c);
 				}
-				string par = nombreModeloEnInner + "." + mEnInner.Nombre + (nombreColumna.Length > 1 ? "," + nombreModeloEnInner + nombreColumna : "");
+				string par = nombreModeloEnInner + "." + this.getStrStaticTabla(mEnInner) + (nombreColumna.Length > 1 ? "," + nombreModeloEnInner + nombreColumna : "");
 				
 				
 				mr += separacion3 + "," + par + "," + getNombreVariableElemento(e);
@@ -1463,7 +1464,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				if (t == TipoDeDatoSQL.TIME) {
 					return "toTime";
 				}
-				if (t == TipoDeDatoSQL.INTEGER) {
+				if (t == TipoDeDatoSQL.INTEGER||t==TipoDeDatoSQL.SERIAL) {
 					return "toInt";
 				} 
 				if (t == TipoDeDatoSQL.POINT) {

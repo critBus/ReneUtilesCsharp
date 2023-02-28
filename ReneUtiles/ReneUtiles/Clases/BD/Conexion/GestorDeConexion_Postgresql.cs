@@ -43,6 +43,7 @@ namespace ReneUtiles.Clases.BD.Conexion
                 return r;
             }
             else {
+
                 datosDeConexion.Cmd.ExecuteNonQuery();
             }
             

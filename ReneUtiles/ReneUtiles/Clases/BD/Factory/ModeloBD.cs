@@ -474,7 +474,8 @@ namespace ReneUtiles.Clases.BD.Factory
                     return c.Nombre;
                 }
             }
-            return "id";
+            //return  "id";
+            return null;
         }
 
 	}

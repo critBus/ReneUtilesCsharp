@@ -31,6 +31,9 @@ namespace ReneUtiles.Clases
 	    }
 		public static bool? toBool(object a)
 		{
+            if (a!=null&&a.ToString().Length==0) {
+                return false;
+            }
 			return Utiles.toBool(a); 
 		}
 		public static string[] split(string a,string separador){

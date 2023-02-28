@@ -52,6 +52,8 @@ namespace ReneUtiles.Clases.BD.Factory
 
 
         public string sufijoModelos;
+        public string idDeafult ;
+        public bool conservarNombres;
 
 
         public FactoryBD(EsquemaBD esquema)
@@ -61,6 +63,8 @@ namespace ReneUtiles.Clases.BD.Factory
             this.NombreClaseBDPadre = "I_BDAdmin";
 
             this.sufijoModelos = "_MD";
+            this.conservarNombres = false;
+            this.idDeafult = "Id";
             //this.NombreBDAdmin="BDAdmin";
             //this.NombreArchivoQueContieneTodosLosModelos="ModelosDeBD";
         }
@@ -185,6 +189,7 @@ namespace ReneUtiles.Clases.BD.Factory
             Esquema.prepararAntesDeCrearCodigo();
 
             CodeBDLenguaje c = comprobarSeguridad(getC);
+            
 
 			List<FileInfo> archivosCreados=new List<FileInfo>();
 			if(c.UsaUnArchivoParaTodosLosModelosJuntos){

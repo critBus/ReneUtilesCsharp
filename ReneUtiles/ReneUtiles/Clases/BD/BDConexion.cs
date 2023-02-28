@@ -25,6 +25,7 @@ namespace ReneUtiles.Clases.BD
 	{
 	private GestorDeConexionImple gestorDeConexionImple;
     private DatosBDConect datosBDConect;
+        
 
     private BDConexion(string usuario, string contraseña, string servidor, string nombreBD, string puerto, TipoDeConexionBD tipoDeConxion, FileInfo url) {
     	
@@ -32,7 +33,7 @@ namespace ReneUtiles.Clases.BD
         string controlador = tipoDeConxion.driver_java;
         datosBDConect = new DatosBDConect(controlador, null, usuario, contraseña, servidor, nombreBD, puerto, "", tipoDeConxion, url, null, false);
     }
-        private SQLUtiles sq() {
+        public SQLUtiles sq() {
             return this.gestorDeConexionImple.sqlUtiles;
         }
 
@@ -50,23 +51,60 @@ namespace ReneUtiles.Clases.BD
     public BDConexion cl() {
         // mostrarResultadoConsola = true;
         //datosBDConect.setMostrarResultadoConsola(true);
-        datosBDConect.mostrarResultadoConsola=true;
+        datosBDConect.mostrarSQL=true;
         return this;
     }
         public BDConexion no_cl()
         {
             // mostrarResultadoConsola = true;
             //datosBDConect.setMostrarResultadoConsola(true);
-            datosBDConect.mostrarResultadoConsola = false;
+            datosBDConect.mostrarSQL = false;
             return this;
         }
-
+        public BDConexion cl_re()
+        {
+            // mostrarResultadoConsola = true;
+            //datosBDConect.setMostrarResultadoConsola(true);
+            datosBDConect.mostrarResultadoConsola = true;
+            return this;
+        }
         public GestorDeConexionImple getGestorDeConexionImple() {
 //        if (gestorDeConexionImple == null) {
 //            gestorDeConexionImple = new GestionadorDeConexion(datosBDConect);
 //        }
         return gestorDeConexionImple;
     }
+
+        public int getIdCorrespondiente(string nombreTabla) {
+            object o= getGestorDeConexionImple()._execute(sq().getIdCorrespondiente(nombreTabla));
+            if (o==null) {
+                return 1;
+            }
+            if (o is int||o is double) {
+                return (int)o;
+            }
+            if (o is string) {
+                if (esNumero(o+"")) {
+                    return (int)dou(o + "");
+                }
+                return 1;
+            }
+            if (o is Object[][]) {
+                Object[][] O = (Object[][])o;
+                if (O == null || O.Length == 0)
+                {
+                    return 1;
+                }
+                if (O[0]==null||O[0].Length==0) {
+                    return 1;
+                }
+                if (O[0][0]==null) {
+                    return 1;
+                }
+                return (int)O[0][0];
+            }
+            return 1;
+        }
 
     public void setGestorDeConexionImple(GestorDeConexionImple gestorDeConexionImple) {
         this.gestorDeConexionImple = gestorDeConexionImple;

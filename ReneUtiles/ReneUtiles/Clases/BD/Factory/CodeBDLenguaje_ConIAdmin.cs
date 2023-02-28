@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ReneUtiles.Clases.BD.Factory.Consultas;
 using ReneUtiles.Clases.BD.Factory.UtilesFactory;
-using ReneUtiles.Clases.BD.Conexion;
+using ReneUtiles.Clases.BD.Conexion; 
 namespace ReneUtiles.Clases.BD.Factory
 {
     public abstract class CodeBDLenguaje_ConIAdmin:CodeBDLenguaje

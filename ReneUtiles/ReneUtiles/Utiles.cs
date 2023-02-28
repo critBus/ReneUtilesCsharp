@@ -388,6 +388,9 @@ namespace ReneUtiles
 					
 				}
 			}
+            if (r.Length==0) {
+                return capitalize(a);
+            }
 			return r;
 		}
 		public static string capitalize(string a)

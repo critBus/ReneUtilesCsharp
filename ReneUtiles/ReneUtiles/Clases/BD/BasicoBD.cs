@@ -39,6 +39,9 @@ namespace ReneUtiles.Clases.BD
 	    }
 	
 	    public  bool toBool(Object o) {
+            if (o!=null&&o.ToString().Length==0) {
+                return false;
+            }
 			return Utiles.toBool(o)??false;
 //	        if (o == null) {
 //	            return false;

@@ -58,7 +58,10 @@ namespace ReneUtiles.Clases.BD.Conexion
 			//es crearTabla
 			datosDeConexion.Cmd = datosDeConexion.Conn.CreateCommand();
 			datosDeConexion.Cmd.CommandText = sql;
-			cwl("sql="+sql);
+            if (this.datosBDConect.mostrarSQL) {
+                cwl("sql=" + sql);
+            }
+			
 			if(this.sqlUtiles.esSelect(sql)){
 				//cwl("sql="+sql);
 				List<object[]> lo=new List<object[]>();

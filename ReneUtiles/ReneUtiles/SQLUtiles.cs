@@ -64,16 +64,28 @@ namespace ReneUtiles
 			ADD = "ADD",
 			ADD_COLUMN = ADD + " " + COLUMN,
 			NOT_NULL = "NOT NULL";
-			
-            
-		public class Configuracion_De_Columnas
+
+        public string idKeyDefault = "Id";
+
+        public virtual string strC(object columna)
+        {
+            string c = columna+"";
+            if (c!="*"&&!c.StartsWith("\"")) {
+                c="\"" + c + "\"";
+            }
+            return c;
+        }
+        public class Configuracion_De_Columnas
 		{
 
 			public Dictionary<string, HashSet<string>> columnasSeleccionadas;
+            private SQLUtiles sqlUtil;
 
-			public  Configuracion_De_Columnas()
+			public  Configuracion_De_Columnas(SQLUtiles sqlUtil)
 			{
-				this.columnasSeleccionadas = new Dictionary<string, HashSet<string>>();
+                this.sqlUtil = sqlUtil;
+
+                this.columnasSeleccionadas = new Dictionary<string, HashSet<string>>();
 			}
 
 			public string getNombreDeTabla(int indice)
@@ -120,28 +132,23 @@ namespace ReneUtiles
 				string[] keys = this.columnasSeleccionadas.Keys.ToArray<string>();
 				for (int i = 0; i < keys.Length; i++) {
 					if (this.columnasSeleccionadas[keys[i]].Contains(columna)) {
-						return keys[i] + "." + columna;
+						return keys[i] + "." + this.sqlUtil.strC(columna);
 					}
 				}
-				return columna;
+				return this.sqlUtil.strC(columna);
 			}
 
-			//        public string getC_T(Object[][] matriz, int indice) {
-			//            string c = matriz.length == 1 ? "id" : matriz[indice][1].toString();//posiblemente sea este mal y sea  en vez de matriz.length sea matriz[indice].length
-			//            string t = matriz[indice][0].toString();
-			////            System.out.println("t="+t);
-			//            addSiNoContiene(t, c);
-			//            return t + "." + c;
-			//        }
+            
+            
 
 			public string getC_T(Object[] lista)
 			{
             
-				string c = lista.Length == 1 ? "id" : lista[1].ToString();
+				string c = lista.Length == 1 ? this.sqlUtil.idKeyDefault : lista[1].ToString();
 				string t = lista[0].ToString();
 //            System.out.println("t="+t);
 				addSiNoContiene(t, c);
-				return t + "." + c;
+				return t + "." + this.sqlUtil.strC(c);
 			}
 			//        public List<String> nombreTalas;
 			//        public List<List<String>> nombreTalas;
@@ -165,10 +172,10 @@ namespace ReneUtiles
 						Object[] A = (Object[])a[i];
 						t = A[0] + "";
 						if (!(A.Length > 1)) {
-							c = "id";
+							c = this.idKeyDefault;
 						} else {
 							c = A[1] + "";
-							sql += t + "." + c;
+							sql += t + "." + strC(c);
 						}
 					} else {
 						sql += a[i];
@@ -184,12 +191,12 @@ namespace ReneUtiles
 
 		public  string __getStr_Where(Object[] a, int inicioDePares)
 		{
-			return __getStr_Where(a, new Configuracion_De_Columnas(), inicioDePares);
+			return __getStr_Where(a, new Configuracion_De_Columnas(this), inicioDePares);
 		}
 
 		public  string __getStr_Where(Object[] a)
 		{
-			return __getStr_Where(a, new Configuracion_De_Columnas(), 0);
+			return __getStr_Where(a, new Configuracion_De_Columnas(this), 0);
 		}
 
 		public  string __getStr_Where(Object[] a, Configuracion_De_Columnas cnf, int inicioDePares)
@@ -200,7 +207,7 @@ namespace ReneUtiles
 				inicioDePares = 0;
 			}
 			if (cnf == null) {
-				cnf = new Configuracion_De_Columnas();
+				cnf = new Configuracion_De_Columnas(this);
 			}
 			int pos = 0;
 			for (int i = inicioDePares; i < a.Length; i++) {
@@ -213,19 +220,19 @@ namespace ReneUtiles
 						Object[] A = (Object[])a[i];
 						t = A[0] + "";
 						if (!(A.Length > 1)) {
-							c = "id";
+							c = this.idKeyDefault;
 						} else {
 							c = A[1] + "";
 						}
 						if (cnf != null) { //&&cnf.addSiNoContiene!=None:
-							cnf.addSiNoContiene(t, c);
+							cnf.addSiNoContiene(t, strC(c));
 						}
-						sqlWhere += t + "." + c;
+						sqlWhere += t + "." + strC(c);
 					} else {
 						if (cnf != null) { //and cnf.getParTC_siSeEncuentra!=None:
 							sqlWhere += cnf.getParTC_siSeEncuentra(a[i] + "");
 						} else {
-							sqlWhere += a[i];
+							sqlWhere += strC(a[i]);
 						}
 					}
 				} else if (pos == 1) {
@@ -235,14 +242,14 @@ namespace ReneUtiles
 						Object[] A = (Object[])a[i];
 						t = A[0] + "";
 						if (!(A.Length > 1)) {
-							c = "id";
+							c = this.idKeyDefault;
 						} else {
 							c = A[1] + "";
 						}
 						if (cnf != null) {//and cnf.addSiNoContiene != None:
-							cnf.addSiNoContiene(t, c);
+							cnf.addSiNoContiene(t, strC(c));
 						}
-						sqlWhere += t + "." + c;
+						sqlWhere += t + "." + strC(c);
                     
 					} else if (
 						(a[i] + "").StartsWith("(")
@@ -265,20 +272,20 @@ namespace ReneUtiles
 
 		public  string __getFrom_Inner_Join_Where_ORDER_BY(string select, Object[] args)
 		{
-			Configuracion_De_Columnas cnf = new Configuracion_De_Columnas();
+			Configuracion_De_Columnas cnf = new Configuracion_De_Columnas(this);
 			Object[] tw = (Object[])args[1];
 			return __getFrom_Inner_Join(select, args, cnf) + __getStr_Where(tw, cnf, 0) + __getStr_ORDER_BY(args, 2);
 		}
 
 		public  string __getFrom_Inner_Join_Where(string select, Object[] args)
 		{
-			Configuracion_De_Columnas cnf = new Configuracion_De_Columnas();
+			Configuracion_De_Columnas cnf = new Configuracion_De_Columnas(this);
 			return __getFrom_Inner_Join(select, args, cnf) + __getStr_Where(args, cnf, 1);
 		}
 
 		public  string __getFrom_Inner_Join(string select, Object[] a)
 		{
-			return __getFrom_Inner_Join(select, a, new Configuracion_De_Columnas());
+			return __getFrom_Inner_Join(select, a, new Configuracion_De_Columnas(this));
 		}
 
     
@@ -324,13 +331,13 @@ namespace ReneUtiles
 		/// C,V
 		/// 
 		/// 
-		/// [T],[T,C] la [T] es [T,"id"]
+		/// [T],[T,C] la [T] es [T,this.idKeyDefault]
 		/// 
 		/// 
-		/// [T],V la [T] es [T,"id"]
+		/// [T],V la [T] es [T,this.idKeyDefault]
 		/// 
 		/// 
-		/// C,[T] la [T] es [T,"id"]
+		/// C,[T] la [T] es [T,this.idKeyDefault]
 		/// 
 		/// 
 		/// 
@@ -348,7 +355,7 @@ namespace ReneUtiles
 		{
 			a=adaptarTipos(a);
 			if (cnf == null) {
-				cnf = new Configuracion_De_Columnas();
+				cnf = new Configuracion_De_Columnas(this);
 			}
 			string sqlOn = "";
 			Object[] A0 = (Object[])a[0];
@@ -424,12 +431,12 @@ namespace ReneUtiles
 			} else if (TipoDeClasificacionSQL.esTipoDeClasificacionSQL(clasificacion)) {
 				clasificacion = "  " + ((TipoDeClasificacionSQL)clasificacion).getValor();
 			}
-			return ALTER_TABLE + " " + nombreTabla + " " + ADD_COLUMN + " " + Columna + " " + tipo.getValor() + " " + DEFAULT + " " + defaultt + clasificacion;
+			return ALTER_TABLE + " " + nombreTabla + " " + ADD_COLUMN + " " + strC(Columna) + " " + tipo.getValor() + " " + DEFAULT + " " + defaultt + clasificacion;
 		}
 
 		public  string renombrarColumna(string nombreTabla, string Columna, string NuevoNombre)
 		{
-			return ALTER_TABLE + " " + nombreTabla + " " + RENAME_COLUMN + " " + Columna + " " + TO + " " + NuevoNombre;
+			return ALTER_TABLE + " " + nombreTabla + " " + RENAME_COLUMN + " " + strC(Columna) + " " + TO + " " + NuevoNombre;
 		}
 
 		public  string eliminarColumna(string nombreTabla, string Columna)
@@ -446,7 +453,7 @@ namespace ReneUtiles
 		//anterior !!!!!!!!!!!!!!!!!!!!!!!!!!!
 		public  string select_Id(string nombreTabla, int id)
 		{
-			return select_Where(nombreTabla, "id", id);
+			return select_Where(nombreTabla, strC(this.idKeyDefault), id);
 		}
 
 		public  bool esDELETE(string sql)
@@ -488,33 +495,7 @@ namespace ReneUtiles
 
 			//.startsWith(CREATE)
 		}
-
-		//    public  string getCantidad_Where(string nombreTabla,params Object[] paresColumnaValor) {
-		//         paresColumnaValor = adaptarTipos(paresColumnaValor);
-		//
-		//        if (paresColumnaValor.Length > 0) {
-		//            String sqlWhere = "", columna = "";
-		//            int pos = 0;
-		//            for (int i = 0; i < paresColumnaValor.Length; i++) {
-		//
-		//                if (pos == 0) {
-		//                    sqlWhere += (!Utiles.isEmpty(sqlWhere) ? " AND " : "");//Ahora aqui
-		//                    sqlWhere += paresColumnaValor[i];
-		//                    if (Utiles.isEmpty(columna)) {
-		//                        columna = paresColumnaValor[i].ToString();
-		//                    }
-		//                } else if (pos == 1) {
-		//                    sqlWhere += " = '" + paresColumnaValor[i] + "'";
-		//                }
-		//
-		//                pos = (++pos) % 2;
-		//            }
-		//            return SELECT_COUNT + "(" + nombreTabla + "." + columna + ") " + FROM + " " + nombreTabla + " " + WHERE + " " + sqlWhere;
-		//        } else {
-		//            return null;
-		//        }
-		//
-		//    }
+        
 	
 		public  string getCantidad_Where(String nombreTabla, params Object[] paresColumnaValor)
 		{
@@ -525,7 +506,7 @@ namespace ReneUtiles
 		public  string getCantidad_Where_Inner_Join(string nombreTabla, string columna, params Object[] args)
 		{
 			args=adaptarTipos(args);
-			return __getFrom_Inner_Join_Where(SELECT_COUNT + "(" + nombreTabla + "." + columna + ") ", args);
+			return __getFrom_Inner_Join_Where(SELECT_COUNT + "(" + nombreTabla + "." + strC(columna) + ") ", args);
 		}
 	
     
@@ -561,7 +542,7 @@ namespace ReneUtiles
 
 		public  string delete_id(string nombreTabla, string id)
 		{
-			return delete(nombreTabla, "id", id);
+			return delete(nombreTabla, this.idKeyDefault, id);
 		}
 
 		public  string delete(string nombreTabla, params Object[] a)
@@ -589,12 +570,12 @@ namespace ReneUtiles
 		/// (nombreTabla,id#,columna,setValor1,columna2,setValor2,... )
 		/// </summary>
 		/// <param name="nombreTabla"></param>
-		/// <param name="id"></param>
+		/// <param name=this.idKeyDefault></param>
 		/// <param name="paresColumnaValor"></param>
 		/// <returns></returns>
 		public  string update_Id(string nombreTabla, string id, params Object[] paresColumnaValor)
 		{
-			return update(nombreTabla, paresColumnaValor, "id", id);
+			return update(nombreTabla, paresColumnaValor, strC(this.idKeyDefault), id);
 		}
 
     
@@ -614,7 +595,7 @@ namespace ReneUtiles
 			int pos = 0;
 			for (int i = 0; i < paresColumnaValor.Length; i++) {
 				if (pos == 0) {
-					sqlSet += (!Utiles.isEmpty(sqlSet) ? " , " : "") + paresColumnaValor[i];
+					sqlSet += (!Utiles.isEmpty(sqlSet) ? " , " : "") + strC(paresColumnaValor[i]);
 				} else if (pos == 1) {
 					sqlSet += "='" + paresColumnaValor[i] + "'";
 				}
@@ -625,7 +606,7 @@ namespace ReneUtiles
 
 				if (pos == 0) {
 					sqlWhere += (!Utiles.isEmpty(sqlWhere) ? " AND " : "");
-					sqlWhere += a[i];
+					sqlWhere += strC(a[i]);
 
 				} else if (pos == 1) {
 					sqlWhere += " = '" + a[i] + "'";
@@ -641,23 +622,23 @@ namespace ReneUtiles
 
 		public  string getSuma(string nombreTabla, string columna)
 		{
-			return SELECT_SUM + "(" + nombreTabla + "." + columna + ") " + FROM + " " + nombreTabla;
+			return SELECT_SUM + "(" + nombreTabla + "." + strC(columna) + ") " + FROM + " " + nombreTabla;
 		}
 		public  string getSuma_Where(string nombreTabla, params Object[] paresColumnaValor)
 		{
 			paresColumnaValor=adaptarTipos(paresColumnaValor);
-			string columna = paresColumnaValor[0] + "";
+			string columna = strC(paresColumnaValor[0]) + "";
 			return getSuma(nombreTabla, columna) + __getStr_Where(paresColumnaValor);
 		}
 
 		public  string getSuma_Where_Inner_Join(string nombreTabla, string columna, params Object[] args)
 		{
 			args=adaptarTipos(args);
-			return __getFrom_Inner_Join_Where(SELECT_SUM + "(" + nombreTabla + "." + columna + ") ", args);
+			return __getFrom_Inner_Join_Where(SELECT_SUM + "(" + nombreTabla + "." + strC(columna) + ") ", args);
 		}
 		public  string getCantidad(string nombreTabla, string columna)
 		{
-			return SELECT_COUNT + "(" + nombreTabla + "." + columna + ") " + FROM + " " + nombreTabla;
+			return SELECT_COUNT + "(" + nombreTabla + "." + strC(columna) + ") " + FROM + " " + nombreTabla;
 		}
 
 		public  string select_Distinct_Group_By_By_Having(string nombreTabla, string[]columnas, String grupBy, String heavinColumna, String heavinValor)
@@ -668,12 +649,12 @@ namespace ReneUtiles
 		public  string select_Group_By_Having(string nombreTabla, string[]columnas, string grupBy, string heavinColumna, string heavinValor)
 		{
 			heavinValor = getObjectCorrecto(heavinValor) + "";
-			return select_Group_By(nombreTabla, columnas, grupBy) + " " + HAVING + " " + heavinColumna + "=" + heavinValor;
+			return select_Group_By(nombreTabla, columnas, grupBy) + " " + HAVING + " " + strC(heavinColumna) + "=" + heavinValor;
 		}
 	
 		public  string getLastId(string nombreTabla)
 		{
-			return getValorMaximo(nombreTabla, "id");
+			return getValorMaximo(nombreTabla, strC(this.idKeyDefault));
 		}
 
 		public  string select_ConUltimoID(string nombreTabla)
@@ -683,7 +664,7 @@ namespace ReneUtiles
 
 		public  string select_forID(string nombreTabla, string id)
 		{
-			return select_Where(nombreTabla, "id", id);
+			return select_Where(nombreTabla, strC(this.idKeyDefault), id);
 		}
     
     
@@ -758,13 +739,13 @@ namespace ReneUtiles
 		/// C,V
 		/// 
 		/// 
-		/// [T],[T,C] la [T] es [T,"id"]
+		/// [T],[T,C] la [T] es [T,this.idKeyDefault]
 		/// 
 		/// 
-		/// [T],V la [T] es [T,"id"]
+		/// [T],V la [T] es [T,this.idKeyDefault]
 		/// 
 		/// 
-		/// C,[T] la [T] es [T,"id"]
+		/// C,[T] la [T] es [T,this.idKeyDefault]
 		/// </summary>
 		/// <returns></returns>
 		public  string select_Where_Inner_Join_TodoDeTabla(string nombreTabla, params Object[] args)
@@ -821,13 +802,13 @@ namespace ReneUtiles
 		/// C,V
 		/// 
 		/// 
-		/// [T],[T,C] la [T] es [T,"id"]
+		/// [T],[T,C] la [T] es [T,this.idKeyDefault]
 		/// 
 		/// 
-		/// [T],V la [T] es [T,"id"]
+		/// [T],V la [T] es [T,this.idKeyDefault]
 		/// 
 		/// 
-		/// C,[T] la [T] es [T,"id"]
+		/// C,[T] la [T] es [T,this.idKeyDefault]
 		/// </summary>
 		/// <returns></returns>
 		public  string select_Distinct_Todo_Where_Inner_Join(string nombreTabla, params Object[] args)
@@ -871,11 +852,11 @@ namespace ReneUtiles
 		/// 
 		/// C,V
 		/// 
-		/// [T],[T,C] la [T] es [T,"id"]
+		/// [T],[T,C] la [T] es [T,this.idKeyDefault]
 		/// 
-		/// [T],V la [T] es [T,"id"]
+		/// [T],V la [T] es [T,this.idKeyDefault]
 		/// 
-		/// C,[T] la [T] es [T,"id"]
+		/// C,[T] la [T] es [T,this.idKeyDefault]
 		/// </summary>
 		/// <returns></returns>
 		public  string select_Where_Inner_Join_ORDER_BY_TodoDeTabla(string nombreTabla, params Object[] args)
@@ -1056,7 +1037,7 @@ namespace ReneUtiles
 		{
 			string sql = "";
 			for (int i = 0; i < columnas.Length; i++) {
-				sql += (i != 0 ? " , " : "") + columnas[i];
+				sql += (i != 0 ? " , " : "") + strC(columnas[i]);
 			}
 			return SELECT + " " + sql + " " + FROM + " " + nombreTabla;
 		}
@@ -1086,7 +1067,7 @@ namespace ReneUtiles
 
 		public  string getIdCorrespondiente(string nombreTabla)
 		{
-			return getIdCorrespondiente(nombreTabla, "id");
+			return getIdCorrespondiente(nombreTabla, strC(this.idKeyDefault));
 		}
 
 		public  string getIdCorrespondiente(string nombreTabla, string id)
@@ -1096,52 +1077,52 @@ namespace ReneUtiles
 
 		public  string getValorPromedio(string nombreTabla, string columna)
 		{
-			return SELECT_AVG + "(" + nombreTabla + "." + columna + ") " + FROM + " " + nombreTabla;
+			return SELECT_AVG + "(" + nombreTabla + "." + strC(columna) + ") " + FROM + " " + nombreTabla;
 		}
 		public  string getValorPromedio_Where_Inner_Join(string nombreTabla, string columna, params Object[] args)
 		{
 			args = adaptarTipos(args);
-			return __getFrom_Inner_Join_Where(SELECT_AVG + "(" + nombreTabla + "." + columna + ") ", args);
+			return __getFrom_Inner_Join_Where(SELECT_AVG + "(" + nombreTabla + "." + strC(columna) + ") ", args);
 		}
 
 		public  string getValorPromedio_Where(string nombreTabla, params Object[] paresColumnaValor)
 		{
 			paresColumnaValor=adaptarTipos(paresColumnaValor);
-			string columna = paresColumnaValor[0] + "";
+			string columna = strC(paresColumnaValor[0]) + "";
 			return getValorPromedio(nombreTabla, columna) + __getStr_Where(paresColumnaValor);
 		}
 
 		public  string getValorMinimo(string nombreTabla, string columna)
 		{
-			return SELECT_MIN + "(" + nombreTabla + "." + columna + ") " + FROM + " " + nombreTabla;
+			return SELECT_MIN + "(" + nombreTabla + "." + strC(columna) + ") " + FROM + " " + nombreTabla;
 		}
 		public  string getValorMinimo_Where_Inner_Join(string nombreTabla, string columna, params Object[] args)
 		{
 			args=adaptarTipos(args);
-			return __getFrom_Inner_Join_Where(SELECT_MIN + "(" + nombreTabla + "." + columna + ") ", args);
+			return __getFrom_Inner_Join_Where(SELECT_MIN + "(" + nombreTabla + "." + strC(columna) + ") ", args);
 		}
 
 		public  string getValorMinimo_Where(string nombreTabla, params Object[] paresColumnaValor)
 		{
 			paresColumnaValor=adaptarTipos(paresColumnaValor);
-			string columna = paresColumnaValor[0] + "";
+			string columna = strC(paresColumnaValor[0]) + "";
 			return getValorMinimo(nombreTabla, columna) + __getStr_Where(paresColumnaValor);
 		}
 		public  string getValorMaximo(string nombreTabla, string columna)
 		{
-			return SELECT_MAX + "(" + nombreTabla + "." + columna + ") " + FROM + " " + nombreTabla;
+			return SELECT_MAX + "(" + nombreTabla + "." + strC(columna) + ") " + FROM + " " + nombreTabla;
 		}
     
 		public  string getValorMaximo_Where_Inner_Join(string nombreTabla, string columna, params Object[] args)
 		{
 			args=adaptarTipos(args);
-			return __getFrom_Inner_Join_Where(SELECT_MAX + "(" + nombreTabla + "." + columna + ") ", args);
+			return __getFrom_Inner_Join_Where(SELECT_MAX + "(" + nombreTabla + "." + strC(columna) + ") ", args);
 		}
 
 		public  string getValorMaximo_Where(string nombreTabla, params Object[] paresColumnaValor)
 		{
 			paresColumnaValor=adaptarTipos(paresColumnaValor);
-			string columna = paresColumnaValor[0] + "";
+			string columna = strC(paresColumnaValor[0]) + "";
 			return getValorMaximo(nombreTabla, columna) + __getStr_Where(paresColumnaValor);
 		}
 
@@ -1170,7 +1151,7 @@ namespace ReneUtiles
 		/// si no lo tiene pone el id de forma automatica con el nombre del argumento
 		/// </summary>
 		/// <param name="nombreTabla"></param>
-		/// <param name="id"></param>
+		/// <param name=this.idKeyDefault></param>
 		/// <param name="a"></param>
 		/// <returns></returns>
 		public virtual  string insertar_idAutomatico(string nombreTabla, string id, Object[] a)
@@ -1192,7 +1173,7 @@ namespace ReneUtiles
 		public  string insertar(string nombreTabla, params Object[] a)
 		{
 			a=adaptarTipos(a);
-			return __insertar(nombreTabla, true, "id", a);
+			return __insertar(nombreTabla, true, strC(this.idKeyDefault), a);
 		}
 
    
@@ -1217,7 +1198,7 @@ namespace ReneUtiles
 				if (esArregloString(a[0])) {
 					columnas = (String[])a[0];
 					for (int i = 0; i < columnas.Length; i++) {
-						sqlColumns += (i != 0 ? " , " : "") + columnas[i];
+						sqlColumns += (i != 0 ? " , " : "") + strC(columnas[i]);
 					}
 					inicioDeValores = 1;
 				}
@@ -1239,11 +1220,11 @@ namespace ReneUtiles
 //        System.out.println("idAutomatico="+idAutomatico);
 			if (idAutomatico) {
 				if (Utiles.isEmpty(nombreId)) {
-					nombreId = "id";
+					nombreId = this.idKeyDefault;
 				}
 				sql = " NULL , " + sql;
 				if (!Utiles.isEmpty(sqlColumns)) {
-					sqlColumns = nombreId + " , " + sqlColumns;
+					sqlColumns = strC(nombreId) + " , " + sqlColumns;
 				}
 			}
 //        System.out.println("sql="+sql);
@@ -1262,7 +1243,7 @@ namespace ReneUtiles
 
 		public  string insertar_Many(string nombreTabla, int cantidadDeColumnas)
 		{
-			return __insertar_Many(nombreTabla, true, "id", cantidadDeColumnas);
+			return __insertar_Many(nombreTabla, true, strC(this.idKeyDefault), cantidadDeColumnas);
 		}
 
 		protected  string __insertar_Many(string nombreTabla, bool idAutomatico, string nombreId, int cantidadDeColumnas)
@@ -1544,16 +1525,16 @@ namespace ReneUtiles
         /// manda a retornar el id
 		/// </summary>
 		/// <param name="nombreTabla"></param>
-		/// <param name="id"></param>
+		/// <param name=this.idKeyDefault></param>
 		/// <param name="a"></param>
 		/// <returns></returns>
 		public override string insertar_idAutomatico(string nombreTabla, string id, Object[] a)
         {
             if (Utiles.isEmpty(id))
             {
-                id = "id";
+                id = this.idKeyDefault;
             }
-            return base.insertar_idAutomatico(nombreTabla,id,a) + " RETURNING "+id+";";
+            return base.insertar_idAutomatico(nombreTabla,id,a) + " RETURNING "+ strC(id) +";";
         }
 
         protected override string __insertar(string nombreTabla, bool idAutomatico, string nombreId, params Object[] a)
@@ -1571,7 +1552,7 @@ namespace ReneUtiles
                     columnas = (String[])a[0];
                     for (int i = 0; i < columnas.Length; i++)
                     {
-                        sqlColumns += (i != 0 ? " , " : "") + columnas[i];
+                        sqlColumns += (i != 0 ? " , " : "") + strC(columnas[i]);
                     }
                     inicioDeValores = 1;
                 }
@@ -1602,7 +1583,7 @@ namespace ReneUtiles
             //{
             //    if (Utiles.isEmpty(nombreId))
             //    {
-            //        nombreId = "id";
+            //        nombreId = this.idKeyDefault;
             //    }
             //    sql = " NULL , " + sql;
             //    if (!Utiles.isEmpty(sqlColumns))

@@ -675,10 +675,24 @@ namespace ReneUtiles.Clases.BD.Factory
 		
 		//otros
 		public  string getNombreStrIdkeyModelo(ModeloBD m)
-		{	
-			return Utiles.llevarASingular(Utiles.getLowerPiso(m.Nombre
-			                                                  .Replace("TABLA_", "idkey_")
-			));
+		{
+            string prefijo = "idkey_";
+            string r = Utiles.llevarASingular(Utiles.getLowerPiso(m.Nombre
+                                                              .Replace("TABLA_", prefijo)
+            ));
+            if (!r.StartsWith(prefijo)) {
+                //if (r.Contains("id")) {
+                //    string nombreVariableModelo = CodeBDLenguaje.getNombreStrModeloLower(m);
+                //    if (r== nombreVariableModelo + "id") {
+                //        r = subs(r, 0, r.Length - 2);
+                //    }
+                //}
+                r = prefijo + r;
+
+                
+                
+            }
+            return r;
 		}
 		public string getNombreVariableElemento(ElementoPorElQueBuscar t)
 		{
@@ -718,10 +732,17 @@ namespace ReneUtiles.Clases.BD.Factory
 		//static
 		public  string getNombreStrModelo(ModeloBD m)
 		{
-            //			cwl("m="+m);
-            //			cwl("m.Nombre="+m.Nombre);
+            //if (factory.conservarNombres) {
+            //    return m.Nombre;
+            //}
+            //cwl("m="+m);
+            //cwl("m.Nombre="+m.Nombre);
+            string r = Utiles.getCapitalizeUnido(m.Nombre.Replace("TABLA_", ""));
 
-            return Utiles.llevarASingular(Utiles.getCapitalizeUnido(m.Nombre.Replace("TABLA_", ""))) +this.factory.sufijoModelos ;//"_MD";
+            //cwl("capi uni="+r);
+             r= Utiles.llevarASingular(r) + this.factory.sufijoModelos;
+            //cwl("r="+r);
+            return r;//"_MD";
 		}
 		
 		public static string getNombreStrColumnaModelo(ColumnaDeModeloBD c)
@@ -736,6 +757,13 @@ namespace ReneUtiles.Clases.BD.Factory
 			           ));
 			if (c.EsReferencia) {
 				if (!r.Contains("idkey")) {
+                    //if (r.Contains("id")) {
+                    //    string nombreVariableModelo = CodeBDLenguaje.getNombreStrModeloLower(m);
+                    //    if (r== nombreVariableModelo+"id") {
+                    //        r = subs(r,0,r.Length-2);
+                    //    }
+                    //}
+
 					r = "idkey_" + r;
 				}
 			}
@@ -759,8 +787,26 @@ namespace ReneUtiles.Clases.BD.Factory
 		{
 			return CodeBDLenguaje.getNombreStrColumnaModelo(c.Padre, c).Replace("idkey_", "");
 		}
-		
-		
-		
-	}
+
+        public  string getStrStaticColumna(ColumnaDeModeloBD c) {
+            string COLUMNA = "COLUMNA_";
+            string r = c.Nombre.ToUpper();
+            if (!r.StartsWith(COLUMNA)) {
+                r = COLUMNA + r;
+            }
+            return r;
+        }
+
+        public string getStrStaticTabla(ModeloBD m)
+        {
+            string COLUMNA = "TABLA_";
+            string r = m.Nombre.ToUpper();
+            if (!r.StartsWith(COLUMNA))
+            {
+                r = COLUMNA + r;
+            }
+            return r;
+        }
+
+    }
 }

@@ -23,6 +23,7 @@ namespace ReneUtiles.Clases.BD.Conexion
 	
 	    public Object resultado;
 	    public bool mostrarResultadoConsola = false;
+        public bool mostrarSQL = true;
 		public DatosBDConect()
 		{
 		}
