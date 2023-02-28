@@ -21,7 +21,7 @@ namespace ReneUtiles.Clases.BD
 	/// <summary>
 	/// Description of BDConexion.
 	/// </summary>
-	public class BDConexion:ReneBasico
+	public class BDConexion:ConsolaBasica
 	{
 	private GestorDeConexionImple gestorDeConexionImple;
     private DatosBDConect datosBDConect;
@@ -76,33 +76,36 @@ namespace ReneUtiles.Clases.BD
     }
 
         public int getIdCorrespondiente(string nombreTabla) {
-            object o= getGestorDeConexionImple()._execute(sq().getIdCorrespondiente(nombreTabla));
+            object o= getGestorDeConexionImple().ejecutarConsultaGetInt(sq().getMaximoID(nombreTabla));
             if (o==null) {
+                //cwl("1-o==null");
                 return 1;
             }
             if (o is int||o is double) {
-                return (int)o;
+                //cwl("n-o is int||o is double");
+                return (int)o+1;
             }
-            if (o is string) {
-                if (esNumero(o+"")) {
-                    return (int)dou(o + "");
-                }
-                return 1;
-            }
-            if (o is Object[][]) {
-                Object[][] O = (Object[][])o;
-                if (O == null || O.Length == 0)
-                {
-                    return 1;
-                }
-                if (O[0]==null||O[0].Length==0) {
-                    return 1;
-                }
-                if (O[0][0]==null) {
-                    return 1;
-                }
-                return (int)O[0][0];
-            }
+            //if (o is string) {
+            //    if (esNumero(o+"")) {
+            //        //cwl("");
+            //        return (int)dou(o + "");
+            //    }
+            //    return 1;
+            //}
+            //if (o is Object[][]) {
+            //    Object[][] O = (Object[][])o;
+            //    if (O == null || O.Length == 0)
+            //    {
+            //        return 1;
+            //    }
+            //    if (O[0]==null||O[0].Length==0) {
+            //        return 1;
+            //    }
+            //    if (O[0][0]==null) {
+            //        return 1;
+            //    }
+            //    return (int)O[0][0];
+            //}
             return 1;
         }
 

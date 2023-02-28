@@ -22,7 +22,13 @@ namespace ReneUtiles.Clases.BD
 	        if (o == null || !esNumeroInt(o)) {
 	            return -1;
 	        }
-	        return inT(o);
+            try {
+                return inT(o);
+            } catch (Exception ex) {
+                cwl("no fue numero por error");
+                return -1;
+            }
+	        
 	    }
 	    public  double toDou(Object o) {
 	        if (o == null || !esNumeroDou(o)) {

@@ -904,6 +904,9 @@ namespace ReneUtiles
 		public static bool esNumero(string a)
 		{
 			int end = a.Length;
+            if (end==0) {
+                return false;
+            }
 			for (int i = 0; i < end; i++) {
 				char c = a.ElementAt(i);
 				if (!Char.IsNumber(c)) {
@@ -914,6 +917,9 @@ namespace ReneUtiles
 			//try{int b=inT(a);return true;}catch{return false;}
 		}
 		public static bool esNumeroAll(params string[] A){
+            if (A.Length==0) {
+                return false;
+            }
 			for (int i = 0; i < A.Length; i++) {
 				if(!esNumero(A[i])){
 					return false;

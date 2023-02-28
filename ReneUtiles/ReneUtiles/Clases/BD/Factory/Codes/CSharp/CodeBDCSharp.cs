@@ -53,7 +53,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
 
 
 
-            bd += separacion1 + "protected BDConexion BD;";
+            bd += separacion1 + "public BDConexion BD;";
             bd += separacion1 + "protected BDUpdates __Upd;";
 
             if (factory.Esquema.UsarSesionStorage)
@@ -795,21 +795,20 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             return mr;
         }
 
-
-        public override string getStrMetodoInsertar(ModeloBD_ID m, int separacion0)
-        {
+        private string __getStrCodigoInsertarSinIdekyNormal(string[] variables,ModeloBD_ID m, int separacion0) {
             string separacion = getSeparacionln(0, separacion0);
             string nombreModelo = this.getNombreStrModelo(m);
             string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
-            string mr = separacion + getPublicOverrideMetodo() + nombreModelo + " " + getNombreMetodo_insertar(m) + "(" + nombreModelo + " " + nombreModeloLower + "){";
             string separacion1 = getSeparacionln(1, separacion0);
-            mr += separacion1 + "if (" + nombreModeloLower + ".idkey==-1){";
             string separacion2 = getSeparacionln(2, separacion0);
-            //mr += separacion2 + "int id=this.BD." + getDSC().NombreMetodoInsertarConIdAutomatico + "(" + nombreModelo + "." + this.getStrStaticTabla(m);
-            string idKey = m.getPrimer_NombreColumnaKey()??factory.idDeafult;
+            string separacion3 = getSeparacionln(3, separacion0);
+            string mr = "";
             
+            //mr += separacion2 + "int id=this.BD." + getDSC().NombreMetodoInsertarConIdAutomatico + "(" + nombreModelo + "." + this.getStrStaticTabla(m);
+            string idKey = m.getPrimer_NombreColumnaKey() ?? factory.idDeafult;
+
             mr += separacion2 + "int id=this.BD." + getDSC().NombreMetodoInsertarConIdAutomatico + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ",\"" + idKey + "\",";
-            string[] variables = new string[m.Columnas.Count];
+            //string[] variables = new string[m.Columnas.Count];
             string separacionExtra = getSeparacionln(4, separacion0);
 
             mr += separacionExtra + "new string[]{";
@@ -823,21 +822,69 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
 
             for (int i = 0; i < variables.Length; i++)
             {
-                ColumnaDeModeloBD c = m.Columnas[i];
-                variables[i] = separacionExtra + "," + nombreModeloLower + "." + CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                //ColumnaDeModeloBD c = m.Columnas[i];
+                //variables[i] = separacionExtra + "," + nombreModeloLower + "." + CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
                 mr += variables[i];
             }
             mr += separacionExtra + ").id;";
             mr += separacion2 + "return this." + getNombreMetodo_GetForID(m) + "(id);";
-            mr += separacion1 + "}else{";
+            return mr;
+        }
+
+        private string __getStrCodigoInsertarConIdeky(string[] variables, ModeloBD_ID m, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+            string separacion1 = getSeparacionln(1, separacion0);
+            string separacion2 = getSeparacionln(2, separacion0);
+            string separacion3 = getSeparacionln(3, separacion0);
+            string separacionExtra = getSeparacionln(4, separacion0);
+            string mr = "";
+
             mr += separacion2 + "this.BD." + getDSC().NombreMetodoInsertarSinIdAutomatico + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + nombreModeloLower + ".idkey";
             for (int i = 0; i < variables.Length; i++)
             {
                 mr += variables[i];
             }
             mr += separacionExtra + ");";
-            mr += separacion2 + "return this." + getNombreMetodo_GetForID(m) + "(" + nombreModeloLower + ".idkey);}";
+            mr += separacion2 + "return this." + getNombreMetodo_GetForID(m) + "(" + nombreModeloLower + ".idkey);";//}
+
+            return mr;
+        }
+
+        public override string getStrMetodoInsertar(ModeloBD_ID m, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+            string mr = separacion + getPublicOverrideMetodo() + nombreModelo + " " + getNombreMetodo_insertar(m) + "(" + nombreModelo + " " + nombreModeloLower + "){";
+            string separacion1 = getSeparacionln(1, separacion0);
+            string separacion2 = getSeparacionln(2, separacion0);
+            string separacion3 = getSeparacionln(3, separacion0);
+            string separacionExtra = getSeparacionln(4, separacion0);
+
+            string[] variables = new string[m.Columnas.Count];
+            for (int i = 0; i < variables.Length; i++)
+            {
+                ColumnaDeModeloBD c = m.Columnas[i];
+                variables[i] = separacionExtra + "," + nombreModeloLower + "." + CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                
+            }
+
+            mr += separacion1 + "if (" + nombreModeloLower + ".idkey==-1){";
+
+            mr += separacion2 + "try{";
+            mr += __getStrCodigoInsertarSinIdekyNormal(variables, m, separacion0 + 1);
+            mr += separacion2 + "} catch (Exception ex) {";
+            mr += separacion3 + nombreModeloLower+ ".idkey=this.BD." + getDSC().NombreMetodoGetIdCorrespondiente + "(" + nombreModelo + "." + this.getStrStaticTabla(m) +");";
+            mr += __getStrCodigoInsertarConIdeky(variables, m, separacion0+1);
+            mr += separacion2 + "}";
+            //---------
+            mr += separacion1 + "}else{";
+            mr += __getStrCodigoInsertarConIdeky(variables, m, separacion0 );
             mr += separacion1 + "}";
+            mr += separacion + "}";
             return mr;
         }
 

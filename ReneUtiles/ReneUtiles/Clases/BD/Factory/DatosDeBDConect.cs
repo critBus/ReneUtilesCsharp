@@ -24,6 +24,8 @@ namespace ReneUtiles.Clases.BD.Factory
 
         //public string NombreMetodoInsertar;
 
+        public string NombreMetodoGetIdCorrespondiente;
+
         public string NombreMetodoInsertarConIdAutomatico;
 
 
@@ -48,6 +50,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		
 		public DatosDeBDConect()
 		{
+            this.NombreMetodoGetIdCorrespondiente = "getIdCorrespondiente";
             this.NombreMetodoGetConexionPOSTGRES = "getConexion_POSTGRES";
             this.NombreMetodoInsertarConIdAutomatico = "insertar_ConIdAutomatico";
             //this.NombreMetodoInsertar="insertar";

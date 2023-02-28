@@ -54,66 +54,86 @@ namespace ReneUtiles.Clases.BD.Conexion
 			datosDeConexion.R=null;
 			//DbConnection conn=crearConexion();
 			datosDeConexion.Conn=crearConexion();
-			//DbCommand sqlite_cmd;//SQLiteCommand
-			//es crearTabla
-			datosDeConexion.Cmd = datosDeConexion.Conn.CreateCommand();
-			datosDeConexion.Cmd.CommandText = sql;
-            if (this.datosBDConect.mostrarSQL) {
-                cwl("sql=" + sql);
+            try {
+                //DbCommand sqlite_cmd;//SQLiteCommand
+                //es crearTabla
+                datosDeConexion.Cmd = datosDeConexion.Conn.CreateCommand();
+                datosDeConexion.Cmd.CommandText = sql;
+                if (this.datosBDConect.mostrarSQL)
+                {
+                    cwl("sql=" + sql);
+                }
+
+                if (this.sqlUtiles.esSelect(sql))
+                {
+                    //cwl("sql="+sql);
+                    List<object[]> lo = new List<object[]>();
+                    //DbDataReader sqlite_datareader;
+                    datosDeConexion.Dr = datosDeConexion.Cmd.ExecuteReader();
+                    int cantidadDeColumnas = 0;
+                    while (datosDeConexion.Dr.Read())
+                    {
+                        cantidadDeColumnas = datosDeConexion.Dr.FieldCount;
+                        object[] o = new object[cantidadDeColumnas];
+
+                        datosDeConexion.Dr.GetValues(o);
+                        lo.Add(o);
+                        //sqlite_datareader.GetDataTypeName()
+                        //string myreader = sqlite_datareader.GetString(0);
+                        //Console.WriteLine(myreader);
+                    }
+                    if (this.sqlUtiles.esSelectValor(sql))
+                    {
+                        if (lo.Count > 0 && ((Object[])lo[0]).Length > 0)
+                        {
+                            datosDeConexion.R = lo[0][0];
+                            if (esNumero(datosDeConexion.R + ""))
+                            {
+                                datosDeConexion.R = dou(datosDeConexion.R + "");
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        datosDeConexion.R = lo.ToArray();
+                    }
+                    //cwl("datosBDConect.mostrarResultadoConsola="+datosBDConect.mostrarResultadoConsola);
+                    if (datosBDConect.mostrarResultadoConsola)
+                    {
+                        _mostrarResultadoConsola();
+                    }
+
+                }
+                else
+                {
+
+                    if (this.sqlUtiles.esInsertar(sql))
+                    {
+                        //algo obtener el id
+                        //					sqlite_cmd = conn.CreateCommand();
+                        //					sqlite_cmd.CommandText = "SELECT LAST_INSERT_ID() as lastid";
+                        //					int id=(int)sqlite_cmd.ExecuteScalar();
+                        //					
+                        //					
+                        //					cwl("id="+id);
+                        datosDeConexion.R = ejecutarConsultaInsertar();//getResultadoDeInsertar();
+
+                    }
+                    else
+                    {
+                        datosDeConexion.Cmd.ExecuteNonQuery();
+
+                    }
+                }
+                datosDeConexion.Conn.Close();
+
+            } catch (Exception ex) {
+                datosDeConexion.Conn.Close();
+                throw ex;
             }
 			
-			if(this.sqlUtiles.esSelect(sql)){
-				//cwl("sql="+sql);
-				List<object[]> lo=new List<object[]>();
-				//DbDataReader sqlite_datareader;
-				datosDeConexion.Dr = datosDeConexion.Cmd.ExecuteReader();
-				int cantidadDeColumnas=0;
-				while (datosDeConexion.Dr.Read())
-		         {
-					cantidadDeColumnas=datosDeConexion.Dr.FieldCount;
-					object[] o=new object[cantidadDeColumnas];
-					
-					datosDeConexion.Dr.GetValues(o);
-					lo.Add(o);
-					//sqlite_datareader.GetDataTypeName()
-		            //string myreader = sqlite_datareader.GetString(0);
-		            //Console.WriteLine(myreader);
-		         }
-				if(this.sqlUtiles.esSelectValor(sql)){
-					if(lo.Count>0&&((Object[])lo[0]).Length>0){
-						datosDeConexion.R=lo[0][0];
-						if(esNumero(datosDeConexion.R+"")){
-							datosDeConexion.R=dou(datosDeConexion.R+"");
-						}
-					}
-					
-				}else{
-					datosDeConexion.R=lo.ToArray();
-				}
-				//cwl("datosBDConect.mostrarResultadoConsola="+datosBDConect.mostrarResultadoConsola);
-				if(datosBDConect.mostrarResultadoConsola){
-					_mostrarResultadoConsola();
-				}
-				
-			}else{
-				
-				if(this.sqlUtiles.esInsertar(sql)){
-                    //algo obtener el id
-                    //					sqlite_cmd = conn.CreateCommand();
-                    //					sqlite_cmd.CommandText = "SELECT LAST_INSERT_ID() as lastid";
-                    //					int id=(int)sqlite_cmd.ExecuteScalar();
-                    //					
-                    //					
-                    //					cwl("id="+id);
-                    datosDeConexion.R = ejecutarConsultaInsertar();//getResultadoDeInsertar();
-
-                }
-                else{
-                    datosDeConexion.Cmd.ExecuteNonQuery();
-
-                }
-			}
-			datosDeConexion.Conn.Close();
+			
 			
 			return datosDeConexion.R;
 		}
@@ -142,5 +162,34 @@ namespace ReneUtiles.Clases.BD.Conexion
 		public abstract DbConnection crearConexion();
         //public abstract BDResultadoInsertar getResultadoDeInsertar();
         protected abstract BDResultadoInsertar ejecutarConsultaInsertar();
+
+        public int ejecutarConsultaGetInt(string sql) {
+            datosDeConexion.R = null;
+            int r = 1;
+            //DbConnection conn=crearConexion();
+            datosDeConexion.Conn = crearConexion();
+            try {
+                //DbCommand sqlite_cmd;//SQLiteCommand
+                //es crearTabla
+                datosDeConexion.Cmd = datosDeConexion.Conn.CreateCommand();
+                datosDeConexion.Cmd.CommandText = sql;
+                if (this.datosBDConect.mostrarSQL)
+                {
+                    cwl("sql=" + sql);
+                }
+                 r = (int)datosDeConexion.Cmd.ExecuteScalar();
+                datosDeConexion.R = r;
+                datosDeConexion.Conn.Close();
+
+            }
+            catch (Exception ex)
+            {
+                datosDeConexion.Conn.Close();
+                throw ex;
+            }
+            
+            return r;
+
+        }
     }
 }

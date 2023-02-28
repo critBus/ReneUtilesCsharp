@@ -482,12 +482,12 @@ namespace ReneUtiles
 			return sql.Trim().ToUpper().StartsWith(CREATE + " ");
 		}
 
-		public  bool esSelect(string sql)
+		public virtual bool esSelect(string sql)
 		{
 			return sql.Trim().ToUpper().StartsWith(SELECT + " ");
 		}
 
-		public  bool esSelectValor(string sql)
+		public virtual bool  esSelectValor(string sql)
 		{
 			string sub = sql.Trim().ToUpper().Substring((SELECT + " ").Length);
 			//System.out.println("sub="+sub);
@@ -1072,10 +1072,23 @@ namespace ReneUtiles
 
 		public  string getIdCorrespondiente(string nombreTabla, string id)
 		{
-			return "(" + getValorMaximo(nombreTabla, id) + ")+1";
+            // RETURNING 
+            string r = "(" + getValorMaximo(nombreTabla, id) + ")+1";
+           // string r =  getValorMaximo(nombreTabla, id) ;
+            return r;
 		}
+        public string getMaximoID(string nombreTabla)
+        {
+            return getMaximoID(nombreTabla, strC(this.idKeyDefault));
+        }
+        public string getMaximoID(string nombreTabla, string id)
+        {
+            string r = getValorMaximo(nombreTabla, id);
+            return r;
+        }
 
-		public  string getValorPromedio(string nombreTabla, string columna)
+
+        public  string getValorPromedio(string nombreTabla, string columna)
 		{
 			return SELECT_AVG + "(" + nombreTabla + "." + strC(columna) + ") " + FROM + " " + nombreTabla;
 		}
@@ -1110,7 +1123,9 @@ namespace ReneUtiles
 		}
 		public  string getValorMaximo(string nombreTabla, string columna)
 		{
-			return SELECT_MAX + "(" + nombreTabla + "." + strC(columna) + ") " + FROM + " " + nombreTabla;
+            string r = SELECT_MAX + "(" + nombreTabla + "." + strC(columna) + ") " + FROM + " " + nombreTabla;
+            
+            return r;
 		}
     
 		public  string getValorMaximo_Where_Inner_Join(string nombreTabla, string columna, params Object[] args)
@@ -1767,6 +1782,17 @@ namespace ReneUtiles
             }
             return CREATE_TABLE + " " + nombreTabla + " ( " + sql + " ) ";
         }
+        public override bool esSelect(string sql)
+        {
+            
+            return base.esSelect(sql) || Utiles.startsWithOR(sql,"(","((",SQLUtiles_Postgres.RETURNING);
+        }
 
+        public override bool esSelectValor(string sql)
+        {
+            return base.esSelectValor(sql) || Utiles.startsWithOR(sql, "(", "((", SQLUtiles_Postgres.RETURNING);
+        }
     }
-}
+
+    
+    }
