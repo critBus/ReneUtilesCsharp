@@ -455,8 +455,12 @@ namespace ReneUtiles
 		{
 			return select_Where(nombreTabla, strC(this.idKeyDefault), id);
 		}
+        public string select_Id(string nombreTabla, string idStr,int id)
+        {
+            return select_Where(nombreTabla, strC(idStr), id);
+        }
 
-		public  bool esDELETE(string sql)
+        public  bool esDELETE(string sql)
 		{
 
 			return sql.Trim().ToUpper().StartsWith(DELETE + " ");
@@ -1524,7 +1528,9 @@ namespace ReneUtiles
             ConstantesExprecionesRegulares.espacios_UnoAlMenos+
             "RETURNING"+
             ConstantesExprecionesRegulares.espacios_UnoAlMenos +
+            "[\"]?"+
             ConstantesExprecionesRegulares.letras+
+            "[\"]?" +
             ConstantesExprecionesRegulares.espacios+
             ";"
             );

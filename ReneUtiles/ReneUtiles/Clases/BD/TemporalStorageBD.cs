@@ -56,7 +56,7 @@ namespace ReneUtiles.Clases.BD
 				direccion = Directory.GetCurrentDirectory();
 			}
 			this._direccion = direccion + "/BDTemporalStorage.sqlite";
-			this._conet = BDConexion.getConexionSQL_LITE(this._direccion)
+			this._conet = BDConexion.getConexionSQL_LITE(this._direccion).no_cl()
 				.crearTablaSiNoExiste(this._nombre)
 				.crearTablaSiNoExiste(this._nombreTablaTipos)
 				.crearTablaSiNoExiste(this._nombreTablaLugaresDeTipoLista, "nombreTabla", "nombrePropiedad", "tipo");
@@ -163,9 +163,9 @@ namespace ReneUtiles.Clases.BD
 				insertNombres.Add(i.nombre);
 				indice += 1;
 			}
-			foreach (object o in sql) {
-				cwl("o=" + o);
-			}
+			//foreach (object o in sql) {
+			//	cwl("o=" + o);
+			//}
 			object[] ob = sql.ToArray();
 			this._conet.crearTablaYBorrarSiExiste(this._nombre, ob);
 			if (insert.Count != 0) {

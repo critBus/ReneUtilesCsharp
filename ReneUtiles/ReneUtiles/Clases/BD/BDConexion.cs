@@ -75,8 +75,8 @@ namespace ReneUtiles.Clases.BD
         return gestorDeConexionImple;
     }
 
-        public int getIdCorrespondiente(string nombreTabla) {
-            object o= getGestorDeConexionImple().ejecutarConsultaGetInt(sq().getMaximoID(nombreTabla));
+        public int getIdCorrespondiente(string nombreTabla,string id) {
+            object o= getGestorDeConexionImple().ejecutarConsultaGetInt(sq().getMaximoID(nombreTabla,id));
             if (o==null) {
                 //cwl("1-o==null");
                 return 1;
@@ -108,8 +108,44 @@ namespace ReneUtiles.Clases.BD
             //}
             return 1;
         }
+        public int getIdCorrespondiente(string nombreTabla)
+        {
+            object o = getGestorDeConexionImple().ejecutarConsultaGetInt(sq().getMaximoID(nombreTabla));
+            if (o == null)
+            {
+                //cwl("1-o==null");
+                return 1;
+            }
+            if (o is int || o is double)
+            {
+                //cwl("n-o is int||o is double");
+                return (int)o + 1;
+            }
+            //if (o is string) {
+            //    if (esNumero(o+"")) {
+            //        //cwl("");
+            //        return (int)dou(o + "");
+            //    }
+            //    return 1;
+            //}
+            //if (o is Object[][]) {
+            //    Object[][] O = (Object[][])o;
+            //    if (O == null || O.Length == 0)
+            //    {
+            //        return 1;
+            //    }
+            //    if (O[0]==null||O[0].Length==0) {
+            //        return 1;
+            //    }
+            //    if (O[0][0]==null) {
+            //        return 1;
+            //    }
+            //    return (int)O[0][0];
+            //}
+            return 1;
+        }
 
-    public void setGestorDeConexionImple(GestorDeConexionImple gestorDeConexionImple) {
+        public void setGestorDeConexionImple(GestorDeConexionImple gestorDeConexionImple) {
         this.gestorDeConexionImple = gestorDeConexionImple;
            
     }
@@ -119,8 +155,8 @@ namespace ReneUtiles.Clases.BD
         return cantidad>0;
     }
 
-    public Object[] select_forID(string nombreTabla, int id) {
-            Object[][] O = (Object[][])getGestorDeConexionImple()._execute(sq().select_Id(nombreTabla, id));
+    public Object[] select_forID(string nombreTabla,string idStr, int id) {
+            Object[][] O = (Object[][])getGestorDeConexionImple()._execute(sq().select_Id(nombreTabla, idStr, id));
             if (O == null || O.Length == 0)
             {
                 return null;
@@ -129,8 +165,19 @@ namespace ReneUtiles.Clases.BD
             //return ((Object[][]) getGestorDeConexionImple()._execute(sq().select_Id(nombreTabla, id)))[0];
         // return select_Where(nombreTabla,"id",id);
     }
+        public Object[] select_forID(string nombreTabla,  int id)
+        {
+            Object[][] O = (Object[][])getGestorDeConexionImple()._execute(sq().select_Id(nombreTabla,  id));
+            if (O == null || O.Length == 0)
+            {
+                return null;
+            }
+            return O[0];
+            //return ((Object[][]) getGestorDeConexionImple()._execute(sq().select_Id(nombreTabla, id)))[0];
+            // return select_Where(nombreTabla,"id",id);
+        }
 
-    public BDConexion delete_id(string nombreTabla, int id) {
+        public BDConexion delete_id(string nombreTabla, int id) {
         return delete_id(nombreTabla, id + "");
     }
 
@@ -601,7 +648,11 @@ namespace ReneUtiles.Clases.BD
                 throw new Exception("para insertar en postgres cuando el id es SERIAL hay que expesificar las columnas a agregar"
                     +"En este caso mediante un arreglo string con los nombres de las columnas");
             }
-            Object O = getGestorDeConexionImple()._execute(sq().insertar_idAutomatico(nombreTabla, id, a));
+            SQLUtiles squ = sq();
+            string sql = squ.insertar_idAutomatico(nombreTabla, id, a);
+            GestorDeConexionImple gs = getGestorDeConexionImple();
+            Object O = gs._execute(sql);
+
             if (O != null && O is BDResultadoInsertar)
             {
                 BDResultadoInsertar res = (BDResultadoInsertar)O;

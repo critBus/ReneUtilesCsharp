@@ -34,25 +34,25 @@ namespace ReneUtiles
 		public readonly static TimeSpan NULL_TIME=TimeSpan.Zero;
 		public readonly static Dictionary<string,int> NumerosRomanos = getDiccionarioNumerosRomanos();
 
-        private readonly static Func<string> SEGURIDAD_R_A = () =>
-        {
-            string []tokens = {
-                "79b18a7294a2241ec6d6accea10b3be8b5f25f9eea067ac1d0c4526e03af7243"//mio
-                ,"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
-                ,"8f61feeb2f616a7769fcfa782ee34f9bb8c49f203b6fb40573f1d2a974ead913"
-            };
-            string placaActual= UtilesEncriptar.getSHA256(UtilesHardware.GetMotherBoardID());
-            foreach (string item in tokens)
-            {
-                if (item== placaActual) {
-                    return "";
-                }
-            }
+        //private readonly static Func<string> SEGURIDAD_R_A = () =>
+        //{
+        //    string []tokens = {
+        //        "79b18a7294a2241ec6d6accea10b3be8b5f25f9eea067ac1d0c4526e03af7243"//mio
+        //        ,"6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+        //        ,"8f61feeb2f616a7769fcfa782ee34f9bb8c49f203b6fb40573f1d2a974ead913"
+        //    };
+        //    string placaActual= UtilesEncriptar.getSHA256(UtilesHardware.GetMotherBoardID());
+        //    foreach (string item in tokens)
+        //    {
+        //        if (item== placaActual) {
+        //            return "";
+        //        }
+        //    }
 
-            throw new Exception("usuario sin autorizacion");
+        //    throw new Exception("usuario sin autorizacion");
             
-        };
-        private readonly static string APLICAR_SEGURIDAD = SEGURIDAD_R_A();
+        //};
+        //private readonly static string APLICAR_SEGURIDAD = SEGURIDAD_R_A();
         public static int getCantidadDeCaracteresIgualesEnMismaPosicion(string a,string b) {
             int c = 0;
 
@@ -74,20 +74,7 @@ namespace ReneUtiles
             psi.FileName = urlExe;// @"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe";//"jre8\\bin\\javaw.exe";
             Process.Start(psi);
 
-            //Console.WriteLine(comando);
-            //System.Diagnostics.Process.Start(comando);
-
-            //using (Process process = new Process())
-            //{
-            //    //process.StartInfo.FileName = "cmd.exe";
-            //    //process.StartInfo.Arguments = comando;//@"cscript \"C:\Program Files\Microsoft Office\Office16\OSPP.VBS\" /dstatus";
-            //    //process.StartInfo.UseShellExecute = false;
-            //    //process.StartInfo.RedirectStandardOutput = true;
-            //    //process.Start();
-
-            //    //StreamReader reader = process.StandardOutput;
-            //    //string output = reader.ReadToEnd();
-            //}
+            
 
         }
 
