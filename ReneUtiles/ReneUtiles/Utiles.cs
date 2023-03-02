@@ -25,14 +25,14 @@ namespace ReneUtiles
 	public delegate void metodoUtilizar3<A, B, C>(A a, B b, C c);
 	public delegate void metodoUtilizarRef3<A, B, C>(ref A a, ref B b, ref C c);
 	public delegate void metodoRealizar();
-    
-	
-	
-	public abstract class Utiles
-	{	
-		public readonly static DateTime NULL_DATE=DateTime.MinValue;
-		public readonly static TimeSpan NULL_TIME=TimeSpan.Zero;
-		public readonly static Dictionary<string,int> NumerosRomanos = getDiccionarioNumerosRomanos();
+
+
+
+    public abstract class Utiles
+    {
+        public readonly static DateTime NULL_DATE = DateTime.MinValue;
+        public readonly static TimeSpan NULL_TIME = TimeSpan.Zero;
+        public readonly static Dictionary<string, int> NumerosRomanos = getDiccionarioNumerosRomanos();
 
         //private readonly static Func<string> SEGURIDAD_R_A = () =>
         //{
@@ -50,9 +50,19 @@ namespace ReneUtiles
         //    }
 
         //    throw new Exception("usuario sin autorizacion");
-            
+
         //};
         //private readonly static string APLICAR_SEGURIDAD = SEGURIDAD_R_A();
+
+        public static string join<T>(IEnumerable<T> a,string j=",") {
+            T []A = a.ToArray();
+            string r = "";
+            for (int i = 0; i < A.Length; i++)
+            {
+                r += (i != 0 ? j : "") + A[i];
+            }
+            return r;
+        }
         public static int getCantidadDeCaracteresIgualesEnMismaPosicion(string a,string b) {
             int c = 0;
 
@@ -78,13 +88,16 @@ namespace ReneUtiles
 
         }
 
-        public static void ejecutarCMD_Visible(string urlExe, string comando)
+        public static void ejecutarCMD_Visible(string urlExe, string comando=null)
         {
 
             ProcessStartInfo psi = new ProcessStartInfo();
             
             psi.UseShellExecute = true;
-            psi.Arguments = comando;//"\"" + @"D:\_Cosas\Temporal\manga\APARI3NCIAS (Temporada 1) [08 Cap.] [1080p] [Dual Audio] FDT\S01E02.mkv" + "\""; //"-jar -XX:+UseConcMarkSweepGC -Xmx1024M -Xms1024M START.jar";
+            if (comando!=null) {
+                psi.Arguments = comando;//"\"" + @"D:\_Cosas\Temporal\manga\APARI3NCIAS (Temporada 1) [08 Cap.] [1080p] [Dual Audio] FDT\S01E02.mkv" + "\""; //"-jar -XX:+UseConcMarkSweepGC -Xmx1024M -Xms1024M START.jar";
+            }
+            
             psi.CreateNoWindow = false;
             psi.WindowStyle = ProcessWindowStyle.Normal;
             psi.FileName = urlExe;// @"C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe";//"jre8\\bin\\javaw.exe";
