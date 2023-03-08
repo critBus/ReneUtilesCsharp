@@ -53,8 +53,14 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				ColumnaDeModeloBD c = m.Columnas[j];
 				mr += separacion1 + this.getStrStaticColumna(c) + "=\"" + c.Nombre + "\"";
 			}
-			
-			string[] columnasStr = new string[m.Columnas.Count];
+            if (m is ModeloBD_ID)
+            {
+                ModeloBD_ID mID = (ModeloBD_ID)m;
+                ColumnaDeModeloBD c = mID.columnaID;
+                mr += separacion1 +  this.getStrStaticColumna(c) + "=\"" + c.Nombre + "\";";
+            }
+
+            string[] columnasStr = new string[m.Columnas.Count];
 			mr += separacion1 + "def __init__(self,apibd";
 			for (int i = 0; i < m.Columnas.Count; i++) {
 				ColumnaDeModeloBD c = m.Columnas[i];
@@ -81,6 +87,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				
 				
 			}
+
+
 			mr += separacion2 + "super().__init__(idkey,apibd)";
 			
 			ColumnaDeModeloBD[] referencias = m.getColumnasReferencia();
@@ -662,9 +670,9 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			string separacion1 = getSeparacionln(1, separacion0);
 			mr += separacion1 + "if " + nombreModeloLower + ".idkey is None:";
 			string separacion2 = getSeparacionln(2, separacion0);
-            string idKey = m.getPrimer_NombreColumnaKey() ?? factory.idDeafult;
+            //string idKey = m.getPrimer_NombreColumnaKey() ?? factory.idDeafult;
             //mr += separacion2 + "id=self.BD." + getDSC().NombreMetodoInsertar + "(" + nombreModelo + "." + this.getStrStaticTabla(m);
-            mr += separacion2 + "id=self.BD." + getDSC().NombreMetodoInsertarConIdAutomatico + "(" + nombreModelo + "." + this.getStrStaticTabla(m)+",\"" + idKey + "\",";
+            mr += separacion2 + "id=self.BD." + getDSC().NombreMetodoInsertarConIdAutomatico + "(" + nombreModelo + "." + this.getStrStaticTabla(m)+",\"" + getStrLlamadaACoumnaIdkeyDefault(m) + "\",";
             string[] variables = new string[m.Columnas.Count];
 			string separacionExtra = getSeparacionln(4, separacion0);
 

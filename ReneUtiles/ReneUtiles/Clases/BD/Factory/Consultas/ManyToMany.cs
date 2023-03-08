@@ -24,7 +24,12 @@ namespace ReneUtiles.Clases.BD.Factory.Consultas
 			this.Many_2 = many_2;
 			this.Union = union;
 		}
-		public void comprobarSeguridad(){
+        public ManyToMany setIdStr(string idStr) {
+            this.Union.IdKeyDefault = idStr;
+            return this;
+        }
+
+        public void comprobarSeguridad(){
 			if(Many_1==Many_2){
 				throw new Exception("Los Many no pueden ser iguales");
 			}

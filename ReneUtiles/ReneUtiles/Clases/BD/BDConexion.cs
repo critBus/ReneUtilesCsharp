@@ -177,16 +177,26 @@ namespace ReneUtiles.Clases.BD
             // return select_Where(nombreTabla,"id",id);
         }
 
-        public BDConexion delete_id(string nombreTabla, int id) {
+    public BDConexion delete_id(string nombreTabla, int id) {
         return delete_id(nombreTabla, id + "");
     }
+        public BDConexion delete_id(string nombreTabla, string idStr, int id)
+        {
+            return delete_id(nombreTabla, idStr,id + "");
+        }
 
     public BDConexion delete_id(string nombreTabla, string id) {
         getGestorDeConexionImple()._execute(sq().delete_id(nombreTabla, id));
         return this;
     }
 
-    public BDConexion delete(string nombreTabla,params  Object[]a) {
+    public BDConexion delete_id(string nombreTabla,string idStr, string id)
+    {
+        getGestorDeConexionImple()._execute(sq().delete_id(nombreTabla, idStr, id));
+        return this;
+    }
+
+        public BDConexion delete(string nombreTabla,params  Object[]a) {
         getGestorDeConexionImple()._execute(sq().delete(nombreTabla, a));
         return this;
     }

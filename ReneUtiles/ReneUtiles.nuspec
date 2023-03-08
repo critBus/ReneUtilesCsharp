@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Rene Lazaro Collado Arteaga</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">GPL-3.0-or-later</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/critBus/ReneUtilesCsharp</projectUrl>
+    <description>$description$</description>
+    <releaseNotes></releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>Utility</tags>
+  </metadata>
+</package>

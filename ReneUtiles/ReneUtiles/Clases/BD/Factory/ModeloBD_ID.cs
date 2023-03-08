@@ -20,12 +20,47 @@ namespace ReneUtiles.Clases.BD.Factory
 	/// </summary>
 	public class ModeloBD_ID:ModeloBD
 	{
-		public ModeloBD_ID(string nombre,params ColumnaDeModeloBD[] columnas):this(nombre,false,columnas){
-			
-		}
+        //private string idKeyDefault = "id";
+        public bool tieneNombrePersonalizado_idKeyDefault = false;
+
+        public ColumnaDeModeloBD columnaID;
+
+        
+
+        public ModeloBD_ID(string nombre,params ColumnaDeModeloBD[] columnas):this(nombre,false,columnas){
+            inicializar();
+
+        }
 		public ModeloBD_ID(string nombre,bool suscritaAUpdates,params ColumnaDeModeloBD[] columnas):base(nombre,suscritaAUpdates,columnas)
 		{
-			//addC(nombre:"id",tipo:);
-		}
-	}
+            //addC(nombre:"id",tipo:);
+            inicializar();
+        }
+
+        public void inicializar() {
+            this.columnaID = new ColumnaDeModeloBD(
+                nombre:"id"
+                ,tipo:TipoDeDatoSQL.INTEGER
+                ,tamaño:-1
+                ,clasificaciones: new TipoDeClasificacionSQL[] {
+                    TipoDeClasificacionSQL.PRIMARY_KEY_AUTOINCREMENT
+                }
+                );
+        }
+
+        public string IdKeyDefault
+        {
+            get
+            {
+                return this.columnaID.Nombre;
+            }
+
+            set
+            {
+                
+                tieneNombrePersonalizado_idKeyDefault = true;
+                this.columnaID.Nombre = value;
+            }
+        }
+    }
 }

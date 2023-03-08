@@ -787,14 +787,19 @@ namespace ReneUtiles.Clases.BD.Factory
 		{
 			return CodeBDLenguaje.getNombreStrColumnaModelo(c.Padre, c).Replace("idkey_", "");
 		}
-
-        public  string getStrStaticColumna(ColumnaDeModeloBD c) {
+        public string getStrStaticColumna(string nombreColumna)
+        {
             string COLUMNA = "COLUMNA_";
-            string r = c.Nombre.ToUpper();
-            if (!r.StartsWith(COLUMNA)) {
+            string r = nombreColumna.ToUpper();
+            if (!r.StartsWith(COLUMNA))
+            {
                 r = COLUMNA + r;
             }
             return r;
+        }
+        public  string getStrStaticColumna(ColumnaDeModeloBD c) {
+            
+            return getStrStaticColumna(c.Nombre);
         }
 
         public string getStrStaticTabla(ModeloBD m)
@@ -808,5 +813,14 @@ namespace ReneUtiles.Clases.BD.Factory
             return r;
         }
 
+        public string getStrLlamadaACoumnaIdkeyDefault(ModeloBD_ID m) {
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreC = factory.Esquema.idDeafult;
+            if (m.tieneNombrePersonalizado_idKeyDefault) {
+                nombreC = m.IdKeyDefault;
+            }
+            //return m.tieneNombrePersonalizado_idKeyDefault ? m.IdKeyDefault : factory.Esquema.idDeafult;
+            return nombreModelo + "." + this.getStrStaticColumna(nombreC);//;
+        }
     }
 }

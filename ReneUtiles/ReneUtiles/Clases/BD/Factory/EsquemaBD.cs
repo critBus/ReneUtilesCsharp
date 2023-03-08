@@ -28,7 +28,10 @@ namespace ReneUtiles.Clases.BD.Factory
 		public List<InnerJoin> ListaInnerJoinOne;
 		public Dictionary<ModeloBD,CrearDeleteCascade> listaCrearDeleteCascade;
 		public Dictionary<ModeloBD,CrearDeleteCascade> listaCrearDeleteCascadeInverso;
-		public EsquemaBD()
+
+        public string idDeafult;
+
+        public EsquemaBD()
 		{
 			this.modelos = new List<ModeloBD>();
 			this.ListaManyToMany = new List<ManyToMany>();
@@ -36,7 +39,9 @@ namespace ReneUtiles.Clases.BD.Factory
 			this.ListaInnerJoinOne = new List<InnerJoin>();
 			this.listaCrearDeleteCascade = new Dictionary<ModeloBD,CrearDeleteCascade>();
 			this.listaCrearDeleteCascadeInverso = new Dictionary<ModeloBD,CrearDeleteCascade>();
-		}
+
+            this.idDeafult = "Id";
+        }
 		
 		public bool necistaUnDeleteCascade(ModeloBD m){
 			return listaCrearDeleteCascade[m].NecesitaDeleteCascade||listaCrearDeleteCascadeInverso[m].NecesitaDeleteCascade;

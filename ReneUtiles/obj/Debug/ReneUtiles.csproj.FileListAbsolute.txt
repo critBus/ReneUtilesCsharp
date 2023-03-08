@@ -28,3 +28,5 @@ D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.ValueTuple.dll
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.ValueTuple.xml
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\ReneWPF.dll
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\ReneWPF.pdb

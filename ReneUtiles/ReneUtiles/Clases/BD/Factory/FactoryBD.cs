@@ -52,7 +52,7 @@ namespace ReneUtiles.Clases.BD.Factory
 
 
         public string sufijoModelos;
-        public string idDeafult ;
+        //public string idDeafult ;
         public bool conservarNombres;
 
 
@@ -64,7 +64,7 @@ namespace ReneUtiles.Clases.BD.Factory
 
             this.sufijoModelos = "_MD";
             this.conservarNombres = false;
-            this.idDeafult = "Id";
+            //this.idDeafult = "Id";
             //this.NombreBDAdmin="BDAdmin";
             //this.NombreArchivoQueContieneTodosLosModelos="ModelosDeBD";
         }

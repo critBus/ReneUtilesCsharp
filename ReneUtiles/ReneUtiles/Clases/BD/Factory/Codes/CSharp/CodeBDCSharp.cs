@@ -245,6 +245,11 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
 
                 mr += separacion1 + "public static readonly string " + this.getStrStaticColumna(c) + "=\"" + c.Nombre + "\";";
             }
+            if (m is ModeloBD_ID) {
+                ModeloBD_ID mID = (ModeloBD_ID)m;
+                ColumnaDeModeloBD c = mID.columnaID;
+                mr += separacion1 + "public static readonly string " + this.getStrStaticColumna(c) + "=\"" + c.Nombre + "\";";
+            }
 
 
             mr += separacion1;
@@ -776,7 +781,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             //string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
             string mr = separacion + getPublicOverrideMetodo() + nombreModelo + " " + getNombreMetodo_GetForID(m) + "(int id){";
             string separacion1 = getSeparacionln(1, separacion0);
-            mr += separacion1 + "Object[] O = this.BD." + getDSC().NombreMetodoGetForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ", id);";
+            mr += separacion1 + "Object[] O = this.BD." + getDSC().NombreMetodoGetForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ","+getStrLlamadaACoumnaIdkeyDefault(m)+", id);";
             string separacion2 = getSeparacionln(2, separacion0);
             mr += separacion1 + "if (O == null){";
             mr += separacion2 + "return null;}";
@@ -805,9 +810,9 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             string mr = "";
             
             //mr += separacion2 + "int id=this.BD." + getDSC().NombreMetodoInsertarConIdAutomatico + "(" + nombreModelo + "." + this.getStrStaticTabla(m);
-            string idKey = m.getPrimer_NombreColumnaKey() ?? factory.idDeafult;
+            //string idKey = m.getPrimer_NombreColumnaKey() ?? getStrLlamadaACoumnaIdkeyDefault(m);
 
-            mr += separacion2 + "int id=this.BD." + getDSC().NombreMetodoInsertarConIdAutomatico + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ",\"" + idKey + "\",";
+            mr += separacion2 + "int id=this.BD." + getDSC().NombreMetodoInsertarConIdAutomatico + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + getStrLlamadaACoumnaIdkeyDefault(m) + ",";
             //string[] variables = new string[m.Columnas.Count];
             string separacionExtra = getSeparacionln(4, separacion0);
 
@@ -974,7 +979,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
 
             string mr = separacion + getPublicOverrideMetodo() + " void " + getNombreMetodoDeleteForID(m) + "(int id){";
             string separacion2 = getSeparacionln(2, separacion0);
-            mr += separacion2 + "this.BD." + getDSC().NombreMetodoDeleteForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ",id);";
+            mr += separacion2 + "this.BD." + getDSC().NombreMetodoDeleteForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ","+getStrLlamadaACoumnaIdkeyDefault(m)+",id);";
             mr += separacion + "}";
             mr += separacion + getPublicOverrideMetodo() + " void " + getNombreMetodoDeleteForID(m) + "(" + nombreModelo + " " + nombreModeloLower + "){";
             mr += separacion2 + getNombreMetodoDeleteForID(m) + "(" + nombreModeloLower + ".idkey);";
@@ -2158,7 +2163,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             //string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
             string mr = separacion + getPublicOverrideMetodo() + " bool " + getNombreMetodoExiste_ForID(m) + "(int id){";
             string separacion1 = getSeparacionln(1, separacion0);
-            mr += separacion1 + "Object[] O = this.BD." + getDSC().NombreMetodoGetForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ", id);";
+            mr += separacion1 + "Object[] O = this.BD." + getDSC().NombreMetodoGetForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + getStrLlamadaACoumnaIdkeyDefault(m) + ", id);";
             string separacion2 = getSeparacionln(2, separacion0);
             mr += separacion1 + "return O != null;";
 
@@ -2592,7 +2597,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
                 //bd += separacion2 + "this.BD = BDConexion." + getDSC().NombreMetodoGetConexionSQL_LITE + "(this.urlBD);";
                 bd += separacion2 + "" + __getStrNewBDConexion_DelConstructorBD(this, 2);
             }
-            bd += separacion3 + "this.BD.sq().idKeyDefault=\"" +factory.idDeafult+ "\";";
+            bd += separacion3 + "this.BD.sq().idKeyDefault=\"" +factory.Esquema.idDeafult+ "\";";
 
             return bd;
         }

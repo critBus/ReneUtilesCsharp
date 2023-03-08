@@ -549,7 +549,12 @@ namespace ReneUtiles
 			return delete(nombreTabla, this.idKeyDefault, id);
 		}
 
-		public  string delete(string nombreTabla, params Object[] a)
+        public string delete_id(string nombreTabla,string idStr, string id)
+        {
+            return delete(nombreTabla, idStr, id);
+        }
+
+        public  string delete(string nombreTabla, params Object[] a)
 		{
 			a = adaptarTipos(a);
 			string sqlWhere = "";

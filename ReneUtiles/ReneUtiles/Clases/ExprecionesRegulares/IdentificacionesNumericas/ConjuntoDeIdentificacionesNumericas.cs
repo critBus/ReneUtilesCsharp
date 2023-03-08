@@ -30,8 +30,11 @@ namespace ReneUtiles.Clases.ExprecionesRegulares.IdentificacionesNumericas
         {
             get { return new ReadOnlyCollection<IdentificacionNumericaEnStr>(this.ordenadosPorNumero.ToList()); }
         }
-
-        public int size() {
+        public void clear() {
+            this.ordenadosPorIndice.Clear();
+            this.ordenadosPorNumero.Clear();
+        }
+       public int size() {
             return this.ordenadosPorIndice.Count();
         }
 
