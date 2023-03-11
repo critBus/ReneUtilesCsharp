@@ -539,6 +539,15 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             mr += separacion2 + "return this.apibd." + getNombreMetodoUpdate(m) + "(this);";
             mr += separacion1 + "}";
 
+            //metodo insertar con un ID 
+            mr += separacion1 + "public " + nombreModelo + " " + getNombreMetodoSaveConID(m) + "(){";
+            mr += separacion2 + "if (this.apibd."+ getNombreMetodoExiste_ForID(m)+ "(this.idkey)){";
+            mr += separacion3 + "return this.apibd." + getNombreMetodoUpdate(m) + "(this);";
+            mr += separacion2 + "}";
+            mr += separacion2 + "return this.apibd." + getNombreMetodo_insertar(m) + "(this);";
+            mr += separacion1 + "}";
+
+
             mr += separacion1 + "public void " + getNombreMetodoDelete_EnModelo(m) + "(){";
             mr += separacion2 + "if (this.idkey!=-1){";
             if (E.necistaUnDeleteCascade(m))

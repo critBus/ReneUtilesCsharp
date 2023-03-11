@@ -67,11 +67,19 @@ namespace ReneUtiles
 
         public string idKeyDefault = "Id";
 
+        public virtual string separadorComillas() {
+            return "\"";
+        }
+        public virtual string separadorComillasContrario()
+        {
+            return "'";
+        }
+
         public virtual string strC(object columna)
         {
             string c = columna+"";
-            if (c!="*"&&!c.StartsWith("\"")) {
-                c="\"" + c + "\"";
+            if (c!="*"&&!c.StartsWith(separadorComillas())) {
+                c= separadorComillas() + c + separadorComillas();
             }
             return c;
         }
@@ -257,7 +265,7 @@ namespace ReneUtiles
 						&& esSelect(Utiles.subs((a[i] + ""), 1, (a[i] + "").Length - 2))) {
 						sqlWhere += a[i];
 					} else {
-						sqlWhere += "'" + a[i] + "'";
+						sqlWhere += "" + getStrValor(a[i]) + "";
 					}
 
 				}
@@ -566,7 +574,7 @@ namespace ReneUtiles
 					sqlWhere += (!Utiles.isEmpty(sqlWhere) ? " AND " : "");//Ahora aqui
 					sqlWhere += a[i];
 				} else if (pos == 1) {
-					sqlWhere += " = '" + a[i] + "'";
+					sqlWhere += " = " + getStrValor(a[i]) + "";
 				}
 
 				pos = (++pos) % 2;
@@ -606,7 +614,7 @@ namespace ReneUtiles
 				if (pos == 0) {
 					sqlSet += (!Utiles.isEmpty(sqlSet) ? " , " : "") + strC(paresColumnaValor[i]);
 				} else if (pos == 1) {
-					sqlSet += "='" + paresColumnaValor[i] + "'";
+                    sqlSet += "=" + getStrValor(paresColumnaValor[i]); //separadorComillas() + "" + paresColumnaValor[i] + "" + separadorComillas() + "";
 				}
 				pos = (pos + 1) % 2;
 			}
@@ -618,7 +626,7 @@ namespace ReneUtiles
 					sqlWhere += strC(a[i]);
 
 				} else if (pos == 1) {
-					sqlWhere += " = '" + a[i] + "'";
+					sqlWhere += " = " + getStrValor(a[i]) + "";
 
 				}
 
@@ -1201,6 +1209,12 @@ namespace ReneUtiles
 		}
 
    
+        public virtual string getStrValor(object valor)
+        {
+            return separadorComillas() + "" + valor.ToString().Replace(separadorComillas(),separadorComillasContrario()) + "" + separadorComillas();
+
+        }
+
 		/// <summary>
 		/// (nombreTabla,valores una sola fila completa)<br/>
 		/// (nombreTabla,[]columnas,valores) si no lo tiene pone el id de forma automatica
@@ -1227,15 +1241,15 @@ namespace ReneUtiles
 					inicioDeValores = 1;
 				}
 				for (int i = inicioDeValores; i < a.Length; i++) {
-					//sql += (i != inicioDeValores ? " , " : "") + " '" + a[i] + "' ";
+					//sql += (i != inicioDeValores ? " , " : "") + " " + getStrValor(a[i]) + " ";
 					sql += (i != inicioDeValores ? " , " : "");
-					if ((a[i] + "").StartsWith("b'") && (a[i] + "").EndsWith("'")) {
+					if ((a[i] + "").StartsWith("b" + separadorComillas() + "") && (a[i] + "").EndsWith("" + separadorComillas() + "")) {
 						sql += a[i];
 					} else {
 						if (esInt(a[i])) {
 							sql += a[i] + " ";
 						} else {
-							sql += " '" + a[i] + "' ";
+							sql += " " + getStrValor(a[i]) + " ";
 						}
 					}
 				}
@@ -1584,9 +1598,8 @@ namespace ReneUtiles
                 }
                 for (int i = inicioDeValores; i < a.Length; i++)
                 {
-                    //sql += (i != inicioDeValores ? " , " : "") + " '" + a[i] + "' ";
                     sql += (i != inicioDeValores ? " , " : "");
-                    if ((a[i] + "").StartsWith("b'") && (a[i] + "").EndsWith("'"))
+                    if ((a[i] + "").StartsWith("b" + separadorComillas() + "") && (a[i] + "").EndsWith("" + separadorComillas() + ""))
                     {
                         sql += a[i];
                     }
@@ -1598,7 +1611,7 @@ namespace ReneUtiles
                         }
                         else
                         {
-                            sql += " '" + a[i] + "' ";
+                            sql += " " + getStrValor(a[i]) + " ";
                         }
                     }
                 }

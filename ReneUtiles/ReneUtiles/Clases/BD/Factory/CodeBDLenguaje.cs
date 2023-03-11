@@ -502,9 +502,14 @@ namespace ReneUtiles.Clases.BD.Factory
 			string nombreModelo = this.getNombreStrModelo(m);
 			return "s";
 		}
-		
-		//Existe GetForID
-		public abstract string getStrMetodoExiste_ForID(ModeloBD_ID m, int separacion0);
+        public virtual string getNombreMetodoSaveConID(ModeloBD m)
+        {
+            string nombreModelo = this.getNombreStrModelo(m);
+            return "si";
+        }
+
+        //Existe GetForID
+        public abstract string getStrMetodoExiste_ForID(ModeloBD_ID m, int separacion0);
 		public virtual  string getNombreMetodoExiste_ForID(ModeloBD m)
 		{
 			string nombreModelo = this.getNombreStrModelo(m);

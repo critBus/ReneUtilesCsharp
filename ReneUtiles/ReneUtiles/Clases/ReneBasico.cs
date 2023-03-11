@@ -90,7 +90,7 @@ namespace ReneUtiles.Clases
 			return Utiles.esNumero(a);
 		}
 		public static bool esNumeroAll(params string[] A){
-			return Utiles.esNumeroAll();
+			return Utiles.esNumeroAll(A);
 		}
 		public static bool or<E>(E a, params E[] B)
 		{

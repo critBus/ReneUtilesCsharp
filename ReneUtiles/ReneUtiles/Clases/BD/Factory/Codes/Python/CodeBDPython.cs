@@ -255,8 +255,14 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			mr += separacion2 + "if self.idkey is None:";
 			mr += separacion3 + "return self.apibd." + getNombreMetodo_insertar(m) + "(self)";
 			mr += separacion2 + "return self.apibd." + getNombreMetodoUpdate(m) + "(self)";
-			
-			mr += separacion1 + "def " + getNombreMetodoDelete_EnModelo(m) + "(self):";
+
+            //metodo insertar con un ID 
+            mr += separacion1 + "def " + getNombreMetodoSaveConID(m) + "(self):";
+            mr += separacion2 + "if self.apibd."+ getNombreMetodoExiste_ForID(m) + "(self.idkey):";
+            mr += separacion3 + "return self.apibd." + getNombreMetodoUpdate(m) + "(self)";
+            mr += separacion2 + "return self.apibd." + getNombreMetodo_insertar(m) + "(self)";
+
+            mr += separacion1 + "def " + getNombreMetodoDelete_EnModelo(m) + "(self):";
 			mr += separacion2 + "if self.idkey is not None:";
 			if (E.necistaUnDeleteCascade(m)) {
 				mr += separacion3 + "self.apibd." + getNombreMetodoDeleteForID_Cascade(m) + "(self.idkey)";

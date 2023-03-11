@@ -236,7 +236,8 @@ namespace ReneUtiles
         }
 
         public static bool? toBool(object o){
-			if(o==null){
+			if(o==null|| o.ToString().Length == 0)
+            {
 				return null;
 			}
 			if(o is bool){
@@ -245,7 +246,14 @@ namespace ReneUtiles
 			if(o is bool?){
 				return (bool?)o;
 			}
-			return Boolean.Parse(o.ToString().ToLower());
+            if (o.ToString()=="0") {
+                return false;
+            }
+            if (o.ToString() == "1")
+            {
+                return true;
+            }
+            return Boolean.Parse(o.ToString().ToLower());
 		}
 		
 		public static int minimo(params int?[] args){
@@ -554,7 +562,17 @@ namespace ReneUtiles
 			}
 			return res;
 		}
-		public static string[] split(string a,string separador){
+        public static E[] split<E>(string a,Func<string,E> parse, string separador) {
+            string[] t = split(a, separador);
+            E[] r = new E[t.Length];
+            for (int i = 0; i < t.Length; i++)
+            {
+                r[i] = parse(t[i]);
+            }
+            return r;
+        }
+
+        public static string[] split(string a,string separador){
 			List<string> l=new List<string>();
 			int indiceAnterior=0;
 			int indiceActual=-1;
