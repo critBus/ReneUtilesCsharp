@@ -19,6 +19,25 @@ namespace ReneUtiles
 	{
 		public static readonly char[] caracteresNoPermitidosNombre = {  '*', '?', '\"', '<', '>', '|', '\\', '/', ':' };
 
+
+        public static DirectoryInfo getParent(FileInfo f) {
+            System.IO.DirectoryInfo d = new System.IO.FileInfo(f.ToString()).Directory;
+            if (d==null) {
+                return null;
+            }
+            return new DirectoryInfo(d.ToString());
+        }
+
+        public static DirectoryInfo getParent(DirectoryInfo f)
+        {
+            System.IO.DirectoryInfo d = new System.IO.DirectoryInfo(f.ToString()).Parent;
+            if (d == null)
+            {
+                return null;
+            }
+            return new DirectoryInfo(d.ToString());
+        }
+
         public static EspacioEnAlmacenamiento getTipoDeEspacioDisponible(string url) {
             
             string discoDestino = Utiles.subs(url, 0, 3);
@@ -287,13 +306,16 @@ namespace ReneUtiles
 //        }
 			return i;
 		}
-		
-	
-		
-		public static string  getNombre(FileInfo f)
+
+
+        public static string getNombreConExtencion(FileInfo f) {
+            return new System.IO.FileInfo(f.ToString()).Name;
+        }
+
+        public static string  getNombre(FileInfo f)
 		{
 			string extencion = getExtencion(f);
-			string nombreConExtencion = f.Name;
+            string nombreConExtencion = new System.IO.FileInfo(f.ToString()).Name;//;f.Name;
 			int iPunto = nombreConExtencion.LastIndexOf(".");
 			int iExtencion = iPunto != -1 ? iPunto : nombreConExtencion.Length;
 			string nombre = subs(nombreConExtencion, 0, iExtencion);
@@ -714,7 +736,8 @@ namespace ReneUtiles
 
 		public static string getParentStr(FileInfo f)
 		{
-			DirectoryInfo parent = Directory.GetParent(f.ToString());
+
+            DirectoryInfo parent = getParent(f); //Directory.GetParent(f.ToString());
 			string urlParent = parent == null ? "" : parent.ToString();
 			return urlParent;
 		}

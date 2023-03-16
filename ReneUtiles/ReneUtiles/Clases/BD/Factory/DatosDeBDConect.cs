@@ -23,7 +23,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		}
 
         //public string NombreMetodoInsertar;
-
+        public string NombreMetodoDesactivarConsola;
         public string NombreMetodoGetIdCorrespondiente;
 
         public string NombreMetodoInsertarConIdAutomatico;
@@ -50,6 +50,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		
 		public DatosDeBDConect()
 		{
+            this.NombreMetodoDesactivarConsola = "no_cl";
             this.NombreMetodoGetIdCorrespondiente = "getIdCorrespondiente";
             this.NombreMetodoGetConexionPOSTGRES = "getConexion_POSTGRES";
             this.NombreMetodoInsertarConIdAutomatico = "insertar_ConIdAutomatico";

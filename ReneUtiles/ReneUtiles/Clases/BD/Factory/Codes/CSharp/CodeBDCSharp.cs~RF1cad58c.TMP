@@ -130,19 +130,12 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             return bd;
         }
 
-        public override string getStrMetodoMetodoDesactivarConsola_Abstract(int separacion0) {
-            string separacion1 = getSeparacionln(0, separacion0);
-            string separacion2 = getSeparacionln(0, separacion0);
-            string mr = "";
-            mr += separacion1 + getPublicAbstractMetodo() + " " + factory.NombreClaseBDPadre+ " " + getNombreMetodoDesactivarConsola() + "();";
-            return mr;
-        }
         public override string getStrMetodoMetodoDesactivarConsola(int separacion0)
         {
             string separacion1 = getSeparacionln(0, separacion0);
-            string separacion2 = getSeparacionln(1, separacion0);
+            string separacion2 = getSeparacionln(0, separacion0);
             string mr = "";
-            mr += separacion1 + getPublicOverrideMetodo() + " " + factory.NombreClaseBDPadre+" "+ getNombreMetodoDesactivarConsola() + "(){";
+            mr += separacion1 + getPublicOverrideMetodo() + " " + factory.NombreClaseBDPadre + "(){";
             mr += separacion2 + "this.BD."+ getDSC().NombreMetodoDesactivarConsola+"();";
             mr += separacion2 + "return this;";
             mr += separacion1 + "}";

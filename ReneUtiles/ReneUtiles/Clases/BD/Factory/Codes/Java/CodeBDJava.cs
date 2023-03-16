@@ -488,9 +488,18 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 				string nombreModeloLowerActual = getNombreStrModeloLower(mDestino);
 				string nombreModeloUnionActual = getNombreStrModelo(o.Union);
 				string nombreModeloUnionLowerActual = getNombreStrModeloLower(o.Union);
-				
-				
-				string nombreMetodoAdd=getNombreMetodoAddMany_ManyToMany(o,m);
+
+                string cabezalMtM = "";
+                if (mDestino == o.Many_1)
+                {
+                    cabezalMtM = "(" + nombreModeloLowerActual + ".idkey,this.idkey)";
+                }
+                else
+                {
+                    cabezalMtM = "(this.idkey," + nombreModeloLowerActual + ".idkey)";
+                }
+
+                string nombreMetodoAdd=getNombreMetodoAddMany_ManyToMany(o,m);
 				if(!nombreMetodosAgregados.Contains(nombreMetodoAdd)){
 					nombreMetodosAgregados.Add(nombreMetodoAdd);
 					mr += separacion1 + "public " + nombreModeloActual + " " + getNombreMetodoAddMany_ManyToMany(o, m) + "(" + nombreModeloActual + " " + nombreModeloLowerActual + ") throws Exception {";
@@ -506,7 +515,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 					
 					
 					 
-					mr += separacion2 + "if (!this.apibd." + getNombreMetodoExiste_ManyToMany(o) + "(this.idkey," + nombreModeloLowerActual + ".idkey)){";
+					mr += separacion2 + "if (!this.apibd." + getNombreMetodoExiste_ManyToMany(o) + cabezalMtM+"){";
 
                     //mr += separacion3 + nombreModeloUnionActual + " " + nombreModeloUnionLowerActual + "=new " + nombreModeloUnionActual + "(this.apibd,this," + nombreModeloLowerActual + ");";
 
@@ -530,9 +539,27 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 					
 					mr += separacion1 + "}";
 				}
-				
-				
-			}
+
+
+                string nombreMetodoRemove = getNombreMetodoRemoveMany_ManyToMany(o, m);
+                if (!nombreMetodosAgregados.Contains(nombreMetodoRemove))
+                {
+                    nombreMetodosAgregados.Add(nombreMetodoRemove);
+
+
+
+                    mr += separacion1 + "public void " + nombreMetodoRemove + "(" + nombreModeloActual + " " + nombreModeloLowerActual + ")throws Exception {";
+                    //mr += separacion2 + "if (this.idkey!=-1&&"+ nombreModeloLowerActual + ".idkey!=-1&&this.apibd."+ getNombreMetodoExiste_ManyToMany(o) + "(this.idkey," + nombreModeloLowerActual + ".idkey)){";
+                    mr += separacion2 + "if (this.idkey!=-1&&" + nombreModeloLowerActual + ".idkey!=-1&&this.apibd." + getNombreMetodoExiste_ManyToMany(o) + cabezalMtM + "){";
+
+                    mr += separacion3 + nombreModeloUnionActual + " " + nombreModeloUnionLowerActual + "=this.apibd." + getNombreMetodoGet_EnBD_ManyToMany(o) + cabezalMtM + ";"; //"(this.idkey," + nombreModeloLowerActual + ".idkey);";
+                    mr += separacion3 + nombreModeloUnionLowerActual + ".d();";
+                    mr += separacion2 + "}";
+                    mr += separacion1 + "}";
+                }
+
+
+            }
 			
 			mr += separacion1 + "public " + nombreModelo + " " + getNombreMetodoSave(m) + "()throws Exception {";
 			
@@ -575,6 +602,35 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			return mr;
 		
 		}
+
+        private string getPublicOverrideMetodo(int separacion0)
+        {
+            string separacion1 = getSeparacionln(0, separacion0);
+            return "public ";
+        }
+        private string getPublicAbstractMetodo()
+        {
+            return "public abstract ";
+        }
+        //public override string getStrMetodoMetodoDesactivarConsola_Abstract(int separacion0)
+        //{
+        //    string separacion1 = getSeparacionln(0, separacion0);
+        //    string separacion2 = getSeparacionln(0, separacion0);
+        //    string mr = "";
+        //    mr += separacion1 + getPublicAbstractMetodo() + " " + factory.NombreClaseBDPadre +" "+getNombreMetodoDesactivarConsola()+ "()throws Exception;";
+        //    return mr;
+        //}
+        public override string getStrMetodoMetodoDesactivarConsola(int separacion0)
+        {
+            string separacion1 = getSeparacionln(0, separacion0);
+            string separacion2 = getSeparacionln(1, separacion0);
+            string mr = "";
+            mr += separacion1 + getPublicOverrideMetodo(separacion0) + " " + factory.NombreClaseBDPadre+" " + getNombreMetodoDesactivarConsola() + "()throws Exception{";
+            mr += separacion2 + "this.BD." + getDSC().NombreMetodoDesactivarConsola + "();";
+            mr += separacion2 + "return this;";
+            mr += separacion1 + "}";
+            return mr;
+        }
 
 
         public override string getStrMetodoGetSesionStorage(int separacion0)

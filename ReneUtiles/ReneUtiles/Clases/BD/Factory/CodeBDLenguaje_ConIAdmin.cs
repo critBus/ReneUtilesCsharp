@@ -15,7 +15,7 @@ namespace ReneUtiles.Clases.BD.Factory
         {
 
         }
-
+        public abstract string getStrMetodoMetodoDesactivarConsola_Abstract(int separacion0);
         public abstract string getStrBD_IAdminPadre(int separacion0);
 
         public abstract string getStrMetodoCrearTabla_Abstract(ModeloBD m, int separacion0);
@@ -191,7 +191,7 @@ namespace ReneUtiles.Clases.BD.Factory
             int distancia = separacion0;
             EsquemaBD E = factory.Esquema;
             string bd = "";
-
+            bd += getStrMetodoMetodoDesactivarConsola(distancia);
             //bd += separacion1 + "public string " + getNombreMetodoUrlBD() + "(){";
             //bd += separacion2 + "return  this.urlBD;";
             //bd += separacion1 + "}";
@@ -365,6 +365,7 @@ namespace ReneUtiles.Clases.BD.Factory
             int distancia = separacion0;
             EsquemaBD E = factory.Esquema;
             string bd = "";
+            bd += getStrMetodoMetodoDesactivarConsola_Abstract(distancia);
 
             for (int i = 0; i < E.getCantidadDeModelos(); i++)
             {

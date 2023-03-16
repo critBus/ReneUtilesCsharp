@@ -41,7 +41,21 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			}
 			return mr;
 		}
-		public override string getStrModelo(ModeloBD m, EsquemaBD E, int separacion0)
+        
+        public override string getStrMetodoMetodoDesactivarConsola(int separacion0)
+        {
+            string separacion1 = getSeparacionln(0, separacion0);
+            string separacion2 = getSeparacionln(1, separacion0);
+            string mr = "";
+            mr += separacion1 + "def " + factory.NombreClaseBDPadre +" " + getNombreMetodoDesactivarConsola() + "(self):";
+            mr += separacion2 + "self.BD." + getDSC().NombreMetodoDesactivarConsola + "()";
+            mr += separacion2 + "return self;";
+            
+            return mr;
+        }
+
+
+        public override string getStrModelo(ModeloBD m, EsquemaBD E, int separacion0)
 		{
 			string nombreSuperClaseModelo = getNombreSuperclaseModelo();
 			string separacion = getSeparacionln(0, separacion0);
@@ -221,7 +235,18 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				string nombreModeloUnionLowerActual = getNombreStrModeloLower(o.Union);
 				
 				string nombreMetodoAdd = getNombreMetodoAddMany_ManyToMany(o, m);
-				if (!nombreMetodosAgregados.Contains(nombreMetodoAdd)) {
+
+                string cabezalMtM = "";
+                if (mDestino == o.Many_1)
+                {
+                    cabezalMtM = "(" + nombreModeloLowerActual + ".idkey,self.idkey)";
+                }
+                else
+                {
+                    cabezalMtM = "(self.idkey," + nombreModeloLowerActual + ".idkey)";
+                }
+
+                if (!nombreMetodosAgregados.Contains(nombreMetodoAdd)) {
 					nombreMetodosAgregados.Add(nombreMetodoAdd);
 					mr += separacion1 + "def " + getNombreMetodoAddMany_ManyToMany(o, m) + "(self," + nombreModeloLowerActual + "):";//+nombreModeloActual+" "
 				
@@ -245,10 +270,26 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 					//mr += separacion2 + "return "+getNombreMetodoGet_EnBD_ManyToMany(o)+"(this.idkey,"+nombreModeloLowerActual+".idkey);";
 					mr += separacion2 + "return " + nombreModeloLowerActual;
 				}
-				
-				
-				
-			}
+
+
+                string nombreMetodoRemove = getNombreMetodoRemoveMany_ManyToMany(o, m);
+                if (!nombreMetodosAgregados.Contains(nombreMetodoRemove))
+                {
+                    nombreMetodosAgregados.Add(nombreMetodoRemove);
+
+
+
+                    mr += separacion1 + "def " + nombreMetodoRemove + "(self," + nombreModeloLowerActual + "):";
+                    //mr += separacion2 + "if (this.idkey!=-1&&"+ nombreModeloLowerActual + ".idkey!=-1&&this.apibd."+ getNombreMetodoExiste_ManyToMany(o) + "(this.idkey," + nombreModeloLowerActual + ".idkey)){";
+                    mr += separacion2 + "if self.idkey!=-1 and " + nombreModeloLowerActual + ".idkey!=-1 and self.apibd." + getNombreMetodoExiste_ManyToMany(o) + cabezalMtM + " :";
+
+                    mr += separacion3 +  nombreModeloUnionLowerActual + "=self.apibd." + getNombreMetodoGet_EnBD_ManyToMany(o) + cabezalMtM  ; //"(this.idkey," + nombreModeloLowerActual + ".idkey);";
+                    mr += separacion3 + nombreModeloUnionLowerActual + ".d():";
+                    
+                }
+
+
+            }
 			
 			//mr += separacion1 + "def getStr(self, textoInicial=\"\"):";
 			mr += separacion1 + "def " + getNombreMetodoSave(m) + "(self):";

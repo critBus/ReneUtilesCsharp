@@ -58,7 +58,7 @@ namespace ReneUtiles.Clases.BD.Factory
 
         public FactoryBD(EsquemaBD esquema)
 		{
-				this.Esquema=esquema;
+			this.Esquema=esquema;
             this.listaDatosDeConexiones = new List<DatosDeConexionFactoryBD>();
             this.NombreClaseBDPadre = "I_BDAdmin";
 

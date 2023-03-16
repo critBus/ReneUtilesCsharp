@@ -29,7 +29,9 @@ namespace ReneUtiles.Clases.BD.Factory
 		public Dictionary<ModeloBD,CrearDeleteCascade> listaCrearDeleteCascade;
 		public Dictionary<ModeloBD,CrearDeleteCascade> listaCrearDeleteCascadeInverso;
 
-        public string idDeafult;
+        private string idDeafult;
+
+        
 
         public EsquemaBD()
 		{
@@ -40,10 +42,33 @@ namespace ReneUtiles.Clases.BD.Factory
 			this.listaCrearDeleteCascade = new Dictionary<ModeloBD,CrearDeleteCascade>();
 			this.listaCrearDeleteCascadeInverso = new Dictionary<ModeloBD,CrearDeleteCascade>();
 
-            this.idDeafult = "Id";
+            this.idDeafult = "id";
         }
-		
-		public bool necistaUnDeleteCascade(ModeloBD m){
+
+        public string IdDeafult
+        {
+            get
+            {
+                return idDeafult;
+            }
+
+            set
+            {
+                idDeafult = value;
+                for (int i = 0; i < modelos.Count; i++)
+                {
+                    ModeloBD m = modelos[i];
+                    if (m is ModeloBD_ID) {
+                        ModeloBD_ID mi = (ModeloBD_ID)m;
+                        if (!mi.tieneNombrePersonalizado_idKeyDefault) {
+                            mi.columnaID.Nombre = value;
+                        }
+                    }
+                }
+                }
+        }
+
+        public bool necistaUnDeleteCascade(ModeloBD m){
 			return listaCrearDeleteCascade[m].NecesitaDeleteCascade||listaCrearDeleteCascadeInverso[m].NecesitaDeleteCascade;
 		}
 		//Despues de comprobar la seguridad

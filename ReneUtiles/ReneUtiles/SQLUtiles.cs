@@ -67,6 +67,14 @@ namespace ReneUtiles
 
         public string idKeyDefault = "Id";
 
+        public virtual string getStrValor(object valor)
+        {
+            if (valor==null) {
+                return "NULL";
+            }
+            return separadorComillas() + "" + valor.ToString().Replace(separadorComillas(), separadorComillasContrario()) + "" + separadorComillas();
+
+        }
         public virtual string separadorComillas() {
             return "\"";
         }
@@ -572,7 +580,8 @@ namespace ReneUtiles
             
 				if (pos == 0) {
 					sqlWhere += (!Utiles.isEmpty(sqlWhere) ? " AND " : "");//Ahora aqui
-					sqlWhere += a[i];
+					sqlWhere += strC(a[i]);
+                    
 				} else if (pos == 1) {
 					sqlWhere += " = " + getStrValor(a[i]) + "";
 				}
@@ -1209,11 +1218,7 @@ namespace ReneUtiles
 		}
 
    
-        public virtual string getStrValor(object valor)
-        {
-            return separadorComillas() + "" + valor.ToString().Replace(separadorComillas(),separadorComillasContrario()) + "" + separadorComillas();
-
-        }
+        
 
 		/// <summary>
 		/// (nombreTabla,valores una sola fila completa)<br/>
@@ -1815,6 +1820,24 @@ namespace ReneUtiles
         public override bool esSelectValor(string sql)
         {
             return base.esSelectValor(sql) || Utiles.startsWithOR(sql, "(", "((", SQLUtiles_Postgres.RETURNING);
+        }
+        public override string separadorComillas()
+        {
+            return "'" ;
+        }
+        public override string separadorComillasContrario()
+        {
+            return "\"";
+        }
+        public override string strC(object columna)
+        {
+            string separador = separadorComillasContrario();
+            string c = columna + "";
+            if (c != "*" && !c.StartsWith(separador))
+            {
+                c = separador + c + separador;
+            }
+            return c;
         }
     }
 

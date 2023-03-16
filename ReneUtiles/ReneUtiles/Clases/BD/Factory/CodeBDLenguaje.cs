@@ -58,6 +58,12 @@ namespace ReneUtiles.Clases.BD.Factory
 		{
 			return "getUrlBD";
 		}
+        public virtual string getNombreMetodoDesactivarConsola()
+        {
+            return "no_cl";
+        }
+        public abstract string getStrMetodoMetodoDesactivarConsola(int separacion0);
+        
 
         //Metodo crearTabla
         public abstract string getStrMetodoGetSesionStorage(int separacion0);
@@ -435,10 +441,22 @@ namespace ReneUtiles.Clases.BD.Factory
 			return "add" + this.getNombreStrModelo(o.Union);
 			;
 		}
-		
-		//Metodo Get_ManyToMany
-		//Get dentro del modelo
-		public virtual  string getNombreMetodoGet_ManyToMany(ManyToMany o, ModeloBD m)
+
+        public virtual string getNombreMetodoRemoveMany_ManyToMany(ManyToMany o, ModeloBD m)
+        {
+            if (o.Union.TieneUnNombreAutomatico)
+            {
+                return "remove" + this.getNombreStrModelo(o.Many_1 == m ? o.Many_2 : o.Many_1);
+            }
+
+            return "remove" + this.getNombreStrModelo(o.Union);
+            ;
+        }
+
+
+        //Metodo Get_ManyToMany
+        //Get dentro del modelo
+        public virtual  string getNombreMetodoGet_ManyToMany(ManyToMany o, ModeloBD m)
 		{
 			if (o.Union.TieneUnNombreAutomatico) {
 				return "get" + this.getNombreStrModelo(o.Many_1 == m ? o.Many_2 : o.Many_1);
@@ -820,7 +838,7 @@ namespace ReneUtiles.Clases.BD.Factory
 
         public string getStrLlamadaACoumnaIdkeyDefault(ModeloBD_ID m) {
             string nombreModelo = this.getNombreStrModelo(m);
-            string nombreC = factory.Esquema.idDeafult;
+            string nombreC = factory.Esquema.IdDeafult;
             if (m.tieneNombrePersonalizado_idKeyDefault) {
                 nombreC = m.IdKeyDefault;
             }
