@@ -433,22 +433,34 @@ namespace ReneUtiles
 			}
 			return res;
 		}
-		public static int getNumeroDeNumeroRomano(string s)
+		public static int getNumeroDeNumeroRomano(string a)
 		{
-			
-			Dictionary<string,int> d = NumerosRomanos;
+            string s = a.ToUpper();
+
+            Dictionary<string,int> d = NumerosRomanos;
 			int num = 0;
 			int lenght = s.Length;
+            string k = "";
+            try {
+                for (int i = 0; i < lenght; i++)
+                {
+
+                    if (i + 1 < lenght && d.ContainsKey(s.Substring(i, 2)))
+                    {
+                        k = s.Substring(i++, 2);
+                        num += d[k];
+                    }
+                    else
+                    {
+                        k = s.Substring(i, 1);
+                        //ConsolaBasica.cwl("subs(s, i, 1)="+subs(s, i, 1));
+                        num += d[k];
+                    }
+                }
+            } catch (Exception ex){
+                Console.WriteLine("dio error numeros romanos");
+            }
 			
-			for (int i = 0; i < lenght; i++) {
-				
-				if (i + 1 < lenght && d.ContainsKey(s.Substring(i, 2))) {
-					num += d[s.Substring(i++, 2)];
-				} else {
-					//ConsolaBasica.cwl("subs(s, i, 1)="+subs(s, i, 1));
-					num += d[s.Substring(i, 1)];
-				}
-			}
 			return num;
 			//string [][] a={{""},{""}};
 			return -1;

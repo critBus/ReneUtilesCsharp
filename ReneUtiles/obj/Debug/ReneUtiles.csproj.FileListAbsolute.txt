@@ -19,7 +19,6 @@ D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\Npgsql
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\Npgsql.xml
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.Data.SQLite.pdb
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.Data.SQLite.xml
-D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\obj\Debug\ReneUtiles.csprojResolveAssemblyReference.cache
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\obj\Debug\ReneUtiles.dll
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\obj\Debug\ReneUtiles.pdb
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.Threading.Tasks.Extensions.dll
@@ -28,5 +27,4 @@ D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.ValueTuple.dll
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\System.ValueTuple.xml
-D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\ReneWPF.dll
-D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\bin\Debug\ReneWPF.pdb
+D:\_Cosas\Programacion\Proyectos\C#\ReneUtilesCsharp\ReneUtiles\obj\Debug\ReneUtiles.csprojResolveAssemblyReference.cache

@@ -54,6 +54,11 @@ namespace ReneUtiles.Clases.BD.Conexion
 			datosDeConexion.R=null;
 			//DbConnection conn=crearConexion();
 			datosDeConexion.Conn=crearConexion();
+
+            //if (sql== "SELECT * FROM TABLA_DIRECCION_DE_PAQUETE WHERE \"COLUMNA_SECCION\" = \"ANIME\"") {
+            //    cwl("vamos a ver");
+            //}
+
             try {
                 //DbCommand sqlite_cmd;//SQLiteCommand
                 //es crearTabla
@@ -69,19 +74,33 @@ namespace ReneUtiles.Clases.BD.Conexion
                     //cwl("sql="+sql);
                     List<object[]> lo = new List<object[]>();
                     //DbDataReader sqlite_datareader;
-                    datosDeConexion.Dr = datosDeConexion.Cmd.ExecuteReader();
-                    int cantidadDeColumnas = 0;
-                    while (datosDeConexion.Dr.Read())
-                    {
-                        cantidadDeColumnas = datosDeConexion.Dr.FieldCount;
-                        object[] o = new object[cantidadDeColumnas];
+                    try {
+                        datosDeConexion.Dr = datosDeConexion.Cmd.ExecuteReader();
+                        int cantidadDeColumnas = 0;
+                        while (datosDeConexion.Dr.Read())
+                        {
+                            cantidadDeColumnas = datosDeConexion.Dr.FieldCount;
+                            object[] o = new object[cantidadDeColumnas];
 
-                        datosDeConexion.Dr.GetValues(o);
-                        lo.Add(o);
-                        //sqlite_datareader.GetDataTypeName()
-                        //string myreader = sqlite_datareader.GetString(0);
-                        //Console.WriteLine(myreader);
+                            try { 
+                            datosDeConexion.Dr.GetValues(o);
+                                }
+                                catch (System.InvalidOperationException ex)
+                                {
+                                    cwl("error exepcion 2");
+                                    throw ex;
+                                }
+                            lo.Add(o);
+                            //sqlite_datareader.GetDataTypeName()
+                            //string myreader = sqlite_datareader.GetString(0);
+                            //Console.WriteLine(myreader);
+                        }
+
+                    } catch (System.InvalidOperationException ex) {
+                        cwl("error exepcion");
+                        throw ex;
                     }
+                    
                     if (this.sqlUtiles.esSelectValor(sql))
                     {
                         if (lo.Count > 0 && ((Object[])lo[0]).Length > 0)

@@ -158,6 +158,8 @@
     <Compile Include="ReneUtiles\Clases\IA\Imagenes\ImgUtilesIA.cs" />
     <Compile Include="ReneUtiles\Clases\IA\Imagenes\PixelMxN.cs" />
     <Compile Include="ReneUtiles\Clases\IMG\TipoDeImg.cs" />
+    <Compile Include="ReneUtiles\Clases\Interfaces\ConIndiceInicial.cs" />
+    <Compile Include="ReneUtiles\Clases\Interfaces\ConPrimerIndiceNumerico.cs" />
     <Compile Include="ReneUtiles\Clases\LeguajeDescritivo\Metodos\Algoritmo.cs" />
     <Compile Include="ReneUtiles\Clases\ParEnvoltura.cs" />
     <Compile Include="ReneUtiles\Clases\PatronRegex.cs" />
@@ -193,12 +195,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ReneUtiles\Clases\Web\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\ReneWPF\ReneWPF\ReneWPF.csproj">
-      <Project>{6de58df7-8771-418d-b07e-20f38083dedd}</Project>
-      <Name>ReneWPF</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

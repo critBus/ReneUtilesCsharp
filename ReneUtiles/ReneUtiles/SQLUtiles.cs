@@ -72,7 +72,12 @@ namespace ReneUtiles
             if (valor==null) {
                 return "NULL";
             }
-            return separadorComillas() + "" + valor.ToString().Replace(separadorComillas(), separadorComillasContrario()) + "" + separadorComillas();
+            return "'" + ""
+                + valor.ToString().Replace("'", "''")//.Replace(separadorComillas(), separadorComillasContrario())
+                + "" + "'";
+            //return separadorComillas() + "" 
+            //    + valor.ToString().Replace(separadorComillas(), separadorComillasContrario()) 
+            //    + "" + separadorComillas();
 
         }
         public virtual string separadorComillas() {

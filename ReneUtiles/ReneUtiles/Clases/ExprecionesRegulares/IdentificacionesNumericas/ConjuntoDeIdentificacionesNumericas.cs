@@ -39,8 +39,11 @@ namespace ReneUtiles.Clases.ExprecionesRegulares.IdentificacionesNumericas
         }
 
         public bool isEmpty() {
-            return size() > 0;
+            return size() == 0;
         }
 
+        public int getIndiceInicial() {
+            return isEmpty() ? -1 : OrdenadosPorIndice.First().IndiceDeRepresentacionStr;
+        }
     }
 }
