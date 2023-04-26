@@ -202,17 +202,28 @@ namespace ReneUtiles.Clases.BD.Factory
 		}
 		public virtual  string getNombreMetodoGetListaDe_OneToManyLinkInterno(OneToMany o)
 		{
-			if (o.TieneUnNombreAutomatico) {
+			//if (o.TieneUnNombreAutomatico) {
 				return getNombreMetodoGetAll_ForColumna(o.Many, o.LinkToOne);
-			}
+			//}
 			
-			return "get" +o.Nombre;
+			//return "get" +o.Nombre;
 			//return "getListaDe_"+this.getNombreStrModelo(o.Many);
 			
 		}
-		
-		//Metodo GetAll_InnerJoin_ForListaDeColumnas
-		public virtual string getStrMetodoGetAll_InnerJoin_ForListaDeColumnas(InnerJoin I, int separacion0)
+        public virtual string getNombreMetodoGetListaDe_OneToManyLinkInterno_ParaModelo(OneToMany o)
+        {
+            if (o.TieneUnNombreAutomatico)
+            {
+                return getNombreMetodoGetListaDe(o.Many);
+            }
+
+            //return "get" + o.Nombre;
+            return "getListaDe_"+this.getNombreStrModelo(o.Many);
+
+        }
+
+        //Metodo GetAll_InnerJoin_ForListaDeColumnas
+        public virtual string getStrMetodoGetAll_InnerJoin_ForListaDeColumnas(InnerJoin I, int separacion0)
 		{
 			return getStrMetodoGetAll_InnerJoin_ForListaDeColumnas(I.ModeloDestino, I.Cadena, I.ElementosWhere, separacion0);
 		}

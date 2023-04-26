@@ -122,8 +122,13 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			for (int i = 0; i < m.ListaOneToMany.Count; i++) {
 				OneToMany o = m.ListaOneToMany[i];
 				string nombreModeloActual = getNombreStrModelo(o.Many);//getStrMetodoGetAll_ForColumna
-				mr += separacion1 + "def " + getNombreMetodoGetListaDe(o.Many) + "(self):";
-				mr += separacion2 + "return self.apibd." + getNombreMetodoGetListaDe_OneToManyLinkInterno(o) + "(self.idkey)";
+                string nombreVariableColumnaRefencia = "idkey";
+                if (o.LinkToMany != null)
+                {
+                    nombreVariableColumnaRefencia = getNombreVariableElemento(o.LinkToMany);
+                }
+                mr += separacion1 + "def " + getNombreMetodoGetListaDe_OneToManyLinkInterno_ParaModelo(o) + "(self):";
+				mr += separacion2 + "return self.apibd." + getNombreMetodoGetListaDe_OneToManyLinkInterno(o) + "(self."+ nombreVariableColumnaRefencia + ")";
 				
 				
 				string nombreMetodoAdd = getNombreMetodoAddMany_OneToMany(o);
@@ -135,7 +140,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 					
 					mr += separacion2 + "if self.idkey is None:";
 					mr += separacion3 + "self.idkey=self.apibd." + getNombreMetodo_insertar(m) + "(self).idkey";
-					mr += separacion3 + nombreModeloLowerActual + "." + nombreVariableColumnaLink + "=self.idkey";
+					mr += separacion3 + nombreModeloLowerActual + "." + nombreVariableColumnaLink + "=self."+ nombreVariableColumnaRefencia;
 					
 					
 					mr += separacion2 + "if " + nombreModeloLowerActual + ".idkey is None:";

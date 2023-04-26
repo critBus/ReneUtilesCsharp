@@ -390,9 +390,20 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
                 string nombreModeloActual = getNombreStrModelo(o.Many);//getStrMetodoGetAll_ForColumna
                 string nombreModeloLowerActual = getNombreStrModeloLower(o.Many);
                 string nombreVariableColumnaLink = getNombreVariableElemento(o.LinkToOne);
-                mr += separacion1 + "public List<" + nombreModeloActual + "> " + getNombreMetodoGetListaDe(o.Many) + "(){";
-                mr += separacion2 + "return this.apibd." + getNombreMetodoGetListaDe_OneToManyLinkInterno(o) + "(this.idkey);";
-                mr += separacion1 + "}";
+                string nombreVariableColumnaRefencia = "idkey";
+                if (o.LinkToMany!=null) {
+                    nombreVariableColumnaRefencia = getNombreVariableElemento(o.LinkToMany);
+                }
+                //mr += separacion1 + "public List<" + nombreModeloActual + "> " + getNombreMetodoGetListaDe(o.Many) + "(){";
+                //mr += separacion2 + "return this.apibd." + getNombreMetodoGetListaDe_OneToManyLinkInterno(o) + "(this.idkey);";
+
+                mr += separacion1 + "public List<" + nombreModeloActual + "> " + getNombreMetodoGetListaDe_OneToManyLinkInterno_ParaModelo(o) + "(){";
+                mr += separacion2 + "return this.apibd." + getNombreMetodoGetListaDe_OneToManyLinkInterno(o);
+                mr += "(this."+ nombreVariableColumnaRefencia + ");";
+                    
+
+
+                    mr += separacion1 + "}";
                 string nombreMetodoAdd = getNombreMetodoAddMany_OneToMany(o);
                 if (!nombreMetodosAgregados.Contains(nombreMetodoAdd))
                 {
@@ -401,7 +412,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
 
                     mr += separacion2 + "if (this.idkey==-1){";
                     mr += separacion3 + "this.idkey=this.apibd." + getNombreMetodo_insertar(m) + "(this).idkey;";
-                    mr += separacion3 + nombreModeloLowerActual + "." + nombreVariableColumnaLink + "=this.idkey;";
+                    //mr += separacion3 + nombreModeloLowerActual + "." + nombreVariableColumnaLink + "=this.idkey;";
+                    mr += separacion3 + nombreModeloLowerActual + "." + nombreVariableColumnaLink + "=this."+ nombreVariableColumnaRefencia + ";";
                     mr += separacion2 + "}";
 
                     mr += separacion2 + "if (" + nombreModeloLowerActual + ".idkey==-1){";

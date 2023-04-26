@@ -200,11 +200,33 @@ namespace ReneUtiles.Clases.BD.Factory
 			}
 			return null;
 		}
-		
-		public OneToMany addGetListaDe(ModeloBD m, ColumnaDeModeloBD c,string nombre)
+        public OneToMany addGetListaDe(ModeloBD m, ColumnaDeModeloBD c, string nombre) {
+            return addGetListaDe(null, m, c, nombre);
+        }
+        /// <summary>
+        /// cLink es generalmente el id, plq se puede dejar en null
+        /// esta columna es la que el modelo Many va ha tener como referencia
+        /// aunque esta referencia es mas bien un valor por el que va ha identificar
+        /// a su modelo One, se recomienda que sea una columna de
+        /// valor unico 
+        /// </summary>
+        /// <param name="cPorLaQueBuscar"></param>
+        /// <param name="m"></param>
+        /// <param name="c"></param>
+        /// <param name="nombre"></param>
+        /// <returns></returns>
+        public OneToMany addGetListaDe(ColumnaDeModeloBD cLink, ModeloBD m, ColumnaDeModeloBD c,string nombre)
 		{
-			OneToMany o = new OneToMany(one: this, many: m, linkToOne: c,nombre:nombre);
+			OneToMany o = new OneToMany(one: this, many: m
+                , linkToOne: c,nombre:nombre
+                ,LinkToMany: cLink
+                );
 			ListaOneToMany.Add(o);
+
+            if (!c.EsReferencia) {
+                m.addBuscarListaPor(c);
+            }
+
 			return o;
 		}
 		

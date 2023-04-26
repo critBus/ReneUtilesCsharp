@@ -20,13 +20,25 @@ namespace ReneUtiles.Clases.BD.Factory.Consultas
 		public ModeloBD One;
 		public ModeloBD Many;
 		public ColumnaDeModeloBD LinkToOne;//lo tiene el many
-		public OneToMany(ModeloBD one,ModeloBD many,ColumnaDeModeloBD linkToOne,string nombre){
+        public ColumnaDeModeloBD LinkToMany;//lo tiene el many, generalmente el id, en ese caso null
+        public OneToMany(ModeloBD one, ModeloBD many, ColumnaDeModeloBD linkToOne, string nombre)
+            :this(one, many, linkToOne, nombre,null)
+        {
+
+        }
+
+        public OneToMany(ModeloBD one,ModeloBD many
+            ,ColumnaDeModeloBD linkToOne,string nombre
+            , ColumnaDeModeloBD LinkToMany)
+        {
 			this.One=one;
 			this.Many=many;
 			this.LinkToOne=linkToOne;
 			this.TieneUnNombreAutomatico=nombre==null;
 			this.Nombre=nombre;
-		}
+            this.LinkToMany = LinkToMany;
+
+        }
 		public OneToMany(ModeloBD one,ModeloBD many,ColumnaDeModeloBD linkToOne):this(one,many,linkToOne,null)
 		{
 			
