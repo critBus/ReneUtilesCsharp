@@ -283,8 +283,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
 
                 mr += (i != 0) ? "," : "";
                 mr += getNombreTipoDeDato(c) + " " + columnasStr[i];
-            }
-            mr += ",int idkey," + nombreTipoApiBD + " apibd)";//"{"
+            }//("+getNombreTipoDeDato(m.getTipoDeDatoID())+" id)
+            mr += "," + getNombreTipoDeDato(m.getTipoDeDatoID()) + " idkey," + nombreTipoApiBD + " apibd)";//"{"
                                                               //string separacion2 = getSeparacionln(2, separacion0);
             mr += ":base(idkey,apibd){";
             for (int i = 0; i < columnasStr.Length; i++)
@@ -358,6 +358,19 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
                 mr += separacion1 + "}";
 
             }
+
+            string variableModelo = "v";
+            mr += separacion1 + "public " + nombreModelo + "(" + nombreModelo + " "+ variableModelo+")";
+            mr += separacion2+":this(";
+            for (int i = 0; i < columnasStr.Length; i++)
+            {
+                string c = columnasStr[i];
+                mr += (i != 0) ? "," : "";
+                mr += variableModelo +"."+ c;
+            }
+            mr += ","+variableModelo + ".idkey,"
+                + variableModelo + ".apibd){";
+            mr += separacion1 + "}";
 
             ColumnaDeModeloBD[] referencias = m.getColumnasReferencia();
             for (int i = 0; i < referencias.Length; i++)
@@ -589,6 +602,29 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             mr += separacion2 + "}";
 
             mr += separacion2 + "return this.apibd." + getNombreMetodoUpdate(m) + "(this);";
+            mr += separacion1 + "}";
+
+            string variableBDNew = "bd";
+            mr += separacion1 + "public " + nombreModelo + " " + getNombreMetodoSaveNewBD(m) + "("+factory.NombreClaseBDPadre+" "+variableBDNew+"){";
+            string variableIDAnteiror = "idAnterior";
+            mr += separacion2 + getNombreTipoDeDato(m.getTipoDeDatoID()) + " " + variableIDAnteiror + "=this.idkey;";
+            mr += separacion2 + "this.idkey=-1;";
+            string variableBDAnterior = "bdAnterior";
+            mr += separacion2 + factory.NombreClaseBDPadre + " " + variableBDAnterior + "=this.apibd;";
+            mr += separacion2 + "this.apibd=" + variableBDNew + ";";
+            string variableModeloNuevo = "n";
+            mr += separacion2 + nombreModelo + " " + variableModeloNuevo + "=" + getNombreMetodoSave(m) + "();";
+            mr += separacion2 + "this.idkey="+ variableIDAnteiror+";";
+            mr += separacion2 + "this.apibd=" + variableBDAnterior + ";";
+            mr += separacion2 + "return " + variableModeloNuevo + ";";
+            mr += separacion1 + "}";
+
+            //Copia con id -1 modelo en nueva BD
+            mr += separacion1 + "public " + nombreModelo + " " + getNombreMetodoCopyMoedeloNewBD(m) + "(" + factory.NombreClaseBDPadre + " " + variableBDNew + "){";
+            mr += separacion2 + nombreModelo + " " + variableModeloNuevo + "= new " + nombreModelo + "(this);";
+            mr += separacion2 + variableModeloNuevo + ".idkey=-1;";
+            mr += separacion2 + variableModeloNuevo + ".apibd=" + variableBDNew + ";";
+            mr += separacion2 + "return " + variableModeloNuevo + ";";
             mr += separacion1 + "}";
 
             //metodo insertar con un ID 
@@ -829,7 +865,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             string nombreModelo = this.getNombreStrModelo(m);
             string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
             //string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
-            string mr = separacion + getPublicAbstractMetodo()+" " + nombreModelo + " " + getNombreMetodo_GetForID(m) + "(int id);";
+            string mr = separacion + getPublicAbstractMetodo()+" " + nombreModelo + " " + getNombreMetodo_GetForID(m) + "("+getNombreTipoDeDato(m.getTipoDeDatoID())+" id);";
 
             return mr;
         }
@@ -840,7 +876,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             string nombreModelo = this.getNombreStrModelo(m);
             string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
             //string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
-            string mr = separacion + getPublicOverrideMetodo() + nombreModelo + " " + getNombreMetodo_GetForID(m) + "(int id){";
+            string mr = separacion + getPublicOverrideMetodo() + nombreModelo + " " + getNombreMetodo_GetForID(m) + "("+getNombreTipoDeDato(m.getTipoDeDatoID())+" id){";
             string separacion1 = getSeparacionln(1, separacion0);
             mr += separacion1 + "Object[] O = this.BD." + getDSC().NombreMetodoGetForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ","+getStrLlamadaACoumnaIdkeyDefault(m)+", id);";
             string separacion2 = getSeparacionln(2, separacion0);
@@ -1025,7 +1061,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 
 
-            string mr = separacion + getPublicAbstractMetodo()+" void " + getNombreMetodoDeleteForID(m) + "(int id);";
+            string mr = separacion + getPublicAbstractMetodo()+" void " + getNombreMetodoDeleteForID(m) + "("+getNombreTipoDeDato(m.getTipoDeDatoID())+" id);";
             mr += separacion + getPublicAbstractMetodo() + " void " + getNombreMetodoDeleteForID(m) + "(" + nombreModelo + " " + nombreModeloLower + ");";
 
             return mr;
@@ -1039,7 +1075,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 
 
-            string mr = separacion + getPublicOverrideMetodo() + " void " + getNombreMetodoDeleteForID(m) + "(int id){";
+            string mr = separacion + getPublicOverrideMetodo() + " void " + getNombreMetodoDeleteForID(m) + "("+getNombreTipoDeDato(m.getTipoDeDatoID())+" id){";
             string separacion2 = getSeparacionln(2, separacion0);
             mr += separacion2 + "this.BD." + getDSC().NombreMetodoDeleteForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + ","+getStrLlamadaACoumnaIdkeyDefault(m)+",id);";
             mr += separacion + "}";
@@ -2209,9 +2245,9 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
         {
             string separacion = getSeparacionln(0, separacion0);
             string nombreModelo = this.getNombreStrModelo(m);
-            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);//(int id) //("+getNombreTipoDeDato(m.getTipoDeDatoID())+" id)
             //string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
-            string mr = separacion + getPublicAbstractMetodo()+" bool " + getNombreMetodoExiste_ForID(m) + "(int id);";
+            string mr = separacion + getPublicAbstractMetodo()+" bool " + getNombreMetodoExiste_ForID(m) + "("+getNombreTipoDeDato(m.getTipoDeDatoID())+" id);";
 
             return mr;
         }
@@ -2223,7 +2259,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             string nombreModelo = this.getNombreStrModelo(m);
             string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
             //string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
-            string mr = separacion + getPublicOverrideMetodo() + " bool " + getNombreMetodoExiste_ForID(m) + "(int id){";
+            string mr = separacion + getPublicOverrideMetodo() + " bool " + getNombreMetodoExiste_ForID(m) + "("+getNombreTipoDeDato(m.getTipoDeDatoID())+" id){";
             string separacion1 = getSeparacionln(1, separacion0);
             mr += separacion1 + "Object[] O = this.BD." + getDSC().NombreMetodoGetForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + getStrLlamadaACoumnaIdkeyDefault(m) + ", id);";
             string separacion2 = getSeparacionln(2, separacion0);
@@ -2425,7 +2461,9 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
                 {
                     ColumnaDeModeloBD c = (ColumnaDeModeloBD)e;
                     nombreColumna = "." + this.getStrStaticColumna(c);
-                    par = nombreModeloEnInner + "." + this.getStrStaticTabla(mEnInner) + (nombreColumna.Length > 1 ? "," + nombreModeloEnInner + nombreColumna : "");
+                    par = "new Object[]{"+ 
+                        nombreModeloEnInner + "." + this.getStrStaticTabla(mEnInner) + (nombreColumna.Length > 1 ? "," + nombreModeloEnInner + nombreColumna : "") 
+                        + "}";
                 }
                 else
                 {
@@ -2473,7 +2511,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
 
             if (t == TipoDeDatoSQL.BOOLEAN)
             {
-                return "bool";
+                return "bool?";
             }
             if (t == TipoDeDatoSQL.BLOB)
             {
@@ -2481,15 +2519,15 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             }
             if (t == TipoDeDatoSQL.DATE)
             {
-                return "DateTime";
+                return "DateTime?";
             }
             if (t == TipoDeDatoSQL.TIME)
             {
-                return "TimeSpan";
+                return "TimeSpan?";
             }
             if (t == TipoDeDatoSQL.INTEGER||t==TipoDeDatoSQL.SERIAL)
             {
-                return "int";
+                return "int?";
             }
             if (t == TipoDeDatoSQL.POINT)
             {
@@ -2497,7 +2535,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             }
             if (t == TipoDeDatoSQL.REAL || t == TipoDeDatoSQL.DOUBLE_PRECISION)
             {
-                return "double";
+                return "double?";
             }
             if (t == TipoDeDatoSQL.VARCHAR || t == TipoDeDatoSQL.TEXT)
             {

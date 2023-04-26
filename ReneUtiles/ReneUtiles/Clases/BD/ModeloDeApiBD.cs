@@ -14,15 +14,15 @@ namespace ReneUtiles.Clases.BD
 	/// Description of ModeloDeApiBD.
 	/// </summary>
 	public class ModeloDeApiBD<E> {
-    public int idkey;
+    public int? idkey;
     public E apibd;
 
-    public ModeloDeApiBD(int idkey, E apibd) {
+    public ModeloDeApiBD(int? idkey, E apibd) {
         this.idkey = idkey;
         this.apibd = apibd;
     }
 
-    public int getIdkey() {
+    public int? getIdkey() {
         return idkey;
     }
 

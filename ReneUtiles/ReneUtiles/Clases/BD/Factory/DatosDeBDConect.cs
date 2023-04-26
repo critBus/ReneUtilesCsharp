@@ -23,6 +23,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		}
 
         //public string NombreMetodoInsertar;
+        public string NombreMetodoExisteInnerJoin;
         public string NombreMetodoDesactivarConsola;
         public string NombreMetodoGetIdCorrespondiente;
 
@@ -50,6 +51,7 @@ namespace ReneUtiles.Clases.BD.Factory
 		
 		public DatosDeBDConect()
 		{
+            this.NombreMetodoExisteInnerJoin = "existe_InnerJoin";
             this.NombreMetodoDesactivarConsola = "no_cl";
             this.NombreMetodoGetIdCorrespondiente = "getIdCorrespondiente";
             this.NombreMetodoGetConexionPOSTGRES = "getConexion_POSTGRES";

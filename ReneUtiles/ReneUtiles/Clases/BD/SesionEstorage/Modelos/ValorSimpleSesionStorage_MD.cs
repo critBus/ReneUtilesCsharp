@@ -12,14 +12,14 @@ public class ValorSimpleSesionStorage_MD:ModeloDeApiBD<BDAdminSesionStorage> {
 		public static readonly string COLUMNA_ID_TABLA_PROPIEDAD_SESION_STORAGE="COLUMNA_ID_TABLA_PROPIEDAD_SESION_STORAGE";
 		public static readonly string COLUMNA_VALOR="COLUMNA_VALOR";
 		
-		public int idkey_propiedad_sesion_storage;
+		public int? idkey_propiedad_sesion_storage;
 		public string valor;
 		
-		public ValorSimpleSesionStorage_MD(int idkey_propiedad_sesion_storage,string valor,int idkey,BDAdminSesionStorage apibd):base(idkey,apibd){
+		public ValorSimpleSesionStorage_MD(int? idkey_propiedad_sesion_storage,string valor,int? idkey,BDAdminSesionStorage apibd):base(idkey,apibd){
 			this.idkey_propiedad_sesion_storage=idkey_propiedad_sesion_storage;
 			this.valor=valor;
 		}
-		public ValorSimpleSesionStorage_MD(BDAdminSesionStorage apibd,int idkey_propiedad_sesion_storage,string valor):this(idkey_propiedad_sesion_storage,valor,-1,apibd){
+		public ValorSimpleSesionStorage_MD(BDAdminSesionStorage apibd,int? idkey_propiedad_sesion_storage,string valor):this(idkey_propiedad_sesion_storage,valor,-1,apibd){
 		}
 		public ValorSimpleSesionStorage_MD(BDAdminSesionStorage apibd,PropiedadSesionStorage_MD propiedad_sesion_storage,string valor):this(propiedad_sesion_storage.idkey,valor,-1,apibd){
 		}

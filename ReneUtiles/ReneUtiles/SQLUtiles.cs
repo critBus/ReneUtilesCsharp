@@ -70,7 +70,7 @@ namespace ReneUtiles
         public virtual string getStrValor(object valor)
         {
             if (valor==null) {
-                return "NULL";
+                return getStrNull();
             }
             return "'" + ""
                 + valor.ToString().Replace("'", "''")//.Replace(separadorComillas(), separadorComillasContrario())
@@ -472,11 +472,11 @@ namespace ReneUtiles
             
             
 		//anterior !!!!!!!!!!!!!!!!!!!!!!!!!!!
-		public  string select_Id(string nombreTabla, int id)
+		public  string select_Id(string nombreTabla, int? id)
 		{
 			return select_Where(nombreTabla, strC(this.idKeyDefault), id);
 		}
-        public string select_Id(string nombreTabla, string idStr,int id)
+        public string select_Id(string nombreTabla, string idStr,int? id)
         {
             return select_Where(nombreTabla, strC(idStr), id);
         }
@@ -1270,7 +1270,7 @@ namespace ReneUtiles
 				if (Utiles.isEmpty(nombreId)) {
 					nombreId = this.idKeyDefault;
 				}
-				sql = " NULL , " + sql;
+				sql = " "+ getStrNull() + " , " + sql;
 				if (!Utiles.isEmpty(sqlColumns)) {
 					sqlColumns = strC(nombreId) + " , " + sqlColumns;
 				}
@@ -1278,7 +1278,9 @@ namespace ReneUtiles
 //        System.out.println("sql="+sql);
 			return INSERT_INTO + " " + nombreTabla + (!Utiles.isEmpty(sqlColumns) ? " ( " + sqlColumns + " ) " : " ") + VALUES + " ( " + sql + " ) ";
 		}
-
+        public string getStrNull() {
+            return "NULL";
+        }
 		public  string insertar_Many_SinIdAutomatico(string nombreTabla, int cantidadDeColumnas)
 		{
 			return __insertar_Many(nombreTabla, false, "", cantidadDeColumnas);
@@ -1301,7 +1303,7 @@ namespace ReneUtiles
 				sql += (i != 0 ? " , " : "") + "?";
 			}
 			if (idAutomatico) {
-				sql = " NULL , " + sql;
+				sql = " "+getStrNull()+" , " + sql;
 			}
 			return INSERT_INTO + " " + nombreTabla + " " + VALUES + " ( " + sql + " ) ";
 		}

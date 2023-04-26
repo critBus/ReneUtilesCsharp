@@ -118,7 +118,10 @@ namespace ReneUtiles.Clases.BD
 	
 	
 	    public  bool esNumeroInt(Object o) {
-	        if (o is int) {
+            if (o==null) {
+                return false;
+            }
+            if (o is int) {
 	            return true;
 	        }
 	        return Utiles.esNumeroAll(o.ToString());

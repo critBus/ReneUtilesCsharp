@@ -294,7 +294,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 				mr += (i != 0) ? "," : "";
 				mr += getNombreTipoDeDato(c) + " " + columnasStr[i];
 			}
-			mr += ",int idkey," + nombreTipoApiBD + " apibd){";
+			mr += "," + getNombreTipoDeDato(m.getTipoDeDatoID())+" idkey," + nombreTipoApiBD + " apibd){";
 			string separacion2 = getSeparacionln(2, separacion0);
 			mr += separacion2 + "super(idkey,apibd);";
 			for (int i = 0; i < columnasStr.Length; i++) {
@@ -356,8 +356,22 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 				mr += separacion1 + "}";
 			
 			}
-			
-			ColumnaDeModeloBD[] referencias = m.getColumnasReferencia();
+
+            string variableModelo = "v";
+            mr += separacion1 + "public " + nombreModelo + "(" + nombreModelo + " " + variableModelo + ")";
+            mr += "){";
+            mr += separacion2 + "this(";
+            for (int i = 0; i < columnasStr.Length; i++)
+            {
+                string c = columnasStr[i];
+                mr += (i != 0) ? "," : "";
+                mr += variableModelo + "." + c;
+            }
+            mr += "," + variableModelo + ".idkey,"
+                + variableModelo + ".apibd);";
+            mr += separacion1 + "}";
+
+            ColumnaDeModeloBD[] referencias = m.getColumnasReferencia();
 			for (int i = 0; i < referencias.Length; i++) {
 				//"id_tabla_";
 				ColumnaDeModeloBD c = referencias[i];
@@ -569,6 +583,23 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			
 			mr += separacion2 + "return this.apibd." + getNombreMetodoUpdate(m) + "(this);";
 			mr += separacion1 + "}";
+
+            //save con id-1 en una nueva BD
+            string variableBDNew = "bd";
+            mr += separacion1 + "public " + nombreModelo + " " + getNombreMetodoSaveNewBD(m) + "(" + factory.NombreClaseBDPadre + " " + variableBDNew + ")throws Exception {";
+            string variableIDAnteiror = "idAnterior";
+            mr += separacion2 + getNombreTipoDeDato(m.getTipoDeDatoID()) + " " + variableIDAnteiror + "=this.idkey;";
+            mr += separacion2 + "this.idkey=-1;";
+            string variableBDAnterior = "bdAnterior";
+            mr += separacion2 + factory.NombreClaseBDPadre + " " + variableBDAnterior + "=this.apibd;";
+            mr += separacion2 + "this.apibd=" + variableBDNew + ";";
+            string variableModeloNuevo = "n";
+            mr += separacion2 + nombreModelo + " " + variableModeloNuevo + "=" + getNombreMetodoSave(m) + "();";
+            mr += separacion2 + "this.idkey=" + variableIDAnteiror + ";";
+            mr += separacion2 + "this.apibd=" + variableBDAnterior + ";";
+            mr += separacion2 + "return " + variableModeloNuevo + ";";
+            mr += separacion1 + "}";
+
             //metodo insertar con un ID 
             mr += separacion1 + "public " + nombreModelo + " " + getNombreMetodoSaveConID(m) + "() throws Exception {";
             mr += separacion2 + "if (this.apibd." + getNombreMetodoExiste_ForID(m) + "(this.idkey)){";
@@ -812,7 +843,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			//string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
-			string mr = separacion + "public " + nombreModelo + " " + getNombreMetodo_GetForID(m) + "(int id) throws Exception {";
+			string mr = separacion + "public " + nombreModelo + " " + getNombreMetodo_GetForID(m) + "("+getNombreTipoDeDato(m.getTipoDeDatoID())+" id) throws Exception {";
 			string separacion1 = getSeparacionln(1, separacion0);
 			mr += separacion1 + "Object[] O = this.BD." + getDSC().NombreMetodoGetForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + getStrLlamadaACoumnaIdkeyDefault(m) + ", id);";
 			string separacion2 = getSeparacionln(2, separacion0);
@@ -911,7 +942,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			
 			
-			string mr = separacion + "public void " + getNombreMetodoDeleteForID(m) + "(int id) throws Exception {";
+			string mr = separacion + "public void " + getNombreMetodoDeleteForID(m) + "("+getNombreTipoDeDato(m.getTipoDeDatoID())+" id) throws Exception {";
 			string separacion2 = getSeparacionln(2, separacion0);
 			mr += separacion2 + "this.BD." + getDSC().NombreMetodoDeleteForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + getStrLlamadaACoumnaIdkeyDefault(m) + ",id);";
 			mr += separacion + "}";
@@ -1542,7 +1573,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			//string mr=separacion+"def get"+nombreModelo+"_id(self, id):";
-			string mr = separacion + "public boolean " + getNombreMetodoExiste_ForID(m) + "(int id) throws Exception {";
+			string mr = separacion + "public boolean " + getNombreMetodoExiste_ForID(m) + "("+getNombreTipoDeDato(m.getTipoDeDatoID())+" id) throws Exception {";
 			string separacion1 = getSeparacionln(1, separacion0);
 			mr += separacion1 + "Object[] O = this.BD." + getDSC().NombreMetodoGetForId + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + getStrLlamadaACoumnaIdkeyDefault(m) + ", id);";
 			string separacion2 = getSeparacionln(2, separacion0);
@@ -1715,7 +1746,9 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 				if (e is ColumnaDeModeloBD) {
 					ColumnaDeModeloBD c = (ColumnaDeModeloBD)e;
 					nombreColumna = "." + this.getStrStaticColumna(c);
-					par = nombreModeloEnInner + "." + this.getStrStaticTabla(mEnInner) + (nombreColumna.Length > 1 ? "," + nombreModeloEnInner + nombreColumna : "");
+					par = "new Object[]{" + 
+                        nombreModeloEnInner + "." + this.getStrStaticTabla(mEnInner) + (nombreColumna.Length > 1 ? "," + nombreModeloEnInner + nombreColumna : "")
+                        + "}";
 				}else{
 					par = "new Object[]{" + nombreModeloEnInner + "." + this.getStrStaticTabla(mEnInner) +  "}";//,\"id\"
 				}

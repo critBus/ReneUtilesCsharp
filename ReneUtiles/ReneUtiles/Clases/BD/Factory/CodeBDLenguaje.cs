@@ -520,6 +520,16 @@ namespace ReneUtiles.Clases.BD.Factory
 			string nombreModelo = this.getNombreStrModelo(m);
 			return "s";
 		}
+        public virtual string getNombreMetodoSaveNewBD(ModeloBD m)
+        {
+            string nombreModelo = this.getNombreStrModelo(m);
+            return "sn";
+        }
+        public virtual string getNombreMetodoCopyMoedeloNewBD(ModeloBD m)
+        {
+            string nombreModelo = this.getNombreStrModelo(m);
+            return "cn";
+        }
         public virtual string getNombreMetodoSaveConID(ModeloBD m)
         {
             string nombreModelo = this.getNombreStrModelo(m);

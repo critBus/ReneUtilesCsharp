@@ -63,15 +63,15 @@ public class BDAdminSesionStorage:BasicoBD{
 				};
 			return lista;
 			}
-		public PropiedadSesionStorage_MD getPropiedadSesionStorage_MD_id(int id){
-			Object[] O = this.BD.select_forID(PropiedadSesionStorage_MD.TABLA_PROPIEDAD_SESION_STORAGE, id);
+		public PropiedadSesionStorage_MD getPropiedadSesionStorage_MD_id(int? id){
+			Object[] O = this.BD.select_forID(PropiedadSesionStorage_MD.TABLA_PROPIEDAD_SESION_STORAGE, id); 
 			if (O == null){
 				return null;}
 			return this.getPropiedadSesionStorage_MD_Args(O);
 			}
 		public PropiedadSesionStorage_MD insertarPropiedadSesionStorage_MD(PropiedadSesionStorage_MD propiedad_sesion_storage){
 			if (propiedad_sesion_storage.idkey==-1){
-				int id=this.BD.insertar(PropiedadSesionStorage_MD.TABLA_PROPIEDAD_SESION_STORAGE
+				int? id=this.BD.insertar(PropiedadSesionStorage_MD.TABLA_PROPIEDAD_SESION_STORAGE
 						,propiedad_sesion_storage.sesion
 						,propiedad_sesion_storage.propiedad
 						,propiedad_sesion_storage.es_lista
@@ -102,7 +102,7 @@ public class BDAdminSesionStorage:BasicoBD{
 							 , PropiedadSesionStorage_MD.COLUMNA_ES_LISTA , propiedad_sesion_storage.es_lista);
 				return getPropiedadSesionStorage_MD_id(propiedad_sesion_storage.idkey);
 		}
-		public void deletePropiedadSesionStorage_MD_ForId(int id){
+		public void deletePropiedadSesionStorage_MD_ForId(int? id){
 				this.BD.delete_id(PropiedadSesionStorage_MD.TABLA_PROPIEDAD_SESION_STORAGE,id);
 		}
 		public void deletePropiedadSesionStorage_MD_ForId(PropiedadSesionStorage_MD propiedad_sesion_storage){
@@ -113,10 +113,10 @@ public class BDAdminSesionStorage:BasicoBD{
 						,PropiedadSesionStorage_MD.COLUMNA_SESION,sesion
 						,PropiedadSesionStorage_MD.COLUMNA_PROPIEDAD,propiedad);
 		}
-		public void deletePropiedadSesionStorage_MD_ForId_CASCADE(int idkey_propiedad_sesion_storage){
+		public void deletePropiedadSesionStorage_MD_ForId_CASCADE(int? idkey_propiedad_sesion_storage){
 			deletePropiedadSesionStorage_MD_ForId_CASCADE(idkey_propiedad_sesion_storage,null);
 		}
-		public void deletePropiedadSesionStorage_MD_ForId_CASCADE(int idkey_propiedad_sesion_storage,Object modeloQueLoLlamo){
+		public void deletePropiedadSesionStorage_MD_ForId_CASCADE(int? idkey_propiedad_sesion_storage,Object modeloQueLoLlamo){
 			PropiedadSesionStorage_MD propiedad_sesion_storage=getPropiedadSesionStorage_MD_id(idkey_propiedad_sesion_storage);
 			deleteValorSimpleSesionStorage_MD_For_Idkey_propiedad_sesion_storage(idkey_propiedad_sesion_storage);
 			deleteDatoEnListaSesionStorage_MD_For_Idkey_propiedad_sesion_storage(idkey_propiedad_sesion_storage);
@@ -149,7 +149,7 @@ public class BDAdminSesionStorage:BasicoBD{
 				};
 			return lista;
 			}
-		public ValorSimpleSesionStorage_MD getValorSimpleSesionStorage_MD_id(int id){
+		public ValorSimpleSesionStorage_MD getValorSimpleSesionStorage_MD_id(int? id){
 			Object[] O = this.BD.select_forID(ValorSimpleSesionStorage_MD.TABLA_VALOR_SIMPLE_SESION_STORAGE, id);
 			if (O == null){
 				return null;}
@@ -157,7 +157,7 @@ public class BDAdminSesionStorage:BasicoBD{
 			}
 		public ValorSimpleSesionStorage_MD insertarValorSimpleSesionStorage_MD(ValorSimpleSesionStorage_MD valor_simple_sesion_storage){
 			if (valor_simple_sesion_storage.idkey==-1){
-				int id=this.BD.insertar(ValorSimpleSesionStorage_MD.TABLA_VALOR_SIMPLE_SESION_STORAGE
+				int? id=this.BD.insertar(ValorSimpleSesionStorage_MD.TABLA_VALOR_SIMPLE_SESION_STORAGE
 						,valor_simple_sesion_storage.idkey_propiedad_sesion_storage
 						,valor_simple_sesion_storage.valor
 						).id;
@@ -185,7 +185,7 @@ public class BDAdminSesionStorage:BasicoBD{
 							 , ValorSimpleSesionStorage_MD.COLUMNA_VALOR , valor_simple_sesion_storage.valor);
 				return getValorSimpleSesionStorage_MD_id(valor_simple_sesion_storage.idkey);
 		}
-		public void deleteValorSimpleSesionStorage_MD_ForId(int id){
+		public void deleteValorSimpleSesionStorage_MD_ForId(int? id){
 				this.BD.delete_id(ValorSimpleSesionStorage_MD.TABLA_VALOR_SIMPLE_SESION_STORAGE,id);
 		}
 		public void deleteValorSimpleSesionStorage_MD_ForId(ValorSimpleSesionStorage_MD valor_simple_sesion_storage){
@@ -218,7 +218,7 @@ public class BDAdminSesionStorage:BasicoBD{
 				};
 			return lista;
 			}
-		public DatoEnListaSesionStorage_MD getDatoEnListaSesionStorage_MD_id(int id){
+		public DatoEnListaSesionStorage_MD getDatoEnListaSesionStorage_MD_id(int? id){
 			Object[] O = this.BD.select_forID(DatoEnListaSesionStorage_MD.TABLA_DATO_EN_LISTA_SESION_STORAGE, id);
 			if (O == null){
 				return null;}
@@ -226,7 +226,7 @@ public class BDAdminSesionStorage:BasicoBD{
 			}
 		public DatoEnListaSesionStorage_MD insertarDatoEnListaSesionStorage_MD(DatoEnListaSesionStorage_MD dato_en_lista_sesion_storage){
 			if (dato_en_lista_sesion_storage.idkey==-1){
-				int id=this.BD.insertar(DatoEnListaSesionStorage_MD.TABLA_DATO_EN_LISTA_SESION_STORAGE
+				int? id=this.BD.insertar(DatoEnListaSesionStorage_MD.TABLA_DATO_EN_LISTA_SESION_STORAGE
 						,dato_en_lista_sesion_storage.idkey_propiedad_sesion_storage
 						,dato_en_lista_sesion_storage.valor
 						).id;
@@ -254,7 +254,7 @@ public class BDAdminSesionStorage:BasicoBD{
 							 , DatoEnListaSesionStorage_MD.COLUMNA_VALOR , dato_en_lista_sesion_storage.valor);
 				return getDatoEnListaSesionStorage_MD_id(dato_en_lista_sesion_storage.idkey);
 		}
-		public void deleteDatoEnListaSesionStorage_MD_ForId(int id){
+		public void deleteDatoEnListaSesionStorage_MD_ForId(int? id){
 				this.BD.delete_id(DatoEnListaSesionStorage_MD.TABLA_DATO_EN_LISTA_SESION_STORAGE,id);
 		}
 		public void deleteDatoEnListaSesionStorage_MD_ForId(DatoEnListaSesionStorage_MD dato_en_lista_sesion_storage){
@@ -278,7 +278,7 @@ public class BDAdminSesionStorage:BasicoBD{
 				}
 				return null;
 		}
-		public List<ValorSimpleSesionStorage_MD> getValorSimpleSesionStorage_MD_All_Idkey_propiedad_sesion_storage(int idkey_propiedad_sesion_storage){
+		public List<ValorSimpleSesionStorage_MD> getValorSimpleSesionStorage_MD_All_Idkey_propiedad_sesion_storage(int? idkey_propiedad_sesion_storage){
 				List<ValorSimpleSesionStorage_MD> lista=new List<ValorSimpleSesionStorage_MD>();
 				Object [][]O=this.BD.select_Where(ValorSimpleSesionStorage_MD.TABLA_VALOR_SIMPLE_SESION_STORAGE,ValorSimpleSesionStorage_MD.COLUMNA_ID_TABLA_PROPIEDAD_SESION_STORAGE,idkey_propiedad_sesion_storage);
 				if (O!=null){
@@ -291,7 +291,7 @@ public class BDAdminSesionStorage:BasicoBD{
 		public List<ValorSimpleSesionStorage_MD> getValorSimpleSesionStorage_MD_All_Idkey_propiedad_sesion_storage(PropiedadSesionStorage_MD propiedad_sesion_storage){
 				return getValorSimpleSesionStorage_MD_All_Idkey_propiedad_sesion_storage(propiedad_sesion_storage.idkey);
 		}
-		public ValorSimpleSesionStorage_MD getValorSimpleSesionStorage_MD_For_Idkey_propiedad_sesion_storage(int idkey_propiedad_sesion_storage){
+		public ValorSimpleSesionStorage_MD getValorSimpleSesionStorage_MD_For_Idkey_propiedad_sesion_storage(int? idkey_propiedad_sesion_storage){
 				Object []O=this.BD.select_Where_FirstRow(ValorSimpleSesionStorage_MD.TABLA_VALOR_SIMPLE_SESION_STORAGE,ValorSimpleSesionStorage_MD.COLUMNA_ID_TABLA_PROPIEDAD_SESION_STORAGE,idkey_propiedad_sesion_storage);
 				if (O!=null){
 					return getValorSimpleSesionStorage_MD_Args(O);
@@ -301,13 +301,13 @@ public class BDAdminSesionStorage:BasicoBD{
 		public ValorSimpleSesionStorage_MD getValorSimpleSesionStorage_MD_For_Idkey_propiedad_sesion_storage(PropiedadSesionStorage_MD propiedad_sesion_storage){
 				return getValorSimpleSesionStorage_MD_For_Idkey_propiedad_sesion_storage(propiedad_sesion_storage.idkey);
 		}
-		public void deleteValorSimpleSesionStorage_MD_For_Idkey_propiedad_sesion_storage(int idkey_propiedad_sesion_storage){
+		public void deleteValorSimpleSesionStorage_MD_For_Idkey_propiedad_sesion_storage(int? idkey_propiedad_sesion_storage){
 				this.BD.delete(ValorSimpleSesionStorage_MD.TABLA_VALOR_SIMPLE_SESION_STORAGE,ValorSimpleSesionStorage_MD.COLUMNA_ID_TABLA_PROPIEDAD_SESION_STORAGE,idkey_propiedad_sesion_storage);
 		}
 		public void deleteValorSimpleSesionStorage_MD_For_Idkey_propiedad_sesion_storage(PropiedadSesionStorage_MD propiedad_sesion_storage){
 				deleteValorSimpleSesionStorage_MD_For_Idkey_propiedad_sesion_storage(propiedad_sesion_storage.idkey);
 		}
-		public List<DatoEnListaSesionStorage_MD> getDatoEnListaSesionStorage_MD_All_Idkey_propiedad_sesion_storage(int idkey_propiedad_sesion_storage){
+		public List<DatoEnListaSesionStorage_MD> getDatoEnListaSesionStorage_MD_All_Idkey_propiedad_sesion_storage(int? idkey_propiedad_sesion_storage){
 				List<DatoEnListaSesionStorage_MD> lista=new List<DatoEnListaSesionStorage_MD>();
 				Object [][]O=this.BD.select_Where(DatoEnListaSesionStorage_MD.TABLA_DATO_EN_LISTA_SESION_STORAGE,DatoEnListaSesionStorage_MD.COLUMNA_ID_TABLA_PROPIEDAD_SESION_STORAGE,idkey_propiedad_sesion_storage);
 				if (O!=null){
@@ -320,7 +320,7 @@ public class BDAdminSesionStorage:BasicoBD{
 		public List<DatoEnListaSesionStorage_MD> getDatoEnListaSesionStorage_MD_All_Idkey_propiedad_sesion_storage(PropiedadSesionStorage_MD propiedad_sesion_storage){
 				return getDatoEnListaSesionStorage_MD_All_Idkey_propiedad_sesion_storage(propiedad_sesion_storage.idkey);
 		}
-		public void deleteDatoEnListaSesionStorage_MD_For_Idkey_propiedad_sesion_storage(int idkey_propiedad_sesion_storage){
+		public void deleteDatoEnListaSesionStorage_MD_For_Idkey_propiedad_sesion_storage(int? idkey_propiedad_sesion_storage){
 				this.BD.delete(DatoEnListaSesionStorage_MD.TABLA_DATO_EN_LISTA_SESION_STORAGE,DatoEnListaSesionStorage_MD.COLUMNA_ID_TABLA_PROPIEDAD_SESION_STORAGE,idkey_propiedad_sesion_storage);
 		}
 		public void deleteDatoEnListaSesionStorage_MD_For_Idkey_propiedad_sesion_storage(PropiedadSesionStorage_MD propiedad_sesion_storage){

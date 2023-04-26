@@ -104,8 +104,10 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 
 
 			mr += separacion2 + "super().__init__(idkey,apibd)";
-			
-			ColumnaDeModeloBD[] referencias = m.getColumnasReferencia();
+
+            
+
+            ColumnaDeModeloBD[] referencias = m.getColumnasReferencia();
 			for (int i = 0; i < referencias.Length; i++) {
 				//string a="idkey_";//"id_tabla_";
 				ColumnaDeModeloBD c = referencias[i];
@@ -296,6 +298,23 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 			mr += separacion2 + "if self.idkey is None:";
 			mr += separacion3 + "return self.apibd." + getNombreMetodo_insertar(m) + "(self)";
 			mr += separacion2 + "return self.apibd." + getNombreMetodoUpdate(m) + "(self)";
+
+            //save con id-1 en una nueva BD
+            string variableBDNew = "bd";
+            mr += separacion1 + "def " + getNombreMetodoSaveNewBD(m) + "("  + variableBDNew + "){";
+            string variableIDAnteiror = "idAnterior";
+            mr += separacion2 + variableIDAnteiror + "=self.idkey";
+            mr += separacion2 + "self.idkey=-1";
+            string variableBDAnterior = "bdAnterior";
+            mr += separacion2 +  variableBDAnterior + "=self.apibd";
+            mr += separacion2 + "self.apibd=" + variableBDNew ;
+            string variableModeloNuevo = "n";
+            mr += separacion2 + variableModeloNuevo + "=" + getNombreMetodoSave(m) + "()";
+            mr += separacion2 + "self.idkey=" + variableIDAnteiror ;
+            mr += separacion2 + "self.apibd=" + variableBDAnterior ;
+            mr += separacion2 + "return " + variableModeloNuevo ;
+            
+
 
             //metodo insertar con un ID 
             mr += separacion1 + "def " + getNombreMetodoSaveConID(m) + "(self):";
@@ -1478,7 +1497,9 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 					ColumnaDeModeloBD c = (ColumnaDeModeloBD)e;
 					nombreColumna = "." + this.getStrStaticColumna(c);
 				}
-				string par = nombreModeloEnInner + "." + this.getStrStaticTabla(mEnInner) + (nombreColumna.Length > 1 ? "," + nombreModeloEnInner + nombreColumna : "");
+				string par = "["+
+                    nombreModeloEnInner + "." + this.getStrStaticTabla(mEnInner) + (nombreColumna.Length > 1 ? "," + nombreModeloEnInner + nombreColumna : "")
+                    +"]";
 				
 				
 				mr += separacion3 + "," + par + "," + getNombreVariableElemento(e);

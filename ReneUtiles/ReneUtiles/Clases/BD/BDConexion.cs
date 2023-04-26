@@ -155,7 +155,18 @@ namespace ReneUtiles.Clases.BD
         return cantidad>0;
     }
 
-    public Object[] select_forID(string nombreTabla,string idStr, int id) {
+        
+
+        public bool existe_InnerJoin(string nombreTabla, params Object[] paresColumnaValor)
+        {
+            int cantidad = (int)(
+                getGestorDeConexionImple()._execute(sq().getCantidad_Where_Inner_Join(nombreTabla, paresColumnaValor[0].ToString(), paresColumnaValor))
+                );
+                //getCantidad_Where(nombreTabla, paresColumnaValor);
+            return cantidad > 0;
+        }
+
+        public Object[] select_forID(string nombreTabla,string idStr, int? id) {
             Object[][] O = (Object[][])getGestorDeConexionImple()._execute(sq().select_Id(nombreTabla, idStr, id));
             if (O == null || O.Length == 0)
             {
@@ -165,7 +176,7 @@ namespace ReneUtiles.Clases.BD
             //return ((Object[][]) getGestorDeConexionImple()._execute(sq().select_Id(nombreTabla, id)))[0];
         // return select_Where(nombreTabla,"id",id);
     }
-        public Object[] select_forID(string nombreTabla,  int id)
+        public Object[] select_forID(string nombreTabla,  int? id)
         {
             Object[][] O = (Object[][])getGestorDeConexionImple()._execute(sq().select_Id(nombreTabla,  id));
             if (O == null || O.Length == 0)
@@ -176,13 +187,20 @@ namespace ReneUtiles.Clases.BD
             //return ((Object[][]) getGestorDeConexionImple()._execute(sq().select_Id(nombreTabla, id)))[0];
             // return select_Where(nombreTabla,"id",id);
         }
-
-    public BDConexion delete_id(string nombreTabla, int id) {
-        return delete_id(nombreTabla, id + "");
+        private string getIntNull(int? id) {
+            if (id==null) {
+                return sq().getStrNull();
+            }
+            return id + "";
+        }
+    public BDConexion delete_id(string nombreTabla, int? id) {
+            
+        return delete_id(nombreTabla, getIntNull(id));
     }
-        public BDConexion delete_id(string nombreTabla, string idStr, int id)
+        public BDConexion delete_id(string nombreTabla, string idStr, int? id)
         {
-            return delete_id(nombreTabla, idStr,id + "");
+            
+            return delete_id(nombreTabla, idStr, getIntNull(id));
         }
 
     public BDConexion delete_id(string nombreTabla, string id) {
@@ -209,9 +227,9 @@ namespace ReneUtiles.Clases.BD
      * @param paresColumnaValor
      * @return
      */
-    public BDConexion update_Id(string nombreTabla, int id,params  Object[]paresColumnaValor) {
+    public BDConexion update_Id(string nombreTabla, int? id,params  Object[]paresColumnaValor) {
          //cwl("salida: nombreTabla=" + nombreTabla + " id=" + id + " " + Arrays.toString(paresColumnaValor));
-        string sql = sq().update_Id(nombreTabla, id + "", paresColumnaValor);
+        string sql = sq().update_Id(nombreTabla, getIntNull(id), paresColumnaValor);
         getGestorDeConexionImple()._execute(sql);
         return this;
     }
@@ -289,19 +307,6 @@ namespace ReneUtiles.Clases.BD
         return (Object[][]) getGestorDeConexionImple()._execute(sq().select_Group_By(nombreTabla, columnas, grupBy));
     }
 
-//    public Object[][] select_Distinct_Where_Inner_Join(params Object[] a) {
-//        return (Object[][]) getGestorDeConexionImple()._execute(sq().select_Distinct_Where_Inner_Join(a));
-//    }
-//    public Object[][] select_Where_Inner_Join(params Object[] a) {
-//        return (Object[][]) getGestorDeConexionImple()._execute(sq().select_Where_Inner_Join(a));
-//    }
-//    public Object[][] select_Distinct_Inner_Join(params Object[] a) {
-//        return (Object[][]) getGestorDeConexionImple()._execute(sq().select_Distinct_Inner_Join(a));
-//    }
-//    
-//    public Object[][] select_Inner_Join(params Object[] a) {
-//        return (Object[][]) getGestorDeConexionImple()._execute(sq().select_Inner_Join(a));
-//    }
     public Object[][] select_Distinct_Where(string nombreTabla,params  Object[]a) {
         return (Object[][]) getGestorDeConexionImple()._execute(sq().select_Distinct_Where(nombreTabla, a));
     }
