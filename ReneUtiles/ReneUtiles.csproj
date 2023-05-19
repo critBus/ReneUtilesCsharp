@@ -84,10 +84,12 @@
     <Compile Include="ReneUtiles\Clases\BD\Conexion\GestorDeConexionSQL_Server.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Conexion\GestorDeConexion_Postgresql.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Conexion\IGestorDeConexion.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\CodeBDEsquema.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\CodeBDLenguaje.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\CodeBDLenguaje_ConIAdmin.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\CSharp\CodeBDCSharp.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\CSharp\CodeBDCSharp_Usings.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\CSharp\CodeBD_EsquemaCSharp.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\Java\Android\CodeBDAndroid.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\Java\Android\CodeBDAndroid_DatosDeBDConect.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\Codes\Java\Android\CodeBDAndroid_Imports.cs" />

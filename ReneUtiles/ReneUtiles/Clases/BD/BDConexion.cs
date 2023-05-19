@@ -16,6 +16,8 @@ using ReneUtiles.Clases.BD.Conexion;
 using ReneUtiles;
 using Delimon.Win32.IO;
 
+using ReneUtiles.Clases.BD.Factory;
+
 namespace ReneUtiles.Clases.BD
 {
 	/// <summary>
@@ -33,6 +35,10 @@ namespace ReneUtiles.Clases.BD
         string controlador = tipoDeConxion.driver_java;
         datosBDConect = new DatosBDConect(controlador, null, usuario, contraseña, servidor, nombreBD, puerto, "", tipoDeConxion, url, null, false);
     }
+
+        public List<ModeloBD> getModelos() {
+            return this.gestorDeConexionImple.ObtenerTablasYColumnas();
+        }
         public SQLUtiles sq() {
             return this.gestorDeConexionImple.sqlUtiles;
         }

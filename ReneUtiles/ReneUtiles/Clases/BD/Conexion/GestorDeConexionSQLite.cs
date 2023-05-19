@@ -15,6 +15,11 @@ using System.Data.SQLite;
 using System.Data.Common;
 using ReneUtiles.Clases.BD;
 using ReneUtiles;
+using ReneUtiles.Clases.BD.Factory;
+
+
+
+
 namespace ReneUtiles.Clases.BD.Conexion
 {
 	/// <summary>
@@ -57,5 +62,57 @@ namespace ReneUtiles.Clases.BD.Conexion
 			r.add(TipoDeDatoSQL.INTEGER,id);
 			return r;
 		}
-	}
+
+        public static readonly string TABLE_NAME = "TABLE_NAME";
+
+
 }
+}
+
+
+
+//public  List<string> getTablesNames() {
+//    List<string> list = new List<string>();
+//    DbConnection db =crearConexion();
+//    try {
+
+
+//        DataTable table_schema = db.GetSchema("Tables");
+
+//        if (table_schema.Columns.Count > 0)
+//        {
+//            foreach (DataRow row in table_schema.Rows)
+//            {
+//                foreach (DataColumn col in table_schema.Columns)
+//                {
+//                    if (col.ColumnName == TABLE_NAME)
+//                    {
+//                        if (!row[col].ToString().Contains("sqlite_sequence"))
+//                        {
+//                            list.Add(row[col].ToString());
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    } catch (Exception ex) { } finally {
+//        if (db!=null) {
+//            db.Close();
+//        }
+//    }
+
+
+
+//    return list;
+//}
+//public List<ColumnaDeModeloBD> getTableColumns(string table_name) {
+
+//    List<ColumnaDeModeloBD> list = new List<ColumnaDeModeloBD>();
+
+//    List<string> tables_name = getTablesNames();
+
+//    DbConnection db = crearConexion();
+//    DataTable table_schema = db.GetSchema("Tables");
+
+//    return list;
+//}

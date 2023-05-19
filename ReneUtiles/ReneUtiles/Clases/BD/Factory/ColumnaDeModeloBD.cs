@@ -37,8 +37,10 @@ namespace ReneUtiles.Clases.BD.Factory
 		public object ValorDefault;
 		
 		public ModeloBD Padre;
-		
-		public ColumnaDeModeloBD(string nombre,TipoDeDatoSQL tipo,int tamaño,params TipoDeClasificacionSQL[] clasificaciones)
+        public ColumnaDeModeloBD() {
+        }
+
+        public ColumnaDeModeloBD(string nombre,TipoDeDatoSQL tipo,int tamaño,params TipoDeClasificacionSQL[] clasificaciones)
 		{
 			this.Nombre=nombre;
 			if(tipo==null){
