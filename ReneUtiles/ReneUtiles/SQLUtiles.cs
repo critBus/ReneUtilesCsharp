@@ -75,9 +75,7 @@ namespace ReneUtiles
             return "'" + ""
                 + valor.ToString().Replace("'", "''")//.Replace(separadorComillas(), separadorComillasContrario())
                 + "" + "'";
-            //return separadorComillas() + "" 
-            //    + valor.ToString().Replace(separadorComillas(), separadorComillasContrario()) 
-            //    + "" + separadorComillas();
+            
 
         }
         public virtual string separadorComillas() {
@@ -174,6 +172,7 @@ namespace ReneUtiles
 			//        public List<String> nombreTalas;
 			//        public List<List<String>> nombreTalas;
 		}
+
 
 		public  string __getStr_ORDER_BY(Object[] a, int inicioDeColumnas)
 		{

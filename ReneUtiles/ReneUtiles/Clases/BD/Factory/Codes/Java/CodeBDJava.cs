@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using ReneUtiles;
 using ReneUtiles.Clases.BD.Factory.UtilesFactory;
 using ReneUtiles.Clases.BD.Factory.Consultas;
+
 namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 {
 	/// <summary>
@@ -359,7 +360,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 
             string variableModelo = "v";
             mr += separacion1 + "public " + nombreModelo + "(" + nombreModelo + " " + variableModelo + ")";
-            mr += "){";
+            mr += "{";
             mr += separacion2 + "this(";
             for (int i = 0; i < columnasStr.Length; i++)
             {
@@ -875,7 +876,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
             string[] variables = new string[m.Columnas.Count];
 			string separacionExtra = getSeparacionln(4, separacion0);
 
-            mr += separacionExtra + ",new String[]{";
+            mr += separacionExtra + "new String[]{";
             for (int i = 0; i < variables.Length; i++)
             {
                 ColumnaDeModeloBD c = m.Columnas[i];
