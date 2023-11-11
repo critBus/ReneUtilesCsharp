@@ -29,8 +29,10 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		public string ImportDate;
 		public string ImportFile;
 		public string ImportTime;
-		
-		public CodeBDJava_Imports()
+        public string ImportSQLUtiles;
+
+
+        public CodeBDJava_Imports()
 		{
 			this.ImportBDUpdates="Utiles.ClasesUtiles.BasesDeDatos.BDConexion";
 			this.ImportBDSesionStorage="Utiles.ClasesUtiles.BasesDeDatos.BDSesionStorage";
@@ -45,7 +47,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			this.ImportDate="java.util.Date";
 			this.ImportFile="java.io.File";
 			this.ImportTime="java.sql.Time";
-		}
+            this.ImportSQLUtiles = "";
+        }
 		
 		protected string getImport(string a){
 			return "\nimport "+a+";";
@@ -60,8 +63,9 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 				+getImport(ImportTipoDeOrdenamientoSQL)
 				+getImport(ImportBasicoBD)
 				+getImport(ImportModeloDeApiBD)
-				
-				+getImport(ImportList)
+                + getImport(ImportSQLUtiles)
+
+                + getImport(ImportList)
 				+getImport(ImportArrayList)
 				+getImport(ImportDate)
 				+getImport(ImportFile)

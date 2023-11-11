@@ -221,7 +221,7 @@ namespace ReneUtiles.Clases.BD.Factory
 
                 //cwl("i="+i+" "+mt.Nombre);
                 //CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-                if (factory.Esquema.necistaUnDeleteCascade(mt))
+                if (factory.Esquema.necesitaUnDeleteCascade(mt))
                 {
                     bd += getStrMetodoDeleteForID_Cascade(mt, factory.Esquema, distancia);
                 }
@@ -268,7 +268,7 @@ namespace ReneUtiles.Clases.BD.Factory
                     {
                         bd += getStrMetodoDelete_ForColumna(mt, cmc, distancia);
                         //CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-                        if (factory.Esquema.necistaUnDeleteCascade(mt))
+                        if (factory.Esquema.necesitaUnDeleteCascade(mt))
                         {
                             bd += getStrMetodoDelete_ForColumna_Cascade(mt, cmc, factory.Esquema, distancia);
                         }
@@ -306,7 +306,7 @@ namespace ReneUtiles.Clases.BD.Factory
                     bd += getStrMetodoDelete_ForListaDeColumnas(mt, l, distancia);
 
                     //CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-                    if (factory.Esquema.necistaUnDeleteCascade(mt))
+                    if (factory.Esquema.necesitaUnDeleteCascade(mt))
                     {
                         bd += getStrMetodoDelete_ForListaDeColumnas_Cascade(mt, l, factory.Esquema, distancia);
                     }
@@ -411,7 +411,7 @@ namespace ReneUtiles.Clases.BD.Factory
 
                 //cwl("i="+i+" "+mt.Nombre);
                 //CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-                if (factory.Esquema.necistaUnDeleteCascade(mt))
+                if (factory.Esquema.necesitaUnDeleteCascade(mt))
                 {
                     bd += getStrMetodoDeleteForID_Cascade_Abstract(mt, factory.Esquema, distancia);
                 }
@@ -453,7 +453,7 @@ namespace ReneUtiles.Clases.BD.Factory
                     {
                         bd += getStrMetodoDelete_ForColumna_Abstract(mt, cmc, distancia);
                         //CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-                        if (factory.Esquema.necistaUnDeleteCascade(mt))
+                        if (factory.Esquema.necesitaUnDeleteCascade(mt))
                         {
                             bd += getStrMetodoDelete_ForColumna_Cascade_Abstract(mt, cmc, factory.Esquema, distancia);
                         }
@@ -491,7 +491,7 @@ namespace ReneUtiles.Clases.BD.Factory
                     bd += getStrMetodoDelete_ForListaDeColumnas_Abstract(mt, l, distancia);
 
                     //CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-                    if (factory.Esquema.necistaUnDeleteCascade(mt))
+                    if (factory.Esquema.necesitaUnDeleteCascade(mt))
                     {
                         bd += getStrMetodoDelete_ForListaDeColumnas_Cascade_Abstract(mt, l, factory.Esquema, distancia);
                     }

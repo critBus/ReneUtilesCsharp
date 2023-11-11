@@ -68,7 +68,7 @@ namespace ReneUtiles.Clases.BD.Factory
                 }
         }
 
-        public bool necistaUnDeleteCascade(ModeloBD m){
+        public bool necesitaUnDeleteCascade(ModeloBD m){
 			return listaCrearDeleteCascade[m].NecesitaDeleteCascade||listaCrearDeleteCascadeInverso[m].NecesitaDeleteCascade;
 		}
 		//Despues de comprobar la seguridad

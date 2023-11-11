@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ReneUtiles</RootNamespace>
     <AssemblyName>ReneUtiles</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -109,9 +110,13 @@
     <Compile Include="ReneUtiles\Clases\BD\Factory\DatosDeConexionFactoryBD.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\EsquemaBD.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\FactoryBD.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Framewors\CodeBDFramework.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Framewors\Django\CodeModelosDjango.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\Framewors\FactoryFrameworkBD.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\ModeloBD.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\ModeloBD_ID.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\ModeloUnion.cs" />
+    <Compile Include="ReneUtiles\Clases\BD\Factory\SalidaCodeStr.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\UtilesFactory\BasicoFactory.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\UtilesFactory\ElementoPorElQueBuscar.cs" />
     <Compile Include="ReneUtiles\Clases\BD\Factory\UtilesFactory\ElementoPorElQueOrdenar.cs" />

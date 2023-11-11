@@ -73,5 +73,10 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java.Android
 			}
 			return base.getNombreTipoDeDato(t);
 		}
-	}
+
+        public override string getClaseSQLUtil()
+        {
+            return "SQLUtil";
+        }
+    }
 }

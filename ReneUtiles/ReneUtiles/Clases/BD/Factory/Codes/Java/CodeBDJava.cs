@@ -18,8 +18,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 	/// <summary>
 	/// Description of CodeBDJava.
 	/// </summary>
-	public class CodeBDJava:CodeBDLenguaje
-	{
+	public class CodeBDJava : CodeBDLenguaje_ConIAdmin
+    {
 		//private FactoryBD factory;
 		protected CodeBDJava_Imports importsJava;
 		public string NombreClaseUtilidadesBD;
@@ -45,16 +45,17 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			string bd = "package " + factory.DireccionPaquete + ";";
 			bd += "\n" + importsJava.getStr();
 			string nombreClaseBD = datosConexionFactory.NombreBDAdmin;
-			bd += separacion + "\npublic class " + nombreClaseBD + " extends "+this.NombreClaseUtilidadesBD+"{";
+			bd += separacion + "\npublic class " + nombreClaseBD + " extends "
+                + factory.NombreClaseBDPadre + "{";
 			//string separacion1="\n\t";
 			string separacion1 = getSeparacionln(1, separacion0);
-			bd += separacion1 + "private String urlBD;";
-			bd += separacion1 + "private BDConexion BD;";
-			bd += separacion1 + "private BDUpdates __Upd;";
-			if (factory.Esquema.UsarSesionStorage) {
-				bd += separacion1 + "private BDSesionStorage __SesionStorage;";
-			}
-			bd += separacion1 + "private boolean usarUpdater;";
+			//bd += separacion1 + "private String urlBD;";
+			//bd += separacion1 + "private BDConexion BD;";
+			//bd += separacion1 + "private BDUpdates __Upd;";
+			//if (factory.Esquema.UsarSesionStorage) {
+			//	bd += separacion1 + "private BDSesionStorage __SesionStorage;";
+			//}
+			//bd += separacion1 + "private boolean usarUpdater;";
 			bd += separacion1 +"public " + nombreClaseBD + "("+__getStrArgumentos_DelConstructorBD_SinUrl(this,1)+") throws Exception {";
 			bd += __getStrLlamadaThis_DelConstructorBD_SinUrl(this,1);
 			bd += separacion1 +"}";
@@ -80,172 +81,159 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			bd += separacion2 + "this.usarUpdater=" + (factory.Esquema.UsarUpdate ? "true" : "false") + ";";
 			bd += separacion1 + "}";
 			EsquemaBD E = factory.Esquema;
-			
-			bd += separacion1 + "public String "+getNombreMetodoUrlBD()+"(){";
-			bd += separacion2 + "return  this.urlBD;";
-			bd += separacion1 + "}";
-			for (int i = 0; i < E.getCantidadDeModelos(); i++) {
-				ModeloBD_ID mt = (ModeloBD_ID)E.getModelo(i);
-				int distancia = 1;
-				bd += getStrMetodoCrearTabla(mt, distancia);
-				bd += getStrMetodoCrearTablaSiNoExiste(mt, distancia);
-				bd += getStrMetodoGetArgs(mt, distancia);
-				bd += getStrMetodoContentArgs(mt, distancia);
-				bd += getStrMetodoGetForID(mt, distancia);
-				bd += getStrMetodoInsertar(mt, distancia);
-				bd += getStrMetodoGetAll(mt, distancia);
-				bd += getStrMetodoUpdate(mt, distancia);
-				bd += getStrMetodoDeleteForID(mt, distancia);
-				bd += getStrMetodoExiste_ForID(mt,distancia);
-				
-				bool existeSoloEste=mt.ListaDeConjuntoDeColumnasPorLasVerSiExiste.Count==1;
-				for (int j = 0; j < mt.ListaDeConjuntoDeColumnasPorLasVerSiExiste.Count; j++) {
-					List<ColumnaDeModeloBD> lc=mt.ListaDeConjuntoDeColumnasPorLasVerSiExiste[j];
-					bd +=getStrMetodoExiste_ForListaDeColumnas(mt,lc,existeSoloEste,distancia); 
-				}
-				//cwl("i="+i+" "+mt.Nombre);
-				//CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-				if (factory.Esquema.necistaUnDeleteCascade(mt)) {
-					bd += getStrMetodoDeleteForID_Cascade(mt, factory.Esquema, distancia);
-				}
-				
-			}
-			
-			
-			
-			bd += separacion1 + "public void " + getNombreMetodoCrearTodasLasTablas() + "() throws Exception {";
-			for (int i = 0; i < E.getCantidadDeModelos(); i++) {
-				ModeloBD mt = E.getModelo(i);
-				bd += separacion2 + getNombreMetodoCrearTabla(mt) + "();";
-			}
-			if (factory.Esquema.UsarSesionStorage) {
-				bd += separacion2 + "this.__SesionStorage." + getDSC().SesionStorage.NombreMetodoCrearTablaYBorrarSiExiste + "();";
-			}
-			bd += separacion1 + "}";
-			
-			bd += separacion1 + "public void " + getNombreMetodoCrearTodasLasTablasSiNoExisten() + "() throws Exception {";
-			for (int i = 0; i < E.getCantidadDeModelos(); i++) {
-				ModeloBD mt = E.getModelo(i);
-				bd += separacion2 + getNombreMetodoCrearTablaSiNoExiste(mt) + "();";
-			}
-			if (factory.Esquema.UsarSesionStorage) {
-				bd += separacion2 + "this.__SesionStorage." + getDSC().SesionStorage.NombreMetodoCrearTablaYBorrarSiExiste + "();";
-			}
-			bd += separacion1 + "}";
-			
-			if (factory.Esquema.UsarSesionStorage) {
-				bd += separacion1 + "public SesionStorage getSesionStorage() throws Exception {";
-				bd += separacion2 + "return this.__SesionStorage";
-				bd += separacion1 + "}";
-			}
-			
-			
-			
-			for (int i = 0; i < E.getCantidadDeModelos(); i++) {
-				ModeloBD_ID mt = (ModeloBD_ID)E.getModelo(i);
-				int distancia = 1;
-				
-				List<ColumnaDeModeloBD> unicos = new List<ColumnaDeModeloBD>();
-				for (int j = 0; j < mt.Columnas.Count; j++) {
-					ColumnaDeModeloBD cmc = mt.Columnas[j];
-					if (cmc.BuscarListaPorEstaColumna) {
-						bd += getStrMetodoGetAll_ForColumna(mt, cmc, distancia);
-					}
-					if (cmc.BuscarModeloPorEstaColumna) {
-						bd += getStrMetodoGet_ForColumna(mt, cmc, distancia);
-					}
-					if (cmc.EliminarPorEstaColumna) {
-						bd += getStrMetodoDelete_ForColumna(mt, cmc, distancia);
-						//CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-						if (factory.Esquema.necistaUnDeleteCascade(mt)) {
-							bd += getStrMetodoDelete_ForColumna_Cascade(mt, cmc, factory.Esquema, distancia);
-						}
-					}
-					if (cmc.EsUnique) {
-						unicos.Add(cmc);
-					}
-					
-				}
-				
-				for (int j = 0; j < unicos.Count; j++) {
-					ColumnaDeModeloBD cmc = unicos[j];
-					bd += getStrMetodoExiste(mt, cmc, unicos.Count == 1, distancia);
-				}
-				
-				
-				
-				for (int j = 0; j < mt.ListaDeConjuntoDeColumnasPorLasQueBuscaAllModelos.Count; j++) {
-					List<ColumnaDeModeloBD> l = mt.ListaDeConjuntoDeColumnasPorLasQueBuscaAllModelos[j];
-					bd += getStrMetodoGetAll_ForListaDeColumnas(mt, l, distancia);
-				}
-				
-				for (int j = 0; j < mt.ListaDeConjuntoDeColumnasPorLasQueBuscarUnModelo.Count; j++) {
-					List<ColumnaDeModeloBD> l = mt.ListaDeConjuntoDeColumnasPorLasQueBuscarUnModelo[j];
-					bd += getStrMetodoGet_ForListaDeColumnas(mt, l, distancia);
-				}
-				
-				for (int j = 0; j < mt.ListaDeConjuntoDeColumnasPorLasQueEliminar.Count; j++) {
-					List<ColumnaDeModeloBD> l = mt.ListaDeConjuntoDeColumnasPorLasQueEliminar[j];
-					bd += getStrMetodoDelete_ForListaDeColumnas(mt, l, distancia);
-					
-					//CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-					if (factory.Esquema.necistaUnDeleteCascade(mt)) {
-						bd += getStrMetodoDelete_ForListaDeColumnas_Cascade(mt, l, factory.Esquema, distancia);
-					}
-				}
-				
-//				for (int j = 0; j < mt.ListaOneToMany.Count; j++) {
-//					OneToMany o = mt.ListaOneToMany[j];
-//					bd += getStrMetodoGetListaDe_OneToManyLinkInterno(o, distancia);
-//					
-//				}
-				for (int j = 0; j < mt.ListaOneToMany_EnTablaExterna.Count; j++) {
-					OneToMany_EnTablaExterna o = mt.ListaOneToMany_EnTablaExterna[j];
-					bd += getStrMetodoGetListaDe_OneToManyTablaExterna(o, distancia);
-					bd += getStrMetodoGet_EnBD_OneToManyTablaExterna(o, distancia);
-					bd += getStrMetodoExiste_OneToManyEnTablaExterna(o, distancia);
-				}
-				
-				for (int j = 0; j < mt.ListaDeConjuntoDeColumnasPorLasQueBuscaAllModelosYOrdenar.Count; j++) {
-					SelectWhereSort o = mt.ListaDeConjuntoDeColumnasPorLasQueBuscaAllModelosYOrdenar[j];
-					bd += getStrMetodoGetAll_ForListaDeColumnas_Sort(o, distancia);
-					
-				}
-			
-			}
-			
-			List<ManyToMany> lmtm = factory.Esquema.ListaManyToMany;
-			for (int i = 0; i < lmtm.Count; i++) {
-				int distancia = 1;
-				ManyToMany o = lmtm[i];
-				bd += getStrMetodosManyToMany(o, 1);
-				bd += getStrMetodoGet_EnBD_ManyToMany(o, distancia);
-				bd += getStrMetodoExiste_ManyToMany(o, distancia);
-			}
-			
-			List<InnerJoin> linj = factory.Esquema.ListaInnerJoinAll;
-			for (int i = 0; i < linj.Count; i++) {
-				InnerJoin I = linj[i];
-				bd += getStrMetodoGetAll_InnerJoin_ForListaDeColumnas(I, 1);
-			}
-			
-			linj = factory.Esquema.ListaInnerJoinOne;
-			for (int i = 0; i < linj.Count; i++) {
-				InnerJoin I = linj[i];
-				bd += getStrMetodoGet_InnerJoin_ForListaDeColumnas(I, 1);
-			}
-			
-//			for (int i = 0; i < E.getCantidadDeModelos(); i++) {
-//				ModeloBD_ID mt = (ModeloBD_ID)E.getModelo(i);
-//				int distancia = 1;
-//				CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-//				if (Cr.NecesitaDeleteCascade) {
-//					bd += getStrMetodoGet_InnerJoin_ForListaDeColumnas(I, 1);
-//				}
-//			
-//			}
-			
-			bd += separacion + "}";
+
+            int distancia = 2;
+            bd += __getStrMetodosEnAdmin(distancia);
+
+            //bd += separacion1 + "public String "+getNombreMetodoUrlBD()+"(){";
+            //bd += separacion2 + "return  this.urlBD;";
+            //bd += separacion1 + "}";
+            //for (int i = 0; i < E.getCantidadDeModelos(); i++) {
+            //	ModeloBD_ID mt = (ModeloBD_ID)E.getModelo(i);
+            //	int distancia = 1;
+            //	bd += getStrMetodoCrearTabla(mt, distancia);
+            //	bd += getStrMetodoCrearTablaSiNoExiste(mt, distancia);
+            //	bd += getStrMetodoGetArgs(mt, distancia);
+            //	bd += getStrMetodoContentArgs(mt, distancia);
+            //	bd += getStrMetodoGetForID(mt, distancia);
+            //	bd += getStrMetodoInsertar(mt, distancia);
+            //	bd += getStrMetodoGetAll(mt, distancia);
+            //	bd += getStrMetodoUpdate(mt, distancia);
+            //	bd += getStrMetodoDeleteForID(mt, distancia);
+            //	bd += getStrMetodoExiste_ForID(mt,distancia);
+
+            //	bool existeSoloEste=mt.ListaDeConjuntoDeColumnasPorLasVerSiExiste.Count==1;
+            //	for (int j = 0; j < mt.ListaDeConjuntoDeColumnasPorLasVerSiExiste.Count; j++) {
+            //		List<ColumnaDeModeloBD> lc=mt.ListaDeConjuntoDeColumnasPorLasVerSiExiste[j];
+            //		bd +=getStrMetodoExiste_ForListaDeColumnas(mt,lc,existeSoloEste,distancia); 
+            //	}
+            //	if (factory.Esquema.necistaUnDeleteCascade(mt)) {
+            //		bd += getStrMetodoDeleteForID_Cascade(mt, factory.Esquema, distancia);
+            //	}
+
+            //}
+
+
+
+            //bd += separacion1 + "public void " + getNombreMetodoCrearTodasLasTablas() + "() throws Exception {";
+            //for (int i = 0; i < E.getCantidadDeModelos(); i++) {
+            //	ModeloBD mt = E.getModelo(i);
+            //	bd += separacion2 + getNombreMetodoCrearTabla(mt) + "();";
+            //}
+            //if (factory.Esquema.UsarSesionStorage) {
+            //	bd += separacion2 + "this.__SesionStorage." + getDSC().SesionStorage.NombreMetodoCrearTablaYBorrarSiExiste + "();";
+            //}
+            //bd += separacion1 + "}";
+
+            //bd += separacion1 + "public void " + getNombreMetodoCrearTodasLasTablasSiNoExisten() + "() throws Exception {";
+            //for (int i = 0; i < E.getCantidadDeModelos(); i++) {
+            //	ModeloBD mt = E.getModelo(i);
+            //	bd += separacion2 + getNombreMetodoCrearTablaSiNoExiste(mt) + "();";
+            //}
+            //if (factory.Esquema.UsarSesionStorage) {
+            //	bd += separacion2 + "this.__SesionStorage." + getDSC().SesionStorage.NombreMetodoCrearTablaYBorrarSiExiste + "();";
+            //}
+            //bd += separacion1 + "}";
+
+            //if (factory.Esquema.UsarSesionStorage) {
+            //	bd += separacion1 + "public SesionStorage getSesionStorage() throws Exception {";
+            //	bd += separacion2 + "return this.__SesionStorage";
+            //	bd += separacion1 + "}";
+            //}
+
+
+
+            //for (int i = 0; i < E.getCantidadDeModelos(); i++) {
+            //	ModeloBD_ID mt = (ModeloBD_ID)E.getModelo(i);
+            //	int distancia = 1;
+
+            //	List<ColumnaDeModeloBD> unicos = new List<ColumnaDeModeloBD>();
+            //	for (int j = 0; j < mt.Columnas.Count; j++) {
+            //		ColumnaDeModeloBD cmc = mt.Columnas[j];
+            //		if (cmc.BuscarListaPorEstaColumna) {
+            //			bd += getStrMetodoGetAll_ForColumna(mt, cmc, distancia);
+            //		}
+            //		if (cmc.BuscarModeloPorEstaColumna) {
+            //			bd += getStrMetodoGet_ForColumna(mt, cmc, distancia);
+            //		}
+            //		if (cmc.EliminarPorEstaColumna) {
+            //			bd += getStrMetodoDelete_ForColumna(mt, cmc, distancia);
+            //			if (factory.Esquema.necistaUnDeleteCascade(mt)) {
+            //				bd += getStrMetodoDelete_ForColumna_Cascade(mt, cmc, factory.Esquema, distancia);
+            //			}
+            //		}
+            //		if (cmc.EsUnique) {
+            //			unicos.Add(cmc);
+            //		}
+
+            //	}
+
+            //	for (int j = 0; j < unicos.Count; j++) {
+            //		ColumnaDeModeloBD cmc = unicos[j];
+            //		bd += getStrMetodoExiste(mt, cmc, unicos.Count == 1, distancia);
+            //	}
+
+
+
+            //	for (int j = 0; j < mt.ListaDeConjuntoDeColumnasPorLasQueBuscaAllModelos.Count; j++) {
+            //		List<ColumnaDeModeloBD> l = mt.ListaDeConjuntoDeColumnasPorLasQueBuscaAllModelos[j];
+            //		bd += getStrMetodoGetAll_ForListaDeColumnas(mt, l, distancia);
+            //	}
+
+            //	for (int j = 0; j < mt.ListaDeConjuntoDeColumnasPorLasQueBuscarUnModelo.Count; j++) {
+            //		List<ColumnaDeModeloBD> l = mt.ListaDeConjuntoDeColumnasPorLasQueBuscarUnModelo[j];
+            //		bd += getStrMetodoGet_ForListaDeColumnas(mt, l, distancia);
+            //	}
+
+            //	for (int j = 0; j < mt.ListaDeConjuntoDeColumnasPorLasQueEliminar.Count; j++) {
+            //		List<ColumnaDeModeloBD> l = mt.ListaDeConjuntoDeColumnasPorLasQueEliminar[j];
+            //		bd += getStrMetodoDelete_ForListaDeColumnas(mt, l, distancia);
+
+            //		if (factory.Esquema.necistaUnDeleteCascade(mt)) {
+            //			bd += getStrMetodoDelete_ForListaDeColumnas_Cascade(mt, l, factory.Esquema, distancia);
+            //		}
+            //	}
+
+
+            //	for (int j = 0; j < mt.ListaOneToMany_EnTablaExterna.Count; j++) {
+            //		OneToMany_EnTablaExterna o = mt.ListaOneToMany_EnTablaExterna[j];
+            //		bd += getStrMetodoGetListaDe_OneToManyTablaExterna(o, distancia);
+            //		bd += getStrMetodoGet_EnBD_OneToManyTablaExterna(o, distancia);
+            //		bd += getStrMetodoExiste_OneToManyEnTablaExterna(o, distancia);
+            //	}
+
+            //	for (int j = 0; j < mt.ListaDeConjuntoDeColumnasPorLasQueBuscaAllModelosYOrdenar.Count; j++) {
+            //		SelectWhereSort o = mt.ListaDeConjuntoDeColumnasPorLasQueBuscaAllModelosYOrdenar[j];
+            //		bd += getStrMetodoGetAll_ForListaDeColumnas_Sort(o, distancia);
+
+            //	}
+
+            //}
+
+            //List<ManyToMany> lmtm = factory.Esquema.ListaManyToMany;
+            //for (int i = 0; i < lmtm.Count; i++) {
+            //	int distancia = 1;
+            //	ManyToMany o = lmtm[i];
+            //	bd += getStrMetodosManyToMany(o, 1);
+            //	bd += getStrMetodoGet_EnBD_ManyToMany(o, distancia);
+            //	bd += getStrMetodoExiste_ManyToMany(o, distancia);
+            //}
+
+            //List<InnerJoin> linj = factory.Esquema.ListaInnerJoinAll;
+            //for (int i = 0; i < linj.Count; i++) {
+            //	InnerJoin I = linj[i];
+            //	bd += getStrMetodoGetAll_InnerJoin_ForListaDeColumnas(I, 1);
+            //}
+
+            //linj = factory.Esquema.ListaInnerJoinOne;
+            //for (int i = 0; i < linj.Count; i++) {
+            //	InnerJoin I = linj[i];
+            //	bd += getStrMetodoGet_InnerJoin_ForListaDeColumnas(I, 1);
+            //}
+
+
+
+            bd += separacion + "}";
 			
 			return bd;
 		}
@@ -261,7 +249,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			
 			string mr = "package " + factory.DireccionPaquete + ";";
 			mr += "\n" + importsJava.getStr();
-			mr += "\npublic class " + nombreModelo + " extends " + nombreSuperClaseModelo + "<" + nombreTipoApiBD + "> {";
+			mr += "\npublic class " + nombreModelo
+                + " extends " + nombreSuperClaseModelo + "<" + nombreTipoApiBD + "> {";
 			mr += separacion1 + "public static final String " + this.getStrStaticTabla(m) + "=\"" + m.Nombre + "\";";
 			
 			string[] columnasStr = new string[m.Columnas.Count];
@@ -618,7 +607,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 
             mr += separacion1 + "public void " + getNombreMetodoDelete_EnModelo(m) + "()throws Exception {";
 			mr += separacion2 + "if (this.idkey!=-1){";
-			if(E.necistaUnDeleteCascade(m)){
+			if(E.necesitaUnDeleteCascade(m)){
 			mr += separacion3 + "this.apibd." + getNombreMetodoDeleteForID_Cascade(m) + "(this.idkey);";
 			}else{
 			mr += separacion3 + "this.apibd." + getNombreMetodoDeleteForID(m) + "(this.idkey);";
@@ -651,14 +640,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
         {
             return "public abstract ";
         }
-        //public override string getStrMetodoMetodoDesactivarConsola_Abstract(int separacion0)
-        //{
-        //    string separacion1 = getSeparacionln(0, separacion0);
-        //    string separacion2 = getSeparacionln(0, separacion0);
-        //    string mr = "";
-        //    mr += separacion1 + getPublicAbstractMetodo() + " " + factory.NombreClaseBDPadre +" "+getNombreMetodoDesactivarConsola()+ "()throws Exception;";
-        //    return mr;
-        //}
+        
         public override string getStrMetodoMetodoDesactivarConsola(int separacion0)
         {
             string separacion1 = getSeparacionln(0, separacion0);
@@ -688,7 +670,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
             string separacion1 = getSeparacionln(0, separacion0);
             string separacion2 = getSeparacionln(1, separacion0);
             string bd = "";
-            bd += separacion1 + "public void " + getNombreMetodoCrearTodasLasTablasSiNoExisten() + "(){";
+            bd += separacion1 + "public void " + getNombreMetodoCrearTodasLasTablasSiNoExisten() 
+                + "()throws Exception{";
             for (int i = 0; i < E.getCantidadDeModelos(); i++)
             {
                 ModeloBD mt = E.getModelo(i);
@@ -707,7 +690,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
             string separacion1 = getSeparacionln(0, separacion0);
             string separacion2 = getSeparacionln(1, separacion0);
             string bd = "";
-            bd += separacion1 + "public void " + getNombreMetodoCrearTodasLasTablas() + "(){";
+            bd += separacion1 + "public void "
+                + getNombreMetodoCrearTodasLasTablas() + "()throws Exception{";
             for (int i = 0; i < E.getCantidadDeModelos(); i++)
             {
                 ModeloBD mt = E.getModelo(i);
@@ -959,17 +943,29 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			mr += separacion + "}";
 			return mr;
 		}
-		
-		public override string getStrMetodoGetAll_ForColumna(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0)
+        private string getPublicOverrideMetodo()
+        {
+            return "public  ";
+        }
+        
+        public override string getStrMetodoGetAll_ForColumna(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0)
 		{
 			string separacion = getSeparacionln(0, separacion0);
 			string nombreModelo = this.getNombreStrModelo(m);
 			string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
 			string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
-			string mr = separacion + "public List<" + nombreModelo + "> " + getNombreMetodoGetAll_ForColumna(m, c) + "(" + getNombreTipoDeDato(c) + " " + nombreVariableColumna + ") throws Exception {";
+			string mr = separacion + "public List<" + nombreModelo 
+                + "> " + getNombreMetodoGetAll_ForColumna(m, c)
+                + "(" + getNombreTipoDeDato(c) + " "
+                + nombreVariableColumna + ") throws Exception {";
 			string separacion2 = getSeparacionln(2, separacion0);
 			mr += separacion2 + "List<" + nombreModelo + "> lista=new ArrayList<>();";
-			mr += separacion2 + "Object [][]O=this.BD." + getDSC().NombreMetodoSelectWhere + "(" + nombreModelo + "." + this.getStrStaticTabla(m) + "," + nombreModelo + "." + this.getStrStaticColumna(c) + "," + nombreVariableColumna + ");";
+			mr += separacion2 + "Object [][]O=this.BD." + getDSC().NombreMetodoSelectWhere 
+                + "(" + nombreModelo + "." 
+                + this.getStrStaticTabla(m) 
+                + "," + nombreModelo + "." 
+                + this.getStrStaticColumna(c)
+                + "," + nombreVariableColumna + ");";
 			
 			
 			mr += separacion2 + "if (O!=null){";
@@ -981,7 +977,23 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			mr += separacion2 + "}";
 			mr += separacion2 + "return lista;";
 			mr += separacion + "}";
-			return mr;
+
+
+            if (c.EsReferencia)
+            {
+                ModeloBD referencia = c.ReferenciaID;
+                string nombreVariableColumnaReferencia = CodeBDLenguaje.getNombreStrModeloLower(referencia);
+                string nombreModeloColumnaReferencia = this.getNombreStrModelo(referencia);
+                mr += separacion + getPublicOverrideMetodo() 
+                    + " List<" + nombreModelo + "> " 
+                    + getNombreMetodoGetAll_ForColumna(m, c) 
+                    + "(" + nombreModeloColumnaReferencia + " " 
+                    + nombreVariableColumnaReferencia + ")throws Exception {";
+                mr += separacion2 + "return " + getNombreMetodoGetAll_ForColumna(m, c) + "(" + nombreVariableColumnaReferencia + ".idkey);";
+                mr += separacion + "}";
+            }
+
+            return mr;
 		}
 		public override string getStrMetodoGet_ForColumna(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0)
 		{
@@ -1077,7 +1089,62 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			mr += separacion2 + "}";
 			mr += separacion2 + "return lista;";
 			mr += separacion + "}";
-			return mr;
+
+
+            string nombreDelMetodo = getNombreMetodoGetAll_ForListaDeColumnas(m, C);
+            bool hayReferencia = false;
+            foreach (ColumnaDeModeloBD c in C)
+            {
+                if (c.EsReferencia)
+                {
+                    hayReferencia = true;
+                    break;
+                }
+            }
+            if (hayReferencia)
+            {
+                mr += separacion + getPublicOverrideMetodo() 
+                    + " List<" + nombreModelo + "> "
+                    + nombreDelMetodo + "(";
+                for (int i = 0; i < C.Count; i++)
+                {
+                    mr += (i != 0 ? "," : "");
+                    ColumnaDeModeloBD c = C[i];
+                    if (c.EsReferencia)
+                    {
+                        mr += this.getNombreStrModelo(c.ReferenciaID) + " " + CodeBDLenguaje.getNombreStrModeloLower(c.ReferenciaID);
+                    }
+                    else
+                    {
+                        string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                        mr += getNombreTipoDeDato(c) + " " + nombreVariableColumna;
+                    }
+
+                }
+                mr += ") throws Exception {";
+                mr += separacion2 + "return " + nombreDelMetodo + "(";
+                for (int i = 0; i < C.Count; i++)
+                {
+                    mr += (i != 0 ? "," : "");
+                    ColumnaDeModeloBD c = C[i];
+                    if (c.EsReferencia)
+                    {
+                        mr += CodeBDLenguaje.getNombreStrModeloLower(c.ReferenciaID) + ".idkey";
+                    }
+                    else
+                    {
+                        string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                        mr += nombreVariableColumna;
+                    }
+
+                }
+                mr += ");";
+                mr += separacion + "}";
+            }
+
+
+
+            return mr;
 		}
 		
 		public override string getStrMetodoGet_ForListaDeColumnas(string nombreDelMetodo, ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
@@ -1115,7 +1182,61 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 			mr += separacion2 + "}";
 			mr += separacion2 + "return null;";
 			mr += separacion + "}";
-			return mr;
+
+
+
+            bool hayReferencia = false;
+            foreach (ColumnaDeModeloBD c in C)
+            {
+                if (c.EsReferencia)
+                {
+                    hayReferencia = true;
+                    break;
+                }
+            }
+            if (hayReferencia)
+            {
+                mr += separacion 
+                    + getPublicOverrideMetodo() 
+                    + nombreModelo + " " + nombreDelMetodo + "(";
+                for (int i = 0; i < C.Count; i++)
+                {
+                    mr += (i != 0 ? "," : "");
+                    ColumnaDeModeloBD c = C[i];
+                    if (c.EsReferencia)
+                    {
+                        mr += this.getNombreStrModelo(c.ReferenciaID) + " " + CodeBDLenguaje.getNombreStrModeloLower(c.ReferenciaID);
+                    }
+                    else
+                    {
+                        string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                        mr += getNombreTipoDeDato(c) + " " + nombreVariableColumna;
+                    }
+
+                }
+                mr += ") throws Exception {";
+                mr += separacion2 + "return " + nombreDelMetodo + "(";
+                for (int i = 0; i < C.Count; i++)
+                {
+                    mr += (i != 0 ? "," : "");
+                    ColumnaDeModeloBD c = C[i];
+                    if (c.EsReferencia)
+                    {
+                        mr += CodeBDLenguaje.getNombreStrModeloLower(c.ReferenciaID) + ".idkey";
+                    }
+                    else
+                    {
+                        string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                        mr += nombreVariableColumna;
+                    }
+
+                }
+                mr += ");";
+                mr += separacion + "}";
+            }
+
+
+            return mr;
 		}
 		
 		public override string getStrMetodoDelete_ForListaDeColumnas(ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
@@ -1262,7 +1383,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 //				CrearDeleteCascade C = E.listaCrearDeleteCascade[mActual];
 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
 				
-				if (E.necistaUnDeleteCascade(mActual)) {
+				if (E.necesitaUnDeleteCascade(mActual)) {
 					
 					mr += separacionDeCascada +"if(modeloQueLoLlamo!=null&& modeloQueLoLlamo instanceof "+nombreModeloActual+"){";
 					mr += separacionDeCascada1 + getNombreMetodoDelete_ForColumna(mActual, cIneterna) + "(" + nombreVariableModelo + ".idkey);";
@@ -1287,7 +1408,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
 				string nombreVariableColumnaActual = getNombreVariableElemento(cIneterna);
 				
-				if (E.necistaUnDeleteCascade(mActual)) {
+				if (E.necesitaUnDeleteCascade(mActual)) {
 					
 					mr += separacionDeCascada +"if(modeloQueLoLlamo!=null&& modeloQueLoLlamo instanceof "+nombreModeloActual+"){";
 					mr += separacionDeCascada1 + getNombreMetodoDeleteForID(mActual) + "(" + nombreVariableModelo + "." + nombreVariableColumnaActual + ");";//+"("+nombreVariableModelo+".idkey);";
@@ -1343,7 +1464,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 //				CrearDeleteCascade C = E.listaCrearDeleteCascade[mActual];
 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
 				
-				if (E.necistaUnDeleteCascade(mActual)) {
+				if (E.necesitaUnDeleteCascade(mActual)) {
 					mr += separacionDeCascada +"if(modeloQueLoLlamo!=null&& modeloQueLoLlamo instanceof "+nombreModeloActual+"){";
 					mr += separacionDeCascada1 + getNombreMetodoDelete_ForColumna(mActual, cIneterna) + "(" + nombreVariableColumna + ");";//+"("+nombreVariableModelo+".idkey);";
 					mr += separacionDeCascada +"}else{";
@@ -1369,7 +1490,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 //					CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
 					string nombreVariableColumnaActual = getNombreVariableElemento(cIneterna);
 				
-					if (E.necistaUnDeleteCascade(mActual)) {
+					if (E.necesitaUnDeleteCascade(mActual)) {
 						
 						mr += separacionDeCascada +"if(modeloQueLoLlamo!=null&& modeloQueLoLlamo instanceof "+nombreModeloActual+"){";
 						mr += separacionDeCascada1 + getNombreMetodoDeleteForID(mActual) + "(" + nombreVariableModelo + "." + nombreVariableColumnaActual + ");";//+"("+nombreVariableModelo+".idkey);";
@@ -1465,7 +1586,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 //				CrearDeleteCascade C0 = E.listaCrearDeleteCascade[mActual];
 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
 				
-				if (E.necistaUnDeleteCascade(mActual)) {
+				if (E.necesitaUnDeleteCascade(mActual)) {
 					
 					mr += separacionDeCascada +"if(modeloQueLoLlamo!=null&& modeloQueLoLlamo instanceof "+nombreModeloActual+"){";
 					mr += separacionDeCascada1 + getNombreMetodoDelete_ForColumna(mActual, cIneterna) + "(" + nombreVariableModelo + ".idkey);";//+"("+nombreVariableModelo+".idkey);";
@@ -1490,7 +1611,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
 				string nombreVariableColumnaActual = getNombreVariableElemento(cIneterna);
 				
-				if (E.necistaUnDeleteCascade(mActual)) {
+				if (E.necesitaUnDeleteCascade(mActual)) {
 					
 					mr += separacionDeCascada +"if(modeloQueLoLlamo!=null&& modeloQueLoLlamo instanceof "+nombreModeloActual+"){";
 					mr += separacionDeCascada1 + getNombreMetodoDeleteForID(mActual) + "(" + nombreVariableModelo + "." + nombreVariableColumnaActual + ");";//+"("+nombreVariableModelo+".idkey);";
@@ -1798,8 +1919,9 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 		
 		public string getNombreClaseBDImplementada()
 		{
-			return datosConexionFactory.NombreBDAdmin;
-		}
+			//return datosConexionFactory.NombreBDAdmin;
+            return factory.NombreClaseBDPadre;
+        }
 		
 		public string getNombreTipoDeDato(ElementoPorElQueBuscar c)
 		{
@@ -1937,5 +2059,645 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java
 //			mr+=separacion1+"this.BD ="+;
 			return separacion+"this.BD =BDConexion." + code.getDSC().NombreMetodoGetConexionSQL_LITE + "(this.urlBD);";;
 		}
-	}
+
+        public override string getStrMetodoMetodoDesactivarConsola_Abstract(int separacion0)
+        {
+            string separacion1 = getSeparacionln(0, separacion0);
+            string separacion2 = getSeparacionln(0, separacion0);
+            string mr = "";
+            mr += separacion1 + getPublicAbstractMetodo() 
+                + " " + factory.NombreClaseBDPadre 
+                + " " + getNombreMetodoDesactivarConsola() + "()throws Exception;";
+            return mr;
+        }
+
+        public override string getStrBD_IAdminPadre(int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string bd = "package " + factory.DireccionPaquete + ";";
+            bd += "\n" + importsJava.getStr();
+            string nombreClaseBD = factory.NombreClaseBDPadre;
+            bd += separacion + "\npublic abstract class " + nombreClaseBD 
+                + " extends " + this.NombreClaseUtilidadesBD + "{";
+            //string separacion1="\n\t";
+            string separacion1 = getSeparacionln(1, separacion0);
+            bd += separacion1 + "protected String urlBD;";
+            bd += separacion1 + "protected BDConexion BD;";
+            bd += separacion1 + "protected BDUpdates __Upd;";
+            if (factory.Esquema.UsarSesionStorage)
+            {
+                bd += separacion1 + "protected BDSesionStorage __SesionStorage;";
+            }
+            bd += separacion1 + "protected boolean usarUpdater;";
+
+
+
+
+
+
+
+            int distancia = 2;
+            bd += __getStrMetodosEnAdmin_Abstract(distancia);
+            bd += separacion + "public  "+ getClaseSQLUtil() + " sq(){return BD.sq();};";
+
+
+
+            bd += separacion + "}";
+            
+            return bd;
+        }
+        public virtual string getClaseSQLUtil() {
+            return "SQLUtil";
+        }
+        public override string getStrMetodoCrearTabla_Abstract(ModeloBD m, int separacion0)
+        {
+            string nombreModelo = this.getNombreStrModelo(m);
+            string tipoARetornar = getNombreClaseBDImplementada();
+            string separacion1 = getSeparacionln(0, separacion0);
+            string mc = separacion1 + getPublicAbstractMetodo() 
+                + " " + tipoARetornar + " " + getNombreMetodoCrearTabla(m) 
+                + "()throws Exception;";
+
+
+            return mc;
+        }
+
+        public override string getStrMetodoCrearTablaSiNoExiste_Abstract(ModeloBD m, int separacion0)
+        {
+            string nombreModelo = this.getNombreStrModelo(m);
+            string tipoARetornar = getNombreClaseBDImplementada();
+            string separacion1 = getSeparacionln(0, separacion0);
+            string mc = separacion1 + getPublicAbstractMetodo() 
+                + " " + tipoARetornar + " " + getNombreMetodoCrearTablaSiNoExiste(m) + "()throws Exception;";
+
+            return mc;
+        }
+
+        public override string getStrMetodoGetArgs_Abstract(ModeloBD m, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " " + nombreModelo + " " + getNombreMetodo_getArgs(m) 
+                + "(Object[] listaDeArgumentos)throws Exception;";
+
+            return mr;
+        }
+
+        public override string getStrMetodoContentArgs_Abstract(ModeloBD m, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+            string mr = separacion 
+                + getPublicAbstractMetodo() 
+                + " Object[] __content_" + nombreModelo 
+                + "(" + nombreModelo + " " + nombreModeloLower + ")throws Exception;";
+
+            return mr;
+        }
+
+        public override string getStrMetodoGetForID_Abstract(ModeloBD_ID m, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " " + nombreModelo + " " 
+                + getNombreMetodo_GetForID(m) 
+                + "(" + getNombreTipoDeDato(m.getTipoDeDatoID()) + " id)throws Exception;";
+
+            return mr;
+        }
+
+        public override string getStrMetodoInsertar_Abstract(ModeloBD_ID m, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " " + nombreModelo + " " + getNombreMetodo_insertar(m) 
+                + "(" + nombreModelo + " " + nombreModeloLower + ")throws Exception;";
+
+            return mr;
+        }
+
+        public override string getStrMetodoGetAll_Abstract(ModeloBD_ID m, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+            string mr = separacion + getPublicAbstractMetodo() 
+                + "  List<" + nombreModelo + "> " 
+                + getNombreMetodoGetAll(m) + "()throws Exception;";
+
+            return mr;
+        }
+
+        public override string getStrMetodoUpdate_Abstract(ModeloBD_ID m, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " " + nombreModelo + " " + getNombreMetodoUpdate(m) 
+                + "(" + nombreModelo + " " + nombreModeloLower + ")throws Exception;";
+
+            return mr;
+        }
+
+        public override string getStrMetodoDeleteForID_Abstract(ModeloBD_ID m, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+
+
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " void " + getNombreMetodoDeleteForID(m) 
+                + "(" + getNombreTipoDeDato(m.getTipoDeDatoID()) + " id)throws Exception;";
+            mr += separacion + getPublicAbstractMetodo() 
+                + " void " + getNombreMetodoDeleteForID(m) 
+                + "(" + nombreModelo + " " + nombreModeloLower + ")throws Exception;";
+
+            return mr;
+        }
+
+        public override string getStrMetodoGetAll_ForColumna_Abstract(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+            string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " List<" + nombreModelo + "> " 
+                + getNombreMetodoGetAll_ForColumna(m, c) 
+                + "(" + getNombreTipoDeDato(c) + " " + nombreVariableColumna + ")throws Exception;";
+            string separacion2 = getSeparacionln(2, separacion0);
+
+            string separacion3 = getSeparacionln(3, separacion0);
+
+            string separacion4 = getSeparacionln(4, separacion0);
+
+
+
+            if (c.EsReferencia)
+            {
+                ModeloBD referencia = c.ReferenciaID;
+                string nombreVariableColumnaReferencia = CodeBDLenguaje.getNombreStrModeloLower(referencia);
+                string nombreModeloColumnaReferencia = this.getNombreStrModelo(referencia);
+                mr += separacion + getPublicAbstractMetodo() 
+                    + " List<" + nombreModelo + "> " 
+                    + getNombreMetodoGetAll_ForColumna(m, c) 
+                    + "(" + nombreModeloColumnaReferencia 
+                    + " " + nombreVariableColumnaReferencia + ")throws Exception;";
+
+            }
+
+
+            return mr;
+        }
+
+        public override string getStrMetodoGet_ForColumna_Abstract(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+            string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " " + nombreModelo + " " 
+                + getNombreMetodoGet_ForColumna(m, c) 
+                + "(" + getNombreTipoDeDato(c) + " " + nombreVariableColumna + ")throws Exception;";
+            string separacion2 = getSeparacionln(2, separacion0);
+
+
+            string separacion3 = getSeparacionln(3, separacion0);
+
+
+
+
+            if (c.EsReferencia)
+            {
+                ModeloBD referencia = c.ReferenciaID;
+                string nombreVariableColumnaReferencia = CodeBDLenguaje.getNombreStrModeloLower(referencia);
+                string nombreModeloColumnaReferencia = this.getNombreStrModelo(referencia);
+                mr += separacion + getPublicAbstractMetodo() 
+                    + " " + nombreModelo + " " 
+                    + getNombreMetodoGet_ForColumna(m, c) 
+                    + "(" + nombreModeloColumnaReferencia 
+                    + " " + nombreVariableColumnaReferencia + ")throws Exception;";
+
+            }
+
+            return mr;
+        }
+
+        public override string getStrMetodoDelete_ForColumna_Abstract(ModeloBD_ID m, ColumnaDeModeloBD c, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+            string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " void " + getNombreMetodoDelete_ForColumna(m, c) 
+                + "(" + getNombreTipoDeDato(c) + " " + nombreVariableColumna 
+                + ")throws Exception;";
+            string separacion2 = getSeparacionln(2, separacion0);
+
+
+
+            if (c.EsReferencia)
+            {
+                ModeloBD referencia = c.ReferenciaID;
+                string nombreVariableColumnaReferencia = CodeBDLenguaje.getNombreStrModeloLower(referencia);
+                string nombreModeloColumnaReferencia = this.getNombreStrModelo(referencia);
+                mr += separacion + getPublicAbstractMetodo() 
+                    + " void " + getNombreMetodoDelete_ForColumna(m, c) 
+                    + "(" + nombreModeloColumnaReferencia + " "
+                    + nombreVariableColumnaReferencia + ")throws Exception;";
+
+            }
+
+            return mr;
+        }
+
+        public override string getStrMetodoGetAll_ForListaDeColumnas_Abstract(ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " List<" + nombreModelo + "> "
+                + getNombreMetodoGetAll_ForListaDeColumnas(m, C) 
+                + "(";
+            for (int i = 0; i < C.Count; i++)
+            {
+                ColumnaDeModeloBD c = C[i];
+                string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                mr += (i != 0 ? "," : "");
+                mr += getNombreTipoDeDato(c) + " " + nombreVariableColumna;
+            }
+            mr += ")throws Exception;";
+
+            string separacion2 = getSeparacionln(2, separacion0);
+
+            string separacion3 = getSeparacionln(3, separacion0);
+            string separacion4 = getSeparacionln(4, separacion0);
+
+
+
+
+
+            string nombreDelMetodo = getNombreMetodoGetAll_ForListaDeColumnas(m, C);
+            bool hayReferencia = false;
+            foreach (ColumnaDeModeloBD c in C)
+            {
+                if (c.EsReferencia)
+                {
+                    hayReferencia = true;
+                    break;
+                }
+            }
+            if (hayReferencia)
+            {
+                mr += separacion + getPublicAbstractMetodo() 
+                    + " List<" + nombreModelo + "> " + nombreDelMetodo + "(";
+                for (int i = 0; i < C.Count; i++)
+                {
+                    mr += (i != 0 ? "," : "");
+                    ColumnaDeModeloBD c = C[i];
+                    if (c.EsReferencia)
+                    {
+                        mr += this.getNombreStrModelo(c.ReferenciaID) 
+                            + " " + CodeBDLenguaje.getNombreStrModeloLower(c.ReferenciaID);
+                    }
+                    else
+                    {
+                        string nombreVariableColumna = 
+                            CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                        mr += getNombreTipoDeDato(c) + " " + nombreVariableColumna;
+                    }
+
+                }
+                mr += ")throws Exception;";
+
+            }
+
+
+            return mr;
+        }
+
+        public override string getStrMetodoGet_ForListaDeColumnas_Abstract(string nombreDelMetodo, ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+
+            string mr = separacion 
+                + getPublicAbstractMetodo() 
+                + " " + nombreModelo + " " + nombreDelMetodo + "(";
+            for (int i = 0; i < C.Count; i++)
+            {
+                ColumnaDeModeloBD c = C[i];
+                string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                mr += (i != 0 ? "," : "");
+                mr += getNombreTipoDeDato(c) + " " + nombreVariableColumna;
+            }
+            mr += ")throws Exception;";
+
+            string separacion2 = getSeparacionln(2, separacion0);
+
+            string separacion3 = getSeparacionln(3, separacion0);
+
+
+            bool hayReferencia = false;
+            foreach (ColumnaDeModeloBD c in C)
+            {
+                if (c.EsReferencia)
+                {
+                    hayReferencia = true;
+                    break;
+                }
+            }
+            if (hayReferencia)
+            {
+                mr += separacion + getPublicAbstractMetodo() 
+                    + " " + nombreModelo + " " + nombreDelMetodo + "(";
+                for (int i = 0; i < C.Count; i++)
+                {
+                    mr += (i != 0 ? "," : "");
+                    ColumnaDeModeloBD c = C[i];
+                    if (c.EsReferencia)
+                    {
+                        mr += this.getNombreStrModelo(c.ReferenciaID) 
+                            + " " + CodeBDLenguaje.getNombreStrModeloLower(c.ReferenciaID);
+                    }
+                    else
+                    {
+                        string nombreVariableColumna = 
+                            CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                        mr += getNombreTipoDeDato(c) + " " + nombreVariableColumna;
+                    }
+
+                }
+                mr += ")throws Exception;";
+
+            }
+
+
+            return mr;
+        }
+
+        public override string getStrMetodoDelete_ForListaDeColumnas_Abstract(ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " void " + getNombreMetodoDelete_ForListaDeColumnas(m, C) + "(";
+            for (int i = 0; i < C.Count; i++)
+            {
+                ColumnaDeModeloBD c = C[i];
+                string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                mr += (i != 0 ? "," : "");
+                mr += getNombreTipoDeDato(c) + " " + nombreVariableColumna;
+            }
+            mr += ")throws Exception;";
+
+
+            return mr;
+        }
+
+        public override string getStrMetodoGetAll_InnerJoin_ForListaDeColumnas_Abstract(ModeloBD_ID m, List<ElementoPorElQueBuscar> cadena, List<ElementoPorElQueBuscar> elementosWhere, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " List<" + nombreModelo + "> " 
+                + getNombreMetodoGetAll_InnerJoin_ForListaDeColumnas(m, elementosWhere) + "(";
+            for (int i = 0; i < elementosWhere.Count; i++)
+            {
+                ElementoPorElQueBuscar e = elementosWhere[i];
+                string variableElemento = getNombreVariableElemento(e);
+                mr += (i != 0 ? "," : "");
+                mr += getNombreTipoDeDato(e) + " " + variableElemento;
+            }
+            mr += ")throws Exception;";
+
+
+            return mr;
+        }
+
+        public override string getStrMetodoGet_InnerJoin_ForListaDeColumnas_Abstract(ModeloBD_ID m, List<ElementoPorElQueBuscar> cadena, List<ElementoPorElQueBuscar> elementosWhere, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " " + nombreModelo 
+                + " " + getNombreMetodoGet_InnerJoin_ForListaDeColumnas(m, elementosWhere) + "(";
+            for (int i = 0; i < elementosWhere.Count; i++)
+            {
+                ElementoPorElQueBuscar e = elementosWhere[i];
+                string variableElemento = getNombreVariableElemento(e);
+                mr += (i != 0 ? "," : "");
+                mr += getNombreTipoDeDato(e) + " " + variableElemento;
+            }
+            mr += ")throws Exception;";
+
+
+            return mr;
+        }
+
+        public override string getStrMetodoDeleteForID_Cascade_Abstract(ModeloBD_ID m, EsquemaBD E, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreVariableModelo = CodeBDLenguaje.getNombreStrModeloLower(m);//getNombreVariableElemento(m);
+            string nombreVariableColumna = getNombreVariableElemento(m);//CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+            string separacion2 = getSeparacionln(1, separacion0);
+            string separacion3 = getSeparacionln(2, separacion0);
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " void " + getNombreMetodoDeleteForID_Cascade(m) 
+                + "(" + getNombreTipoDeDato(m.getTipoDeDatoID()) 
+                + " " + nombreVariableColumna + ")throws Exception;";
+
+
+            mr += separacion + getPublicAbstractMetodo()
+                + " void " + getNombreMetodoDeleteForID_Cascade(m) 
+                + "(" + getNombreTipoDeDato(m.getTipoDeDatoID()) 
+                + " " + nombreVariableColumna + ",Object modeloQueLoLlamo)throws Exception;";
+
+
+            return mr;
+        }
+
+        public override string getStrMetodoDelete_ForColumna_Cascade_Abstract(ModeloBD_ID m, ColumnaDeModeloBD c, EsquemaBD E, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreVariableModelo = CodeBDLenguaje.getNombreStrModeloLower(m);//getNombreVariableElemento(m);
+            string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+            string separacion2 = getSeparacionln(1, separacion0);
+            string separacion3 = getSeparacionln(2, separacion0);
+            string separacion4 = getSeparacionln(3, separacion0);
+
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " void " + getNombreMetodoDelete_ForColumna_Cascade(m, c) 
+                + "(" + getNombreTipoDeDato(c) + " " + nombreVariableColumna + ")throws Exception;";
+
+
+            mr += separacion + getPublicAbstractMetodo() 
+                + " void " + getNombreMetodoDelete_ForColumna_Cascade(m, c) 
+                + "(" + getNombreTipoDeDato(c) + " " + nombreVariableColumna 
+                + ",Object modeloQueLoLlamo)throws Exception;";
+
+
+            return mr;
+        }
+
+        public override string getStrMetodoDelete_ForListaDeColumnas_Cascade_Abstract(ModeloBD_ID m, List<ColumnaDeModeloBD> C, EsquemaBD E, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreVariableModelo = CodeBDLenguaje.getNombreStrModeloLower(m);//getNombreVariableElemento(m);
+                                                                                    //string nombreVariableColumna=CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+            string separacion2 = getSeparacionln(1, separacion0);
+            string separacion3 = getSeparacionln(2, separacion0);
+
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " void " + getNombreMetodoDelete_ForListaDeColumnas_Cascade(m, C) + "(";
+            for (int i = 0; i < C.Count; i++)
+            {
+                ColumnaDeModeloBD c = C[i];
+                string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                mr += (i != 0 ? "," : "");
+                mr += getNombreTipoDeDato(c) + " " + nombreVariableColumna;
+            }
+            mr += ")throws Exception;";
+
+
+
+
+
+
+            mr += separacion + getPublicAbstractMetodo() 
+                + " void " + getNombreMetodoDelete_ForListaDeColumnas_Cascade(m, C) + "(";
+            for (int i = 0; i < C.Count; i++)
+            {
+                ColumnaDeModeloBD c = C[i];
+                string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                mr += (i != 0 ? "," : "");
+                mr += getNombreTipoDeDato(c) + " " + nombreVariableColumna;
+            }
+            mr += ",Object modeloQueLoLlamo)throws Exception;";
+
+
+            return mr;
+        }
+
+        public override string getStrMetodoExiste_Abstract(ModeloBD_ID m, ColumnaDeModeloBD c, bool soloHayEsteEnElModelo, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+            string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " boolean " + getNombreMetodoExiste(m, c, soloHayEsteEnElModelo) 
+                + "(" + getNombreTipoDeDato(c) + " " + nombreVariableColumna + ")throws Exception;";
+
+            return mr;
+        }
+
+        public override string getStrMetodoExiste_ForListaDeColumnas_Abstract(string nombreMetodo, ModeloBD_ID m, List<ColumnaDeModeloBD> C, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+
+            string mr = separacion + getPublicAbstractMetodo() + " boolean " + nombreMetodo + "(";// + getNombreTipoDeDato(c) + " " + nombreVariableColumna + "){";
+            for (int i = 0; i < C.Count; i++)
+            {
+                ColumnaDeModeloBD c = C[i];
+                string nombreVariableColumna = CodeBDLenguaje.getNombreStrColumnaModelo(m, c);
+                mr += (i != 0 ? "," : "");
+                mr += getNombreTipoDeDato(c) + " " + nombreVariableColumna;
+            }
+            mr += ")throws Exception;";
+
+
+            return mr;
+        }
+
+        public override string getStrMetodoExiste_ForID_Abstract(ModeloBD_ID m, int separacion0)
+        {
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);//(int id) //("+getNombreTipoDeDato(m.getTipoDeDatoID())+" id)
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " boolean " + getNombreMetodoExiste_ForID(m) 
+                + "(" + getNombreTipoDeDato(m.getTipoDeDatoID()) + " id)throws Exception;";
+
+            return mr;
+        }
+
+        public override string getStrMetodoGetAll_ForListaDeColumnas_Sort_Abstract(SelectWhereSort s, int separacion0)
+        {
+            ModeloBD_ID m = s.Modelo;
+            List<ColumnaDeModeloBD> C = s.ListaPorLasQueBuscar;
+            string separacion = getSeparacionln(0, separacion0);
+            string nombreModelo = this.getNombreStrModelo(m);
+            string nombreModeloLower = CodeBDLenguaje.getNombreStrModeloLower(m);
+
+            string mr = separacion + getPublicAbstractMetodo() 
+                + " List<" + nombreModelo + "> "
+                + getNombreMetodoGetAll_ForListaDeColumnas_Sort(s) + "(";//+getNombreTipoDeDato(c)+" "+nombreVariableColumna+"){";
+            for (int i = 0; i < C.Count; i++)
+            {
+                mr += (i != 0 ? "," : "");
+                string nombreVariableColumna = null;
+                
+
+                mr += getNombreTipoDeDato(C[i]) + " " + getNombreVariableElemento(C[i]);
+
+            }
+            mr += ")throws Exception;";
+
+            return mr;
+        }
+
+        public override string getStrMetodoCrearTodasLasTablas_Abstract(int separacion0)
+        {
+            string separacion1 = getSeparacionln(0, separacion0);
+            string bd = "";
+            bd += separacion1 + getPublicAbstractMetodo() 
+                + " void " + getNombreMetodoCrearTodasLasTablas() + "()throws Exception;";
+            return bd;
+        }
+
+        public override string getStrMetodoCrearTodasLasTablasSiNoExisten_Abstract(int separacion0)
+        {
+            string separacion1 = getSeparacionln(0, separacion0);
+            string bd = "";
+            bd += separacion1 + getPublicAbstractMetodo() 
+                + " void " + getNombreMetodoCrearTodasLasTablasSiNoExisten() 
+                + "()throws Exception;";
+            return bd;
+        }
+
+        public override string getStrMetodoGetSesionStorage_Abstract(int separacion0)
+        {
+            string separacion1 = getSeparacionln(0, separacion0);
+            string bd = "";
+            bd += separacion1 + getPublicAbstractMetodo() 
+                + " SesionStorage getSesionStorage()throws Exception;";
+            return bd;
+        }
+    }
 }

@@ -247,7 +247,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
 
             //			string mr = "package " + factory.DireccionPaquete + ";";
             //			mr += "\n" + usingsCSharp.getStr();
-            mr += "\npublic class " + nombreModelo + ":" + nombreSuperClaseModelo + "<" + nombreTipoApiBD + "> {";
+            mr += "\npublic class " + nombreModelo + ":" + nombreSuperClaseModelo
+                + "<" + nombreTipoApiBD + "> {";
             mr += separacion1 + "public static readonly string " + this.getStrStaticTabla(m) + "=\"" + m.Nombre + "\";";
 
             string[] columnasStr = new string[m.Columnas.Count];
@@ -639,6 +640,15 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
             mr += separacion2 + "return " + variableModeloNuevo + ";";
             mr += separacion1 + "}";
 
+            //metodo insertar con un ID en otra bd
+            mr += separacion1 + "public " + nombreModelo + " " + getNombreMetodoSaveConID(m) + "(" + factory.NombreClaseBDPadre + " " + variableBDNew + "){";
+            mr += separacion2 + factory.NombreClaseBDPadre + " " + variableBDAnterior + "=this.apibd;";
+            mr += separacion2 + "this.apibd=" + variableBDNew + ";";
+            mr += separacion2 + nombreModelo + " " + variableModeloNuevo + "=" + getNombreMetodoSaveConID(m) + "();";
+            mr += separacion2 + "this.apibd=" + variableBDAnterior + ";";
+            mr += separacion2 + "return " + variableModeloNuevo + ";";
+            mr += separacion1 + "}";
+
             //metodo insertar con un ID 
             mr += separacion1 + "public " + nombreModelo + " " + getNombreMetodoSaveConID(m) + "(){";
             mr += separacion2 + "if (this.apibd."+ getNombreMetodoExiste_ForID(m)+ "(this.idkey)){";
@@ -650,7 +660,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
 
             mr += separacion1 + "public void " + getNombreMetodoDelete_EnModelo(m) + "(){";
             mr += separacion2 + "if (this.idkey!=-1){";
-            if (E.necistaUnDeleteCascade(m))
+            if (E.necesitaUnDeleteCascade(m))
             {
                 mr += separacion3 + "this.apibd." + getNombreMetodoDeleteForID_Cascade(m) + "(this.idkey);";
             }
@@ -1818,7 +1828,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
                 //				CrearDeleteCascade C = E.listaCrearDeleteCascade[mActual];
                 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
 
-                if (E.necistaUnDeleteCascade(mActual))
+                if (E.necesitaUnDeleteCascade(mActual))
                 {
 
                     mr += separacionDeCascada + "if(modeloQueLoLlamo!=null&& modeloQueLoLlamo is " + nombreModeloActual + "){";
@@ -1847,7 +1857,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
                 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
                 string nombreVariableColumnaActual = getNombreVariableElemento(cIneterna);
 
-                if (E.necistaUnDeleteCascade(mActual))
+                if (E.necesitaUnDeleteCascade(mActual))
                 {
 
                     mr += separacionDeCascada + "if(modeloQueLoLlamo!=null&& modeloQueLoLlamo is " + nombreModeloActual + "){";
@@ -1928,7 +1938,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
                 //				CrearDeleteCascade C = E.listaCrearDeleteCascade[mActual];
                 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
 
-                if (E.necistaUnDeleteCascade(mActual))
+                if (E.necesitaUnDeleteCascade(mActual))
                 {
                     mr += separacionDeCascada + "if(modeloQueLoLlamo!=null&& modeloQueLoLlamo is " + nombreModeloActual + "){";
                     mr += separacionDeCascada1 + getNombreMetodoDelete_ForColumna(mActual, cIneterna) + "(" + nombreVariableColumna + ");";//+"("+nombreVariableModelo+".idkey);";
@@ -1959,7 +1969,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
                     //					CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
                     string nombreVariableColumnaActual = getNombreVariableElemento(cIneterna);
 
-                    if (E.necistaUnDeleteCascade(mActual))
+                    if (E.necesitaUnDeleteCascade(mActual))
                     {
 
                         mr += separacionDeCascada + "if(modeloQueLoLlamo!=null&& modeloQueLoLlamo is " + nombreModeloActual + "){";
@@ -2102,7 +2112,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
                 //				CrearDeleteCascade C0 = E.listaCrearDeleteCascade[mActual];
                 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
 
-                if (E.necistaUnDeleteCascade(mActual))
+                if (E.necesitaUnDeleteCascade(mActual))
                 {
 
                     mr += separacionDeCascada + "if(modeloQueLoLlamo!=null&& modeloQueLoLlamo is " + nombreModeloActual + "){";
@@ -2131,7 +2141,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.CSharp
                 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
                 string nombreVariableColumnaActual = getNombreVariableElemento(cIneterna);
 
-                if (E.necistaUnDeleteCascade(mActual))
+                if (E.necesitaUnDeleteCascade(mActual))
                 {
 
                     mr += separacionDeCascada + "if(modeloQueLoLlamo!=null&& modeloQueLoLlamo is " + nombreModeloActual + "){";

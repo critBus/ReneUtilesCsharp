@@ -37,7 +37,8 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Java.Android
 			this.ImportBasicoBDAndroid="com.rene.android.reneandroid.Clases.BD.BasicoBDAndroid";
 			this.ImportJodaDateTime="org.joda.time.DateTime";
 			this.ImportArchivoAndroid="com.rene.android.reneandroid.ArchivoAndroid";
-		}
+            this.ImportSQLUtiles = "com.rene.android.reneandroid.Utiles.MetodosUtiles.SQLUtil";
+        }
 		public override string getStr(){
 			return base.getStr()
 				+getImport(this.ImportBDAndroid)

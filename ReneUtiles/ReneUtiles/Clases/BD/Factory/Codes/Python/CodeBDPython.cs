@@ -329,7 +329,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 
             mr += separacion1 + "def " + getNombreMetodoDelete_EnModelo(m) + "(self):";
 			mr += separacion2 + "if self.idkey is not None:";
-			if (E.necistaUnDeleteCascade(m)) {
+			if (E.necesitaUnDeleteCascade(m)) {
 				mr += separacion3 + "self.apibd." + getNombreMetodoDeleteForID_Cascade(m) + "(self.idkey)";
 			} else {
 				mr += separacion3 + "self.apibd." + getNombreMetodoDeleteForID(m) + "(self.idkey)";
@@ -412,7 +412,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 					bd += getStrMetodoExiste_ForListaDeColumnas(mt, lc, existeSoloEste, distancia); 
 				}
 				//CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-				if (factory.Esquema.necistaUnDeleteCascade(mt)) {
+				if (factory.Esquema.necesitaUnDeleteCascade(mt)) {
 					bd += getStrMetodoDeleteForID_Cascade(mt, factory.Esquema, distancia);
 				}
 			}
@@ -466,7 +466,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 					if (cmc.EliminarPorEstaColumna) {
 						bd += getStrMetodoDelete_ForColumna(mt, cmc, distancia);
 						//CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-						if (factory.Esquema.necistaUnDeleteCascade(mt)) {
+						if (factory.Esquema.necesitaUnDeleteCascade(mt)) {
 							bd += getStrMetodoDelete_ForColumna_Cascade(mt, cmc, factory.Esquema, distancia);
 						}
 					}
@@ -494,7 +494,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 					bd += getStrMetodoDelete_ForListaDeColumnas(mt, l, distancia);
 					
 					//CrearDeleteCascade Cr = factory.Esquema.listaCrearDeleteCascade[mt];
-					if (factory.Esquema.necistaUnDeleteCascade(mt)) {
+					if (factory.Esquema.necesitaUnDeleteCascade(mt)) {
 						bd += getStrMetodoDelete_ForListaDeColumnas_Cascade(mt, l, factory.Esquema, distancia);
 					}
 				}
@@ -1099,7 +1099,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 				//CrearDeleteCascade C=E.listaCrearDeleteCascade[mActual];
 				
-				if (E.necistaUnDeleteCascade(mActual)) {
+				if (E.necesitaUnDeleteCascade(mActual)) {
 					
 					mr += separacionDeCascada + "if (not modeloQueLoLlamo is None) and isinstance(modeloQueLoLlamo," + nombreModeloActual + "):";
 					mr += separacionDeCascada1 + "self." + getNombreMetodoDelete_ForColumna(mActual, cIneterna) + "(" + nombreVariableModelo + ".idkey)";
@@ -1122,7 +1122,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 
 				string nombreVariableColumnaActual = getNombreVariableElemento(cIneterna);
 				
-				if (E.necistaUnDeleteCascade(mActual)) {
+				if (E.necesitaUnDeleteCascade(mActual)) {
 					
 					mr += separacionDeCascada + "if (not modeloQueLoLlamo is None) and isinstance(modeloQueLoLlamo," + nombreModeloActual + "):";
 					mr += separacionDeCascada1 + "self." + getNombreMetodoDeleteForID(mActual) + "(" + nombreVariableModelo + "." + nombreVariableColumnaActual + ")";//+"("+nombreVariableModelo+".idkey);";
@@ -1167,7 +1167,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 				//CrearDeleteCascade C=E.listaCrearDeleteCascade[mActual];
 				
-				if (E.necistaUnDeleteCascade(mActual)) {
+				if (E.necesitaUnDeleteCascade(mActual)) {
 					
 					mr += separacionDeCascada + "if (not modeloQueLoLlamo is None) and isinstance(modeloQueLoLlamo," + nombreModeloActual + "):";
 					mr += separacionDeCascada1 + "self." + getNombreMetodoDelete_ForColumna(mActual, cIneterna) + "(" + nombreVariableColumna + ")";//+"("+nombreVariableModelo+".idkey);";
@@ -1195,7 +1195,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 //					CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
 					string nombreVariableColumnaActual = getNombreVariableElemento(cIneterna);
 				
-					if (E.necistaUnDeleteCascade(mActual)) {
+					if (E.necesitaUnDeleteCascade(mActual)) {
 						
 						mr += separacionDeCascada + "if (not modeloQueLoLlamo is None) and isinstance(modeloQueLoLlamo," + nombreModeloActual + "):";
 						mr += separacionDeCascada1 + "self." + getNombreMetodoDeleteForID(mActual) + "(" + nombreVariableModelo + "." + nombreVariableColumnaActual + ")";//+"("+nombreVariableModelo+".idkey);";
@@ -1261,7 +1261,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 				string nombreModeloLowerActual = CodeBDLenguaje.getNombreStrModeloLower(mActual);
 				//CrearDeleteCascade Cc=E.listaCrearDeleteCascade[mActual];
 				
-				if (E.necistaUnDeleteCascade(mActual)) {
+				if (E.necesitaUnDeleteCascade(mActual)) {
 					
 					mr += separacionDeCascada + "if (not modeloQueLoLlamo is None) and isinstance(modeloQueLoLlamo," + nombreModeloActual + "):";
 					mr += separacionDeCascada1 + "self." + getNombreMetodoDelete_ForColumna(mActual, cIneterna) + "(" + nombreVariableModelo + ".idkey)";//+"("+nombreVariableModelo+".idkey);";
@@ -1286,7 +1286,7 @@ namespace ReneUtiles.Clases.BD.Factory.Codes.Python
 //				CrearDeleteCascade CI = E.listaCrearDeleteCascadeInverso[mActual];
 				string nombreVariableColumnaActual = getNombreVariableElemento(cIneterna);
 				
-				if (E.necistaUnDeleteCascade(mActual)) {
+				if (E.necesitaUnDeleteCascade(mActual)) {
 					
 					mr += separacionDeCascada + "if (not modeloQueLoLlamo is None) and isinstance(modeloQueLoLlamo," + nombreModeloActual + "):";
 					mr += separacionDeCascada1 + "self." + getNombreMetodoDeleteForID(mActual) + "(" + nombreVariableModelo + "." + nombreVariableColumnaActual + ");";//+"("+nombreVariableModelo+".idkey);";
